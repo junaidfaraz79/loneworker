@@ -10,7 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShiftController;
-
+use Illuminate\Support\Facades\Request;
 
 Route::get('/', function() {
     return view('signin');

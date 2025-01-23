@@ -40,6 +40,18 @@ var KTAppEcommerceSaveCategory = function () {
 
     }
 
+    // Init DropzoneJS --- more info:
+    const initDropzone = () => {
+        var myDropzone = new Dropzone("#add_worker_documents", {
+            url: "/",
+            paramName: "file", // The name that will be used to transfer the file
+            maxFiles: 10,
+            maxFilesize: 10, // MB
+            addRemoveLinks: true,
+            autoProcessQueue: false,
+        });
+    }
+
     // Init tagify
     const initTagify = () => {
         // Define all elements for tagify
@@ -229,17 +241,26 @@ var KTAppEcommerceSaveCategory = function () {
                         let form = document.getElementById("kt_ecommerce_add_form");
                         let formData = new FormData(form);
 
+                        const dropzoneElement = document.querySelector('#add_worker_documents');
+                        if (dropzoneElement.dropzone) {
+                            const files = dropzoneElement.dropzone.files;
+                            files.forEach((file) => {
+                                formData.append('worker_documents[]', file, file.name);
+                            });
+                        }
+
                         $.ajax({
                             type: 'POST',
                             url: form.getAttribute("action"),
                             data: formData,
                             contentType: false,
-                            processData:false,                 
-                          })
+                            processData: false,
+                        })
                             .done((data) => {
                                 console.log(data);
-                                let res = JSON.parse(data);        
-                                if(res.status == "duplicate") {
+                                let res = JSON.parse(data);
+                                console.log(res.status);
+                                if (res.status == "duplicate") {
 
                                     Swal.fire({
                                         html:
@@ -248,13 +269,13 @@ var KTAppEcommerceSaveCategory = function () {
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
                                         customClass: { confirmButton: "btn btn-primary" },
-                                    }); 
+                                    });
 
                                     submitButton.setAttribute('data-kt-indicator', 'off');
                                     submitButton.disabled = false;
 
                                 }
-                                else if(res.status == "success") {
+                                else if (res.status == "success") {
 
                                     setTimeout(function () {
                                         submitButton.removeAttribute('data-kt-indicator');
@@ -277,12 +298,7 @@ var KTAppEcommerceSaveCategory = function () {
                                             }
                                         });
                                     }, 2000);
-
                                 }
-                                else {
-
-                                    } 
-
                             })
 
                     } else {
@@ -309,6 +325,7 @@ var KTAppEcommerceSaveCategory = function () {
             initTagify();
             initFormRepeater();
             initConditionsSelect2();
+            initDropzone();
 
             // Handle forms
             handleStatus();
