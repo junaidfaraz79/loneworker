@@ -49,7 +49,8 @@
                             </li>
                             <!--end::Item-->
                             <!--begin::Item-->
-                            <li class="breadcrumb-item text-gray-700">Edit Worker</li>
+                            <li class="breadcrumb-item text-gray-700">{{ $isViewMode === 'n' ? 'Edit Worker' : 'View
+                                Worker'}}</li>
                             <!--end::Item-->
                         </ul>
                         <!--end::Breadcrumb-->
@@ -88,15 +89,12 @@
                                 <!--begin::Image input placeholder-->
 
                                 @php
-                                if(empty($worker->worker_image))
-                                {
-                                $image = 'assets/media/svg/files/blank-image.svg';
-                                $dark_image = 'assets/media/svg/files/blank-image-dark.svg';
-                                }
-                                else
-                                {
-                                $image = str_replace('public/', 'storage/', $worker->worker_image);
-                                $dark_image = '';
+                                if (empty($worker->worker_image)) {
+                                $image = asset('assets/media/svg/files/blank-image.svg');
+                                $dark_image = asset('assets/media/svg/files/blank-image-dark.svg');
+                                } else {
+                                $image = asset('storage/' . $worker->worker_image);
+                                $dark_image = ''; // Assuming no dark mode image for user uploaded images
                                 echo '<input type="hidden" name="current_image" id="current_image"
                                     value="'.$worker->worker_image.'">';
                                 }
@@ -105,11 +103,11 @@
 
                                 <style>
                                     .image-input-placeholder {
-                                        background-image: url($image);
+                                        background-image: url("{{ $image }}");
                                     }
 
                                     [data-bs-theme="dark"] .image-input-placeholder {
-                                        background-image: url($dark_image);
+                                        background-image: url("{{ $dark_image }}");
                                     }
                                 </style>
                                 <!--end::Image input placeholder-->
@@ -117,9 +115,11 @@
                                 <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                                     data-kt-image-input="true">
                                     <!--begin::Preview existing avatar-->
-                                    <div class="image-input-wrapper w-150px h-150px"></div>
+                                    <div class="image-input-wrapper w-150px h-150px"
+                                        style="background-image: url('{{ $image }}')"></div>
                                     <!--end::Preview existing avatar-->
                                     <!--begin::Label-->
+                                    @if($isViewMode === 'n')
                                     <label
                                         class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                         data-kt-image-input-action="change" data-bs-toggle="tooltip"
@@ -134,6 +134,7 @@
                                         <input type="file" name="worker_image" accept=".png, .jpg, .jpeg" />
                                         <!--end::Inputs-->
                                     </label>
+                                    @endif
                                     <!--end::Label-->
                                     <!--begin::Cancel-->
                                     <span
@@ -160,8 +161,10 @@
                                 </div>
                                 <!--end::Image input-->
                                 <!--begin::Description-->
+                                @if($isViewMode === 'n')
                                 <div class="text-muted fs-7">Set the thumbnail image. Only *.png, *.jpg and *.jpeg image
                                     files are accepted</div>
+                                @endif
                                 <!--end::Description-->
                             </div>
                             <!--end::Card body-->
@@ -203,16 +206,18 @@
                             <!--begin::Card body-->
                             <div class="card-body pt-0">
                                 <!--begin::Select2-->
-                                <select name="worker_status" class="form-select mb-2" data-control="select2"
-                                    data-hide-search="true" data-placeholder="Select an option"
-                                    id="kt_ecommerce_add_category_status_select">
+                                <select name="worker_status" class="form-select mb-2" {{ $isViewMode==='y' ? 'disabled'
+                                    : '' }} data-control="select2" data-hide-search="true"
+                                    data-placeholder="Select an option" id="kt_ecommerce_add_category_status_select">
                                     <option></option>
                                     <option value="active" {{ $active_class }}>Active</option>
                                     <option value="inactive" {{ $inactive_class }}>Inactive</option>
                                 </select>
                                 <!--end::Select2-->
                                 <!--begin::Description-->
+                                @if($isViewMode === 'n')
                                 <div class="text-muted fs-7">Set worker status.</div>
+                                @endif
                                 <!--end::Description-->
                             </div>
                             <!--end::Card body-->
@@ -262,10 +267,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="worker_name" class="form-control mb-2"
-                                                    placeholder="Worker name" value="{{ $worker->worker_name }}" />
+                                                    placeholder="Worker name" value="{{ $worker->worker_name }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">A worker name is required.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -276,10 +284,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="phone_no" class="form-control mb-2"
-                                                    placeholder="Phone number" value="{{ $worker->phone_no }}" />
+                                                    placeholder="Phone number" value="{{ $worker->phone_no }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set phone number.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -290,10 +301,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="email" class="form-control mb-2"
-                                                    placeholder="Email address" value="{{ $worker->email }}" />
+                                                    placeholder="Email address" value="{{ $worker->email }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set email address.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -304,10 +318,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="department" class="form-control mb-2"
-                                                    placeholder="Department" value="{{ $worker->department }}" />
+                                                    placeholder="Department" value="{{ $worker->department }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set department.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -318,10 +335,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="role" class="form-control mb-2"
-                                                    placeholder="Role" value="{{ $worker->role }}" />
+                                                    placeholder="Role" value="{{ $worker->role }}" {{ $isViewMode==='y'
+                                                    ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set role.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -333,23 +353,21 @@
                                                 <!--begin::Input-->
                                                 <select class="form-select mb-2" data-control="select2"
                                                     data-hide-search="true" data-placeholder="Select an option"
-                                                    name="check_in_frequency">
-                                                    <option value="select">Select frequency</option>
-                                                    @foreach ($frequency as $key => $f)
-                                                    @php
-                                                    $selected = "";
-                                                    @endphp
-                                                    @if($f->time==$worker->check_in_frequency)
-                                                    @php
-                                                    $selected = "selected='selected'";
-                                                    @endphp
-                                                    @endif
-                                                    <option {{ $selected }} value="{{$f->time}}">{{$f->time}}</option>
+                                                    name="check_in_frequency" {{ $isViewMode==='y' ? 'disabled' : '' }}>
+                                                    <option value="">Select frequency</option>
+                                                    @foreach ($frequency as $f)
+                                                    <option value="{{ $f->time }}" {{ $f->id ==
+                                                        $worker->check_in_frequency ? 'selected' : '' }}>
+                                                        {{ $f->time }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
+
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set Check In Frequency.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -359,9 +377,9 @@
                                                 <label class="form-label">Phone Type</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <select class="form-select mb-2" data-control="select2"
-                                                    data-hide-search="true" data-placeholder="Select an option"
-                                                    name="phone_type">
+                                                <select class="form-select mb-2" {{ $isViewMode==='y' ? 'disabled' : ''
+                                                    }} data-control="select2" data-hide-search="true"
+                                                    data-placeholder="Select an option" name="phone_type">
                                                     @php
                                                     $old_class = '';
                                                     $smart_class = '';
@@ -377,7 +395,9 @@
                                                 </select>
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set phone type.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -403,6 +423,7 @@
                                         <!--begin::Card body-->
                                         <div class="card-body pt-0">
                                             <!--begin::Input group-->
+                                            @if($isViewMode === 'n')
                                             <div class="fv-row mb-2">
                                                 <!--begin::Dropzone-->
                                                 <div class="dropzone" id="add_worker_documents">
@@ -430,6 +451,46 @@
                                             <!--begin::Description-->
                                             <div class="text-muted fs-7">Set the worker documents (License, ID Card,
                                                 Training Certificates).</div>
+                                            @else
+                                                <div class="row g-6 g-xl-9 mb-6 mb-xl-9">
+                                                    @foreach ($documents as $document)
+                                                    <!--begin::Col-->
+                                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                                        <!--begin::Card-->
+                                                        <div class="card h-100">
+                                                            <!--begin::Card body-->
+                                                            <div class="card-body d-flex justify-content-center text-center flex-column p-8">
+                                                                @php
+                                                                    $extension = strtolower(pathinfo($document->file_path, PATHINFO_EXTENSION));
+                                                                    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'];
+                                                                    $isImage = in_array($extension, $imageExtensions);
+                                                                    $fileUrl = $isImage ? asset('storage/' . $document->file_path) : route('downloadDocument', $document->id);
+                                                                    $target = $isImage ? '_blank' : '_self';
+                                                                    $download = $isImage ? '' : 'download';
+                                                                    $imagePath = $isImage ? asset('storage/' . $document->file_path) : asset($fileTypeImages[$extension] ?? 'assets/media/svg/files/upload.svg');
+                                                                @endphp
+                                                                <!--begin::Name-->
+                                                                <a href="{{ $fileUrl }}" target="{{ $target }}" {{ $download }}
+                                                                    class="text-gray-800 text-hover-primary d-flex flex-column">
+                                                                    <div class="symbol symbol-60px mb-5">
+                                                                        @if ($isImage)
+                                                                            <img src="{{ asset('storage/' . $document->file_path) }}" alt="Document" />
+                                                                        @else
+                                                                            <img src="{{ $imagePath }}" alt="Document" />
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="fs-5 fw-bold mb-2">{{ $document->file_name }}</div>
+                                                                </a>
+                                                                <!--end::Name-->
+                                                            </div>
+                                                            <!--end::Card body-->
+                                                        </div>
+                                                        <!--end::Card-->
+                                                    </div>
+                                                    <!--end::Col-->
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                             <!--end::Description-->
                                         </div>
                                         <!--end::Card header-->
@@ -440,6 +501,7 @@
                             <!--end::Tab pane-->
                         </div>
                         <!--end::Tab content-->
+                        @if($isViewMode === 'n')
                         <div class="d-flex justify-content-end">
                             <!--begin::Button-->
                             <a href="/workers" id="kt_ecommerce_add_product_cancel"
@@ -453,6 +515,7 @@
                             </button>
                             <!--end::Button-->
                         </div>
+                        @endif
                     </div>
                     <!--end::Main column-->
                 </form>

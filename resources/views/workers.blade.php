@@ -347,7 +347,7 @@
                                                 <!--end::Avatar-->
                                                 <!--begin::User details-->
                                                 <div class="d-flex flex-column">
-                                                    <a href="/worker/edit/{{ $worker->id }}" class="text-gray-800 text-hover-primary mb-1">{{ $worker->worker_name }}</a>
+                                                    <a href="/worker/view/{{ $worker->id }}" class="text-gray-800 text-hover-primary mb-1">{{ $worker->worker_name }}</a>
                                                 </div>
                                                 <!--begin::User details-->
                                             </td>

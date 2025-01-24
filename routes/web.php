@@ -47,6 +47,8 @@ Route::get('/worker/add', [WorkerController::class, 'add']);
 Route::post('/worker/save', [WorkerController::class, 'save']);
 Route::get('/worker/edit/{parameter}', [WorkerController::class, 'edit']);
 Route::post('/worker/update', [WorkerController::class, 'update']);
+Route::get('/worker/view/{parameter}', [WorkerController::class, 'view']);
+Route::get('/worker/download-document/{parameter}', [WorkerController::class, 'downloadDocument'])->name('downloadDocument');
 
 // Site Routes
 Route::get('/sites', [SiteController::class, 'list'])->name('sites');

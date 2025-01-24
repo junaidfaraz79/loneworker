@@ -302,7 +302,7 @@
                                                     name="check_in_frequency">
                                                     <option>Select frequency</option>
                                                     @foreach ($frequency as $key => $f)
-                                                    <option value="{{$f->id}}">{{$f->time}}</option>
+                                                        <option value="{{$f->id}}">{{$f->time}}</option>
                                                     @endforeach
 
                                                 </select>
@@ -398,8 +398,8 @@
                             <!--begin::Button-->
                             <button type="submit" id="kt_ecommerce_add_submit" class="btn btn-primary">
                                 <span class="indicator-label">Save Changes</span>
-                                {{-- <span class="indicator-progress">Please wait...
-                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span> --}}
+                                <span class="indicator-progress">Please wait...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>
                             <!--end::Button-->
                         </div>

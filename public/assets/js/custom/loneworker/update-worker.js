@@ -49,6 +49,7 @@ var KTAppEcommerceSaveCategory = function () {
             maxFilesize: 10, // MB
             addRemoveLinks: true,
             autoProcessQueue: false,
+            acceptedFiles: 'image/*, .pdf, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         });
     }
 
