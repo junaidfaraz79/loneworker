@@ -51,5 +51,11 @@ class AdminController extends Controller
         session()->flush();  // Clearing the session
         return redirect()->route('admin.login')->with('message', 'You have successfully logged out from the system.');
     }
+
+    public function profile()
+    {
+        $profile = DB::table('lwadmin')->where('email',session('email'))->get();
+        return view('edit-profile', ['profile'=>$profile[0]]);  
+    }
 }
 

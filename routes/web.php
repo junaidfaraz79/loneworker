@@ -82,6 +82,7 @@ Route::prefix('lwadmin')->group(function () {
     Route::middleware([AdminAuth::class])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); // Requires authentication
         Route::get('/signout', [AdminController::class, 'logout'])->name('admin.logout'); // Requires authentication
+        Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
 
         // Subscription Routes
         Route::get('/subscriptions', [SubscriptionController::class, 'list'])->name('subscriptions');

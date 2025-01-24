@@ -777,7 +777,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Menu separator-->
 									<!--begin::Menu item-->
 									<div class="menu-item px-5">
-										<a href="/profile" class="menu-link px-5">My Profile</a>
+										<a href="/lwadmin/profile" class="menu-link px-5">My Profile</a>
 									</div>
 									<!--end::Menu item-->
 									<!--begin::Menu separator-->
@@ -875,7 +875,7 @@ License: For each use you must have a valid license purchased only from above li
 					<div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
 						<div class="app-sidebar-logo position-relative" id="kt_app_sidebar_logo">
 							<!--begin::Logo-->
-							<a href="/dashboard">
+							<a href="/lwadmin/dashboard">
 								<img alt="Logo" src="/assets/media/logos/star.svg" class="h-30px app-sidebar-logo-default theme-light-show" />
 								<img alt="Logo" src="/assets/media/logos/star-dark.svg" class="h-30px app-sidebar-logo-default theme-dark-show" />
 								<img alt="Logo" src="/assets/media/logos/star-mini.svg" class="h-20px app-sidebar-logo-minimize" />
@@ -890,7 +890,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--begin::User-->
 						<div class="app-sidebar-user-default app-sidebar-user-minimize bg-light border border-gray-300 rounded mx-9 mt-9 mt-lg-2" id="kt_app_sidebar_user">
 							<!--begin::User info-->
-							<a href="/profile" class="d-flex align-items-center w-200px p-4 parent-hover">
+							<a href="/lwadmin/profile" class="d-flex align-items-center w-200px p-4 parent-hover">
 								<span class="cursor-pointer symbol symbol-circle symbol-40px me-4">
 									<img src="/assets/media/avatars/300-3.jpg" alt="image" />
 								</span>
