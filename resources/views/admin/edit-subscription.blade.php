@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('admin.layout.layout')
 
 @section('content')    
 
@@ -39,7 +39,7 @@
                                 </li>
                                 <!--end::Item-->                                
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/subscriptions">Subscriptions</a></li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/lwadmin/subscriptions">Subscriptions</a></li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -63,7 +63,7 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_update_subscription" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/subscriptions" action="/subscription/update">
+                    <form id="kt_ecommerce_update_subscription" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/lwadmin/subscriptions" action="/lwadmin/subscription/update">
                         <input type="hidden" name="id" value="{{ $subscription->subscription_id }}" />
                         @csrf
                         <!--begin::Main column-->
@@ -208,7 +208,7 @@
                                     <!--end::Input group-->
                                     <div class="d-flex justify-content-end">
                                         <!--begin::Button-->
-                                        <a href="/subscriptions" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+                                        <a href="/lwadmin/subscriptions" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                         <!--end::Button-->
                                         <!--begin::Button-->
                                         <button type="submit" id="kt_ecommerce_add_submit" class="btn btn-primary">
@@ -233,7 +233,7 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/subscriptions" action="/subscription/update">
+                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/lwadmin/subscriptions" action="/lwadmin/subscription/update">
                         <input type="hidden" name="id" value="{{ $subscription->subscription_id }}" />
                         @csrf
                         <!--begin::Main column-->
@@ -274,7 +274,7 @@
                                     <!--end::Input group-->
                                     <div class="d-flex justify-content-end">
                                         <!--begin::Button-->
-                                        <a href="/subscriptions" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+                                        <a href="/lwadmin/subscriptions" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                         <!--end::Button-->
                                         <!--begin::Button-->
                                         <button type="submit" id="kt_ecommerce_add_submit" class="btn btn-danger">

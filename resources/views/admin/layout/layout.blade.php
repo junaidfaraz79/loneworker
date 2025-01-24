@@ -843,7 +843,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Menu item-->
 									<!--begin::Menu item-->
 									<div class="menu-item px-5">
-										<a href="/signout" class="menu-link px-5">Sign Out</a>
+										<a href="/lwadmin/signout" class="menu-link px-5">Sign Out</a>
 									</div>
 									<!--end::Menu item-->
 								</div>
@@ -854,7 +854,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Action-->
 							<div class="app-navbar-item ms-1 ms-md-2 me-n3">
 								<!--begin::Link-->
-								<a href="/signout" class="btn btn-icon btn-custom btn-color-gray-600 btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px">
+								<a href="/lwadmin/signout" class="btn btn-icon btn-custom btn-color-gray-600 btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px">
 									<i class="ki-duotone ki-exit-right fs-2x">
 										<span class="path1"></span>
 										<span class="path2"></span>
@@ -931,102 +931,32 @@ License: For each use you must have a valid license purchased only from above li
 														<span class="path2"></span>
 													</i>
 												</span>
-												<span class="menu-title">User Management</span>
+												<span class="menu-title">Plan Management</span>
 												<span class="menu-arrow"></span>
 											</span>
 											<!--end:Menu link-->
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
+												<div class="menu-item">
 													<!--begin:Menu link-->
-													<span class="menu-link">
+													<a class="menu-link" href="/lwadmin/plans">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
-														<span class="menu-title">Users</span>
-														<span class="menu-arrow"></span>
-													</span>
+														<span class="menu-title">Plans List</span>
+													</a>
 													<!--end:Menu link-->
-													<!--begin:Menu sub-->
-													<div class="menu-sub menu-sub-accordion">
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="/users">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Users List</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="/user/add">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Add User</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-													</div>
-													<!--end:Menu sub-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-													<!--begin:Menu link-->
-													<span class="menu-link">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Roles</span>
-														<span class="menu-arrow"></span>
-													</span>
-													<!--end:Menu link-->
-													<!--begin:Menu sub-->
-													<div class="menu-sub menu-sub-accordion">
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="#">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Roles List</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="#">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">View Role</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-													</div>
-													<!--end:Menu sub-->
 												</div>
 												<!--end:Menu item-->
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
-													<a class="menu-link" href="#">
+													<a class="menu-link" href="/lwadmin/plan/add">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
-														<span class="menu-title">Permissions</span>
+														<span class="menu-title">Add Plan</span>
 													</a>
 													<!--end:Menu link-->
 												</div>
@@ -1045,280 +975,27 @@ License: For each use you must have a valid license purchased only from above li
 														<span class="path2"></span>
 													</i>
 												</span>
-												<span class="menu-title">Worker Management</span>
+												<span class="menu-title">Subscription Management</span>
 												<span class="menu-arrow"></span>
 											</span>
 											<!--end:Menu link-->
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
-												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
-													<!--begin:Menu link-->
-													<span class="menu-link">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Workers</span>
-														<span class="menu-arrow"></span>
-													</span>
-													<!--end:Menu link-->
-													<!--begin:Menu sub-->
-													<div class="menu-sub menu-sub-accordion">
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="/workers">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Workers List</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="/worker/add">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Add Worker</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-													</div>
-													<!--end:Menu sub-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-													<!--begin:Menu link-->
-													<span class="menu-link">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Roles</span>
-														<span class="menu-arrow"></span>
-													</span>
-													<!--end:Menu link-->
-													<!--begin:Menu sub-->
-													<div class="menu-sub menu-sub-accordion">
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="#">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Roles List</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="#">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">View Role</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-													</div>
-													<!--end:Menu sub-->
-												</div>
-												<!--end:Menu item-->
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
-													<a class="menu-link" href="#">
+													<a class="menu-link" href="/lwadmin/subscriptions">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
-														<span class="menu-title">Permissions</span>
+														<span class="menu-title">Subscriptions List</span>
 													</a>
 													<!--end:Menu link-->
 												</div>
-												<!--end:Menu item-->
 											</div>
 											<!--end:Menu sub-->
 										</div>
-										<!--end:Menu item-->
-										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-											<!--begin:Menu link-->
-											<span class="menu-link">
-												<span class="menu-icon">
-													<i class="ki-duotone ki-abstract-28 fs-1">
-														<span class="path1"></span>
-														<span class="path2"></span>
-													</i>
-												</span>
-												<span class="menu-title">Shift Management</span>
-												<span class="menu-arrow"></span>
-											</span>
-											<!--end:Menu link-->
-											<!--begin:Menu sub-->
-											<div class="menu-sub menu-sub-accordion">
-												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
-													<!--begin:Menu link-->
-													<span class="menu-link">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Shifts</span>
-														<span class="menu-arrow"></span>
-													</span>
-													<!--end:Menu link-->
-													<!--begin:Menu sub-->
-													<div class="menu-sub menu-sub-accordion">
-															<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="/shift/add">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Add Shift</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-													</div>
-													<!--end:Menu sub-->
-												</div>
-											</div>
-											<!--end:Menu sub-->
-										</div>
-										<!--end:Menu item-->										
-										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-											<!--begin:Menu link-->
-											<span class="menu-link">
-												<span class="menu-icon">
-													<i class="ki-duotone ki-abstract-28 fs-1">
-														<span class="path1"></span>
-														<span class="path2"></span>
-													</i>
-												</span>
-												<span class="menu-title">Customer Management</span>
-												<span class="menu-arrow"></span>
-											</span>
-											<!--end:Menu link-->
-											<!--begin:Menu sub-->
-											<div class="menu-sub menu-sub-accordion">
-												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
-													<!--begin:Menu link-->
-													<span class="menu-link">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Customers</span>
-														<span class="menu-arrow"></span>
-													</span>
-													<!--end:Menu link-->
-													<!--begin:Menu sub-->
-													<div class="menu-sub menu-sub-accordion">
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="/customers">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Customers List</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="/customer/add">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Add Customer</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-													</div>
-													<!--end:Menu sub-->
-												</div>
-												<!--end:Menu item-->
-											</div>
-											<!--end:Menu sub-->
-										</div>
-										<!--end:Menu item-->										
-										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-											<!--begin:Menu link-->
-											<span class="menu-link">
-												<span class="menu-icon">
-													<i class="ki-duotone ki-abstract-28 fs-1">
-														<span class="path1"></span>
-														<span class="path2"></span>
-													</i>
-												</span>
-												<span class="menu-title">Site Management</span>
-												<span class="menu-arrow"></span>
-											</span>
-											<!--end:Menu link-->
-											<!--begin:Menu sub-->
-											<div class="menu-sub menu-sub-accordion">
-												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
-													<!--begin:Menu link-->
-													<span class="menu-link">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Sites</span>
-														<span class="menu-arrow"></span>
-													</span>
-													<!--end:Menu link-->
-													<!--begin:Menu sub-->
-													<div class="menu-sub menu-sub-accordion">
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="/sites">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Sites List</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-														<!--begin:Menu item-->
-														<div class="menu-item">
-															<!--begin:Menu link-->
-															<a class="menu-link" href="/site/add">
-																<span class="menu-bullet">
-																	<span class="bullet bullet-dot"></span>
-																</span>
-																<span class="menu-title">Add Site</span>
-															</a>
-															<!--end:Menu link-->
-														</div>
-														<!--end:Menu item-->
-													</div>
-													<!--end:Menu sub-->
-												</div>
-												<!--end:Menu item-->
-											</div>
-											<!--end:Menu sub-->
-										</div>
-										<!--end:Menu item-->
+										<!--end:Menu item Subscription Management-->
 									</div>
 									<!--end::Menu-->
 								</div>

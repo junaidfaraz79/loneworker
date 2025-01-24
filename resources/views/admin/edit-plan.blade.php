@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('admin.layout.layout')
 
 @section('content')    
 
@@ -31,7 +31,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/plans">Plans</a></li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/lwadmin/plans">Plans</a></li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -55,7 +55,7 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/plans" action="../update">
+                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/lwadmin/plans" action="../update">
                         <input type="hidden" name="id" value="{{ $plan[0]->id }}">
                         @csrf
                         <!--begin::Aside column-->
@@ -354,7 +354,7 @@
                             <!--end::Meta options-->
                             <div class="d-flex justify-content-end">
                                 <!--begin::Button-->
-                                <a href="/plans" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+                                <a href="/lwadmin/plans" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                 <!--end::Button-->
                                 <!--begin::Button-->
                                 <button type="submit" id="kt_ecommerce_add_submit" class="btn btn-primary">

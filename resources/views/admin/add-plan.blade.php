@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('admin.layout.layout')
 
 @section('content')    
 
@@ -55,7 +55,7 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/plans" action="save">
+                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/lwadmin/plans" action="save">
                         @csrf
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -325,7 +325,7 @@
                             <!--end::Meta options-->
                             <div class="d-flex justify-content-end">
                                 <!--begin::Button-->
-                                <a href="/plans" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+                                <a href="/lwadmin/plans" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                 <!--end::Button-->
                                 <!--begin::Button-->
                                 <button type="submit" id="kt_ecommerce_add_submit" class="btn btn-primary">

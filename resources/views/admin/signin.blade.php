@@ -81,7 +81,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--begin::Wrapper-->
 						<div class="w-lg-500px p-10 p-lg-15 mx-auto">
 							<!--begin::Form-->
-							<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="/dashboard" action="#">
+							<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="/lwadmin/dashboard" action="#">
 								@csrf
 								<!--begin::Heading-->
 								<div class="text-center mb-10">
@@ -165,7 +165,7 @@ License: For each use you must have a valid license purchased only from above li
 		<script src="assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="assets/js/custom/authentication/sign-in/general.js"></script>
+		<script src="assets/js/custom/authentication/sign-in/admin.js"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>

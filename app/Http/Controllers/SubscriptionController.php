@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
                             ->where('user_type', 'subscriber')
                             ->get();
                        
-        return view('subscriptions', ['subscriptions'=>$subscriptions]);
+        return view('admin.subscriptions', ['subscriptions'=>$subscriptions]);
     }
 
     public function add()
@@ -35,7 +35,7 @@ class SubscriptionController extends Controller
         if(count($subscription))
         {
             $plans = DB::table('plans')->get();
-            return view('edit-subscription', ['subscription' => $subscription[0], 'plans'=>$plans]);
+            return view('admin.edit-subscription', ['subscription' => $subscription[0], 'plans'=>$plans]);
         }
         else 
             return redirect(route('subscriptions'));
@@ -49,7 +49,6 @@ class SubscriptionController extends Controller
         $res = ['id'=>$req->id, 'status'=>'success'];
 
         return json_encode($res);
-
     }
 
     public function delete(Request $req)

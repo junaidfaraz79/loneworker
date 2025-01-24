@@ -12,13 +12,13 @@ class PlanController extends Controller
     public function list()
     {
         $plans = DB::table('plans')->get();
-        return view('plans', ['plans'=>$plans]);
+        return view('admin.plans', ['plans'=>$plans]);
     }
 
     public function add()
     {
         $features = DB::table('features')->get();
-        return view('add-plan', ['features'=>$features]);
+        return view('admin.add-plan', ['features'=>$features]);
     }         
 
     public function save(Request $req)
@@ -95,7 +95,7 @@ class PlanController extends Controller
                 array_push($plan_features, $f->feature_id);
             }
 
-            return view('edit-plan', ['plan' => $plan, 'features'=>$features, 'plan_features'=>$plan_features]);
+            return view('admin.edit-plan', ['plan' => $plan, 'features'=>$features, 'plan_features'=>$plan_features]);
         }
         else 
             return redirect(route('plans'));

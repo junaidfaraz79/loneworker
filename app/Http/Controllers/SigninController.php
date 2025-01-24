@@ -19,7 +19,14 @@ class SigninController extends Controller
         
         if(count($user)) {
 
-            session(['username'=>$user[0]->username, 'user_id' => $user[0]->id, 'role' => $user[0]->role, 'email' => $req->email, 'authenticated' => TRUE]);
+            session([
+                'username'=>$user[0]->username, 
+                'user_id' => $user[0]->id, 
+                'role' => $user[0]->role, 
+                'email' => $req->email, 
+                'authenticated' => TRUE, 
+                'admin_authenticated' => FALSE
+            ]);
 
             return "success";
         }
