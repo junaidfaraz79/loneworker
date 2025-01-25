@@ -71,6 +71,7 @@ Route::get('/shifts', [ShiftController::class, 'list'])->name('users');
 Route::get('/shift/add', [ShiftController::class, 'add']);
 Route::post('/shift/save', [ShiftController::class, 'save']);
 Route::get('/shift/edit/{parameter}', [ShiftController::class, 'edit']);
+Route::get('/shift/view/{parameter}', [ShiftController::class, 'view']);
 Route::post('/shift/update', [ShiftController::class, 'update']);
 
 // Admin Routes

@@ -47,7 +47,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700">Add Shift</li>
+                                <li class="breadcrumb-item text-gray-700">{{ $isViewMode ==='n' ? 'Edit Shift' : 'View Shift' }}</li>
                                 <!--end::Item-->
                             </ul>
                             <!--end::Breadcrumb-->
@@ -63,8 +63,9 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_add_shift_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/shifts" action="/shift/save">
+                    <form id="kt_ecommerce_add_shift_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/shifts" action="/shift/update">
                         @csrf
+                        <input name="shift_id" value="{{ $shift->id }}" type="hidden" />
                         <!--begin::Main column-->
                         <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                             <!--begin::General options-->
@@ -72,7 +73,7 @@
                                 <!--begin::Card header-->
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <h2>Add Shift</h2>
+                                        <h2>{{ $isViewMode ==='n' ? 'Edit Shift' : 'View Shift' }}</h2>
                                     </div>
                                 </div>
                                 <!--end::Card header-->
@@ -84,7 +85,7 @@
                                         <label class="required form-label">Shift Name</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="name" class="form-control mb-2" placeholder="Shift name" />
+                                        <input type="text" name="name" class="form-control mb-2" placeholder="Shift name" value="{{ $shift->name ?? '' }}" {{ $isViewMode === 'y' ? 'readonly' : '' }} />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
@@ -94,10 +95,13 @@
                                         <label class="required form-label">Start Time</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <select name="start_time" class="form-select mb-2" data-control="select2" data-placeholder="Select start time" id="start_time">
+                                        <select name="start_time" class="form-select mb-2" data-control="select2" data-placeholder="Select start time"
+                                             id="start_time" {{ $isViewMode === 'y' ? 'disabled' : '' }} >
                                             <option></option>
                                             @foreach ($timings as $key => $timing)
-                                                <option value="{{ $timing->time }}">{{ $timing->time }}</option>                                                
+                                                <option value="{{ $timing->time }}" @if($shift->start_time == $timing->time) selected @endif>
+                                                    {{ $timing->time }}
+                                                </option>                                             
                                             @endforeach
                                         </select>
                                         <!--end::Input-->
@@ -109,10 +113,13 @@
                                         <label class="required form-label">End Time</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <select name="end_time" class="form-select mb-2" data-control="select2" data-placeholder="Select end time" id="end_time">
+                                        <select name="end_time" class="form-select mb-2" data-control="select2" data-placeholder="Select end time" 
+                                            {{ $isViewMode === 'y' ? 'disabled' : '' }} id="end_time">
                                             <option></option>
                                             @foreach ($timings as $key => $timing)
-                                                <option value="{{$timing->time}}">{{$timing->time}}</option>                                                
+                                                <option value="{{ $timing->time }}" @if($shift->end_time == $timing->time) selected @endif>
+                                                    {{ $timing->time }}
+                                                </option>                                              
                                             @endforeach
                                         </select>
                                         <!--end::Input-->
@@ -124,10 +131,11 @@
                                         <label class="required form-label">Status</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <select name="status" class="form-select mb-2" data-control="select2" data-placeholder="Select status" id="status">
+                                        <select name="status" class="form-select mb-2" data-control="select2" data-placeholder="Select status" 
+                                            id="status" {{ $isViewMode === 'y' ? 'disabled' : '' }} >
                                             <option></option>
-                                            <option value="active">Active</option> 
-                                            <option value="inactive">Inactive</option> 
+                                            <option value="active" @if($shift->status == 'active') selected @endif>Active</option> 
+                                            <option value="inactive" @if($shift->status == 'inactive') selected @endif>Inactive</option> 
                                         </select>
                                         <!--end::Input-->
                                     </div>
@@ -138,7 +146,7 @@
                                         <!--end::Button-->
                                         <!--begin::Button-->
                                         <button type="submit" id="kt_ecommerce_add_shift_submit" class="btn btn-primary">
-                                            <span class="indicator-label">Add Shift</span>
+                                            <span class="indicator-label">Save Changes</span>
                                             <span class="indicator-progress">Please wait... 
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                         </button>
@@ -167,11 +175,4 @@
 
 @push('scripts')
     <script src="/assets/js/custom/loneworker/save-shift.js"></script>
-    {{-- <script src="/assets/js/widgets.bundle.js"></script>
-    <script src="/assets/js/custom/widgets.js"></script>
-    <script src="/assets/js/custom/apps/chat/chat.js"></script>
-    <script src="/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-    <script src="/assets/js/custom/utilities/modals/create-app.js"></script>
-    <script src="/assets/js/custom/utilities/modals/users-search.js"></script> --}}
-
 @endpush

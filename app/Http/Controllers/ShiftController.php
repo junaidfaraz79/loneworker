@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -11,131 +12,127 @@ class ShiftController extends Controller
 {
     public function list()
     {
-        $users = DB::table('users')
-                            ->leftjoin('subscriptions', 'users.email','=','subscriptions.user_email')
-                            ->select('subscriptions.id', 'subscriptions.plan_name', 'subscriptions.status', 'subscriptions.added_on', 'users.username', 'users.email', 'users.phone_no', 'users.company_name', 'users.designation')
-                            ->where('user_type', 'user')
-                            ->get();
-        return view('users', ['users'=>$users]);
+        $shifts = DB::table('shifts')->get();
+        return view('shifts', ['shifts' => $shifts]);
     }
 
     public function add()
     {
         // $plans = DB::table('plans')->get();
-        return view('add-shift');  
-    }         
+        $timings = DB::table('timings')->get();
+        return view('add-shift', compact('timings'));
+    }
 
     public function save(Request $req)
     {
+        // Start transaction
+        DB::beginTransaction();
+        try {
+            // Insert data into the database
+            $id = DB::table('shifts')->insertGetId([
+                'name' => $req->input('name'),  // Assuming 'name' is passed in the request
+                'start_time' => $req->input('start_time'),  // Assuming 'start_time' is passed in the request
+                'end_time' => $req->input('end_time'),  // Assuming 'end_time' is passed in the request
+                'status' => $req->input('status'),  // Assuming 'status' is passed in the request
+                'added_on' => now(),
+                'updated_on' => now(),
+            ]);
 
-        $duplicate = DB::table('users')->where('email','=',$req->email)->get();
+            // Commit the transaction
+            DB::commit();
 
-        if(count($duplicate))
-        {            
-            $res = ['id'=>'', 'status'=>'duplicate'];            
+            // If insertion is successful and $id is returned
+            if ($id) {
+                $res = ['id' => $id, 'status' => 'success'];
+                return response()->json($res, 200);  // Return a 200 OK with the response
+            } else {
+                // If insertion failed
+                $res = ['id' => null, 'status' => 'error'];
+                return response()->json($res, 500);  // Return a 500 Internal Server Error
+            }
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollback();
+
+            // Log the exception
+            Log::error('Error saving shift: ' . $e->getMessage());
+
+            // Return an error response
+            $res = ['id' => null, 'status' => 'error', 'message' => 'Server error occurred: ' . $e];
+            return response()->json($res, 500);  // Return a 500 Internal Server Error
         }
-        else
-        {        
-
-            $id = DB::table('users')->insertGetId([
-                        'username'=>$req->username, 
-                        'role'=>'monitor', 
-                        'email'=>$req->email,
-                        'password'=>'password', 
-                        'cell_no'=>$req->cell_no, 
-                        'phone_no'=>$req->phone_no, 
-                        'company_name'=>$req->company_name, 
-                        'official_address'=>$req->official_address,
-                        'designation'=>$req->designation,
-                        'user_type'=>'user',
-                        // 'status'=>'active'
-                    ]);
-
-            $plan = DB::table('plans')->select('plan_name', 'plan_description', 'plan_type', 'monthly_price', 'yearly_price', 'duration', 'persons')->where('id',$req->plan_id)->get()->toArray();
-
-            $user_plan = [
-                            'user_email'=>$req->email,
-                            'plan_name'=>$plan[0]->plan_name,
-                            'plan_description'=>$plan[0]->plan_description,
-                            'plan_type'=>$plan[0]->plan_type,
-                            'monthly_price'=>$plan[0]->monthly_price,
-                            'yearly_price'=>$plan[0]->yearly_price,
-                            'duration'=>$plan[0]->duration,
-                            'persons'=>$plan[0]->persons,
-                            'status'=>'active'
-                        ];
-
-            $id = DB::table('subscriptions')->insertGetId($user_plan);
-            
-            $res = ['id'=>$id, 'status'=>'success'];
-
-        }
-
-        return json_encode($res);
-
     }
 
-    public function edit(Request $req, string $id)
+
+    public function edit(Request $req, $id)
     {
-        $subscription = DB::table('subscriptions')->where('subscriptions.id','=',$id)
-                            ->join('users', 'users.email','=','subscriptions.user_email')->get();
+        $shift = DB::table('shifts')->where('id', $id)->first();
+        $isViewMode = 'n';
 
-        if(count($subscription))
-        {
-            $plans = DB::table('plans')->get();
-            return view('edit-subscription', ['subscription' => $subscription[0], 'plans'=>$plans]);
-        }
-        else 
-            return redirect(route('subscriptions'));
-
+        if ($shift) {
+            $timings = DB::table('timings')->get();
+            return view('edit-shift', ['shift' => $shift, 'timings' => $timings, 'isViewMode' => $isViewMode]);
+        } else
+            return redirect(route('shifts'));
     }
-    
+
+    public function view(Request $req, $id)
+    {
+        $shift = DB::table('shifts')->where('id', $id)->first();
+        $isViewMode = 'y';
+
+        if ($shift) {
+            $timings = DB::table('timings')->get();
+            return view('edit-shift', ['shift' => $shift, 'timings' => $timings, 'isViewMode' => $isViewMode]);
+        } else
+            return redirect(route('shifts'));
+    }
+
     public function update(Request $req)
     {
+        // Start transaction
+        DB::beginTransaction();
 
-        // $duplicate = DB::table('plans')->where('plan_name','=',$req->plan_name)->where('id','<>',$req->id)->get();
+        try {
+            $updated = DB::table('shifts')->where('id', $req->shift_id)
+                ->update([
+                    'name' => $req->input('name'),
+                    'start_time' => $req->input('start_time'),
+                    'end_time' => $req->input('end_time'),
+                    'status' => $req->input('status'),
+                    'updated_on' => now()
+                ]);
 
-        // if(count($duplicate))
-        // {            
-        //     $res = ['id'=>'', 'status'=>'duplicate'];            
-        // }
-        // else
-        // {
-            // if($req->file('customer_image'))
-            // {
-            //     if($req->file('customer_image')->isValid())
-            //         $customer_image = $req->file('customer_image')->store('public');
-    
-            //     if($req->current_image)
-            //         Storage::delete($req->current_image);
-            // }            
-            // elseif($req->current_image)
-            // {
-            //     $customer_image = $req->current_image; 
-            // }
-            // else
-            // {
-                $customer_image = ''; 
-            // }
-    
-            DB::table('customers')->where('id',$req->id)->update(['customer_name'=>$req->customer_name, 'phone_no'=>$req->phone_no, 'email'=>$req->email, 'role'=>$req->role, 'department'=>$req->department,  'customer_image'=>$customer_image, 'customer_status'=>$req->customer_status]);
+            // Commit the transaction
+            DB::commit();
 
-            $res = ['id'=>$req->id, 'status'=>'success'];
+            // If insertion is successful and $id is returned
+            if ($updated) {
+                $res = ['status' => 'success'];
+                return response()->json($res, 200);  // Return a 200 OK with the response
+            } else {
+                // If insertion failed
+                $res = ['status' => 'error'];
+                return response()->json($res, 500);  // Return a 500 Internal Server Error
+            }
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollback();
 
-        // }
+            // Log the exception
+            Log::error('Error saving shift: ' . $e->getMessage());
 
-        return json_encode($res);
-
+            // Return an error response
+            $res = ['status' => 'error', 'message' => 'Server error occurred: ' . $e];
+            return response()->json($res, 500);  // Return a 500 Internal Server Error
+        }
     }
 
     public function delete(Request $req)
     {
 
-        DB::table('customers')->where('id',$req->id)->delete();
-        $res = ['id'=>$req->id, 'status'=>'success'];
+        DB::table('customers')->where('id', $req->id)->delete();
+        $res = ['id' => $req->id, 'status' => 'success'];
         return json_encode($res);
-
     }
-
-
 }

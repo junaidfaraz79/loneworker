@@ -16,7 +16,7 @@
                         <!--begin::Title-->
                         <h1
                             class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">
-                            Edit Worker</h1>
+                            {{ $isViewMode === 'n' ? 'Edit Worker' : 'View Worker' }}</h1>
                         <!--end::Title-->
                         <!--begin::Breadcrumb-->
                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold">

@@ -26,7 +26,6 @@ class AdminController extends Controller
                 'user_id' => $admin->id, 
                 'role' => $admin->role, 
                 'email' => $req->email, 
-                'authenticated' => TRUE, 
                 'admin_authenticated' => TRUE
             ]);
 
