@@ -335,7 +335,7 @@
                                 </thead>
                                 <tbody class="text-gray-600 fw-semibold">
 
-                                    @foreach($users as $key => $user)
+                                    @forelse($users as $key => $user)
                                         <tr>
                                             <td class="d-flex align-items-center">
                                                 <!--begin:: Avatar -->
@@ -389,7 +389,11 @@
                                                 <!--end::Menu-->
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="100%" class="text-center">No users found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             <!--end::Table-->

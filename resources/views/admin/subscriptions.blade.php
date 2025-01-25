@@ -326,15 +326,14 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-600 fw-semibold">
-
-                                    @foreach($subscriptions as $key => $subscription)
+                                    @forelse ($subscriptions as $subscription)
                                         <tr>
                                             <td class="d-flex align-items-center">
                                                 <!--begin:: Avatar -->
                                                 <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                                     <a href="#">
                                                         <div class="symbol-label">
-                                                            {{-- <img src="assets/media/avatars/300-6.jpg" alt="Emma Smith" class="w-100" /> --}}
+                                                            {{-- <img src="assets/media/avatars/300-6.jpg" alt="Avatar" class="w-100" /> --}}
                                                         </div>
                                                     </a>
                                                 </div>
@@ -343,24 +342,20 @@
                                                 <div class="d-flex flex-column">
                                                     <span class="text-gray-800 mb-1">{{ $subscription->username }}</span>
                                                 </div>
-                                                <!--begin::User details-->
+                                                <!--end::User details-->
                                             </td>
                                             <td>{{ $subscription->designation }}</td>
-                                            <td> {{ $subscription->company_name }} </td>
+                                            <td>{{ $subscription->company_name }}</td>
                                             <td>{{ $subscription->email }}</td>
                                             <td>{{ $subscription->phone_no }}</td>
                                             <td>
                                                 @php 
-                                                    if($subscription->status=="active")
-                                                        $badge = "success";
-                                                    else if($subscription->status=="inactive")
-                                                        $badge = "warning";
-                                                    else if($subscription->status=="cancelled")
-                                                        $badge = "danger";
-                                                @endphp                                                
-                                                <span class="badge badge-light-{{$badge}} fw-bold fs-8 px-2 py-1 ms-2"> 
-                                                    {{ ucfirst($subscription->status) }}
-                                                </span>
+                                                    $badge = 'secondary'; // Default
+                                                    if ($subscription->status == "active") $badge = "success";
+                                                    elseif ($subscription->status == "inactive") $badge = "warning";
+                                                    elseif ($subscription->status == "cancelled") $badge = "danger";
+                                                @endphp
+                                                <span class="badge badge-light-{{$badge}} fw-bold fs-7 px-2 py-1 ms-2">{{ ucfirst($subscription->status) }}</span>
                                             </td>
                                             <td>
                                                 @php $subscription->added_on = date_create($subscription->added_on) @endphp
@@ -380,8 +375,12 @@
                                                 <!--end::Menu-->
                                             </td>
                                         </tr>
-                                    @endforeach
-                                </tbody>
+                                    @empty
+                                        <tr>
+                                            <td colspan="100%" class="text-center">No subscriptions found</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>                                
                             </table>
                             <!--end::Table-->
                         </div>

@@ -333,7 +333,7 @@
                                 </thead>
                                 <tbody class="text-gray-600 fw-semibold">
 
-                                    @foreach($workers as $key => $worker)
+                                    @forelse($workers as $key => $worker)
                                         <tr>
                                             <td class="d-flex align-items-center">
                                                 <!--begin:: Avatar -->
@@ -374,7 +374,11 @@
                                                 <!--end::Menu-->
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="100%" class="text-center">No workers found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             <!--end::Table-->

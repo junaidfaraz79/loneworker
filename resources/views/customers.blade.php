@@ -332,7 +332,7 @@
                                 </thead>
                                 <tbody class="text-gray-600 fw-semibold">
 
-                                    @foreach($customers as $key => $customer)
+                                    @forelse($customers as $key => $customer)
                                         <tr>
                                             <td class="d-flex align-items-center">
                                                 <!--begin:: Avatar -->
@@ -372,7 +372,11 @@
                                                 <!--end::Menu-->
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="100%" class="text-center">No customers found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             <!--end::Table-->

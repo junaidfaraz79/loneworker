@@ -333,7 +333,7 @@
                                 </thead>
                                 <tbody class="text-gray-600 fw-semibold">
 
-                                    @foreach($plans as $key => $plan)
+                                    @forelse($plans as $key => $plan)
                                         <tr>
                                             <td>
                                                 <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -381,9 +381,11 @@
                                                 <!--end::Menu-->
                                             </td>
                                         </tr>
-                                    @endforeach
-
-
+                                    @empty
+                                        <tr>
+                                            <td colspan="100%" class="text-center">No plans found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             <!--end::Table-->

@@ -343,7 +343,14 @@
                                             </td>
                                             <td>{{ $shift->start_time }}</td>
                                             <td>{{ $shift->end_time }}</td>
-                                            <td>{{ ucfirst($shift->status) }}</td>
+                                            <td>
+                                                @php 
+                                                    $badge = 'secondary'; // Default
+                                                    if ($shift->status == "active") $badge = "success";
+                                                    elseif ($shift->status == "inactive") $badge = "warning";
+                                                @endphp
+                                                <span class="badge badge-light-{{$badge}} fw-bold fs-7 px-2 py-1 ms-2">{{ ucfirst($shift->status) }}</span>
+                                            </td>
                                             <td class="text-end">
                                                 <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
                                                 <i class="ki-duotone ki-down fs-5 ms-1"></i></a>

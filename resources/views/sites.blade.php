@@ -332,7 +332,7 @@
                                 </thead>
                                 <tbody class="text-gray-600 fw-semibold">
 
-                                    @foreach($sites as $key => $site)
+                                    @forelse($sites as $key => $site)
                                         <tr>
                                             <td class="d-flex align-items-center">
                                                 <!--begin:: Avatar -->
@@ -351,7 +351,14 @@
                                                 <!--begin::User details-->
                                             </td>
                                             <td>{{ $site->site_address }}</td>
-                                            <td>{{ ucfirst($site->site_status) }}</td>
+                                            <td>
+                                                @php 
+                                                    $badge = 'secondary'; // Default
+                                                    if ($site->site_status == "active") $badge = "success";
+                                                    elseif ($site->site_status == "inactive") $badge = "warning";
+                                                @endphp
+                                                <span class="badge badge-light-{{$badge}} fw-bold fs-7 px-2 py-1 ms-2">{{ ucfirst($site->site_status) }}</span>
+                                            </td>
                                             <td> - </td>
                                             <td class="text-end">
                                                 <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
@@ -372,7 +379,11 @@
                                                 <!--end::Menu-->
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="100%" class="text-center">No sites found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             <!--end::Table-->
