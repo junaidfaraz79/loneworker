@@ -29,6 +29,9 @@ Route::get('/signout', function (Request $request) {
     return redirect()->route('signin')->with('message', 'You have successfully logged out from the system.');
 });
 
+Route::get('/edit-password', [SigninController::class, 'editPassword'])->name('editPassword');
+Route::post('/update-password', [SigninController::class, 'updatePassword'])->name('updatePassword');
+
 Route::get('/dashboard', [DashboardController::class, 'index']);
 
 // Profile
@@ -84,6 +87,8 @@ Route::prefix('lwadmin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); // Requires authentication
         Route::get('/signout', [AdminController::class, 'logout'])->name('admin.logout'); // Requires authentication
         Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
+        Route::get('/edit-password', [SigninController::class, 'editPassword'])->name('editPassword');
+        Route::post('/update-password', [AdminController::class, 'updatePassword'])->name('updatePassword');
 
         // Subscription Routes
         Route::get('/subscriptions', [SubscriptionController::class, 'list'])->name('subscriptions');

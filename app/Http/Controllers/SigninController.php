@@ -36,4 +36,44 @@ class SigninController extends Controller
 
     }
 
+    public function editPassword(Request $req) {
+        return view ('edit-password');
+    }
+
+    public function updatePassword(Request $req)
+    {
+        // Validate the input
+        $req->validate([
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        try {
+            // Assuming email is stored in session and the user is authenticated
+            $email = session('email'); // or use Auth::user()->email if using built-in Auth
+
+            // Update the user's password
+            $updated = DB::table('users')
+                ->where('email', $email)
+                ->update(['password' => $req->password]);
+                // ->update(['password' => bcrypt($req->password)]);
+
+            // Check if the update was successful
+            if ($updated) {
+                $res = ['status' => 'success'];
+                return response()->json($res, 200);
+            } else {
+                // If no rows were updated, handle the case
+                $res = ['status' => 'error'];
+                return response()->json($res, 500);
+            }
+        } catch (\Exception $e) {
+            // Log the error
+            // \Log::error('Password update failed: ' . $e->getMessage());
+            dd($e->getMessage());
+            // Redirect back with error message
+            $res = ['status' => 'error'];
+            return response()->json($res, 500);
+        }
+    }
+
 }

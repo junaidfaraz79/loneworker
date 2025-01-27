@@ -340,7 +340,7 @@
                                                 <!--end::Avatar-->
                                                 <!--begin::User details-->
                                                 <div class="d-flex flex-column">
-                                                    <span class="text-gray-800 mb-1">{{ $subscription->username }}</span>
+                                                    {{ $subscription->username }}
                                                 </div>
                                                 <!--end::User details-->
                                             </td>

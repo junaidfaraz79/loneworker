@@ -56,5 +56,37 @@ class AdminController extends Controller
         $profile = DB::table('lwadmin')->where('email',session('email'))->get();
         return view('edit-profile', ['profile'=>$profile[0]]);  
     }
+
+    public function updatePassword(Request $req)
+    {
+        // Validate the input
+        $req->validate([
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        try {
+            // Assuming email is stored in session and the user is authenticated
+            $email = session('email'); // or use Auth::user()->email if using built-in Auth
+
+            // Update the user's password
+            $updated = DB::table('lwadmin')
+                ->where('email', $email)
+                ->update(['password' => $req->password]);
+                // ->update(['password' => bcrypt($req->password)]);
+
+            // Check if the update was successful
+            if ($updated) {
+                $res = ['status' => 'success'];
+                return response()->json($res, 200);
+            } else {
+                // If no rows were updated, handle the case
+                $res = ['status' => 'error'];
+                return response()->json($res, 500);
+            }
+        } catch (\Exception $e) {
+            $res = ['status' => 'error', 'message' => $e->getMessage()];
+            return response()->json($res, 500);
+        }
+    }
 }
 

@@ -29,7 +29,7 @@ var KTAuthNewPassword = function() {
                             }
                         }
                     },
-                    'confirm-password': {
+                    'password_confirmation': {
                         validators: {
                             notEmpty: {
                                 message: 'The password confirmation is required'
@@ -73,67 +73,67 @@ var KTAuthNewPassword = function() {
     }
 
 
-    var handleSubmitDemo = function (e) {
-        submitButton.addEventListener('click', function (e) {
-            e.preventDefault();
+    // var handleSubmitDemo = function (e) {
+    //     submitButton.addEventListener('click', function (e) {
+    //         e.preventDefault();
 
-            validator.revalidateField('password');
+    //         validator.revalidateField('password');
 
-            validator.validate().then(function(status) {
-                if (status == 'Valid') {
-                    // Show loading indication
-                    submitButton.setAttribute('data-kt-indicator', 'on');
+    //         validator.validate().then(function(status) {
+    //             if (status == 'Valid') {
+    //                 // Show loading indication
+    //                 submitButton.setAttribute('data-kt-indicator', 'on');
 
-                    // Disable button to avoid multiple click
-                    submitButton.disabled = true;
+    //                 // Disable button to avoid multiple click
+    //                 submitButton.disabled = true;
 
-                    // Simulate ajax request
-                    setTimeout(function() {
-                        // Hide loading indication
-                        submitButton.removeAttribute('data-kt-indicator');
+    //                 // Simulate ajax request
+    //                 setTimeout(function() {
+    //                     // Hide loading indication
+    //                     submitButton.removeAttribute('data-kt-indicator');
 
-                        // Enable button
-                        submitButton.disabled = false;
+    //                     // Enable button
+    //                     submitButton.disabled = false;
 
-                        // Show message popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-                        Swal.fire({
-                            text: "You have successfully reset your password!",
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-primary"
-                            }
-                        }).then(function (result) {
-                            if (result.isConfirmed) {
-                                form.querySelector('[name="password"]').value= "";
-                                form.querySelector('[name="confirm-password"]').value= "";
-                                passwordMeter.reset();  // reset password meter
-                                //form.submit();
+    //                     // Show message popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+    //                     Swal.fire({
+    //                         text: "You have successfully reset your password!",
+    //                         icon: "success",
+    //                         buttonsStyling: false,
+    //                         confirmButtonText: "Ok, got it!",
+    //                         customClass: {
+    //                             confirmButton: "btn btn-primary"
+    //                         }
+    //                     }).then(function (result) {
+    //                         if (result.isConfirmed) {
+    //                             form.querySelector('[name="password"]').value= "";
+    //                             form.querySelector('[name="password_confirmation"]').value= "";
+    //                             passwordMeter.reset();  // reset password meter
+    //                             //form.submit();
 
-                                var redirectUrl = form.getAttribute('data-kt-redirect-url');
-                                if (redirectUrl) {
-                                    location.href = redirectUrl;
-                                }
-                            }
-                        });
-                    }, 1500);
-                } else {
-                    // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-                    Swal.fire({
-                        text: "Sorry, looks like there are some errors detected, please try again.",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    });
-                }
-            });
-        });
+    //                             var redirectUrl = form.getAttribute('data-kt-redirect-url');
+    //                             if (redirectUrl) {
+    //                                 location.href = redirectUrl;
+    //                             }
+    //                         }
+    //                     });
+    //                 }, 1500);
+    //             } else {
+    //                 // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+    //                 Swal.fire({
+    //                     text: "Sorry, looks like there are some errors detected, please try again.",
+    //                     icon: "error",
+    //                     buttonsStyling: false,
+    //                     confirmButtonText: "Ok, got it!",
+    //                     customClass: {
+    //                         confirmButton: "btn btn-primary"
+    //                     }
+    //                 });
+    //             }
+    //         });
+    //     });
 
-    }
+    // }
 
     var handleSubmitAjax = function (e) {
         // Handle form submit
@@ -154,14 +154,28 @@ var KTAuthNewPassword = function() {
 
                     // Check axios library docs: https://axios-http.com/docs/intro
                     axios.post(submitButton.closest('form').getAttribute('action'), new FormData(form)).then(function (response) {
-                        if (response) {
-                            form.reset();
-
-                            const redirectUrl = form.getAttribute('data-kt-redirect-url');
-
-                            if (redirectUrl) {
-                                location.href = redirectUrl;
-                            }
+                        if (response.data.status === 'success') {
+                            Swal.fire({
+                                text: "You have successfully reset your password!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }).then(function (result) {
+                                if (result.isConfirmed) {
+                                    form.querySelector('[name="password"]').value= "";
+                                    form.querySelector('[name="password_confirmation"]').value= "";
+                                    passwordMeter.reset();  // reset password meter
+                                    //form.submit();
+    
+                                    var redirectUrl = form.getAttribute('data-kt-redirect-url');
+                                    if (redirectUrl) {
+                                        location.href = redirectUrl;
+                                    }
+                                }
+                            });
                         } else {
                             // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
                             Swal.fire({
@@ -211,15 +225,6 @@ var KTAuthNewPassword = function() {
         return  (passwordMeter.getScore() > 50);
     }
 
-    var isValidUrl = function(url) {
-        try {
-            new URL(url);
-            return true;
-        } catch (e) {
-            return false;
-        }
-    }
-
     // Public Functions
     return {
         // public functions
@@ -230,11 +235,7 @@ var KTAuthNewPassword = function() {
 
             handleForm();
 
-            if (isValidUrl(form.getAttribute('action'))) {
-                handleSubmitAjax(); // use for ajax submit
-            } else {
-                handleSubmitDemo(); // used for demo purposes only
-            }
+            handleSubmitAjax();
         }
     };
 }();

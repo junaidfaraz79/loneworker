@@ -14,9 +14,9 @@ class SubscriptionController extends Controller
         $subscriptions = DB::table('subscriptions')
                             ->join('users', 'users.email','=','subscriptions.user_email')
                             ->select('subscriptions.id', 'subscriptions.plan_name', 'subscriptions.status', 'subscriptions.added_on', 'users.username', 'users.email', 'users.phone_no', 'users.company_name', 'users.designation')
-                            ->where('user_type', 'subscriber')
+                            ->where('users.user_type', 'subscriber')
                             ->get();
-                       
+
         return view('admin.subscriptions', ['subscriptions'=>$subscriptions]);
     }
 
