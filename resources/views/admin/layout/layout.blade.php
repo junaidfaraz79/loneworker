@@ -922,7 +922,7 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item-->
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('plans') || Route::is('plan.add') || Route::is('plan.edit') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
@@ -940,7 +940,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
-													<a class="menu-link" href="/lwadmin/plans">
+													<a class="menu-link {{ Route::is('plans') ? 'active here show' : '' }}" href="/lwadmin/plans">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
@@ -952,7 +952,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
-													<a class="menu-link" href="/lwadmin/plan/add">
+													<a class="menu-link {{ Route::is('plan.add') ? 'active here show' : '' }}" href="/lwadmin/plan/add">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
@@ -966,7 +966,7 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item-->
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('subscriptions') || Route::is('subscription.add') || Route::is('subscription.edit') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
@@ -984,7 +984,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin:Menu item-->
 												<div class="menu-item">
 													<!--begin:Menu link-->
-													<a class="menu-link" href="/lwadmin/subscriptions">
+													<a class="menu-link {{ Route::is('subscriptions') ? 'active here show' : '' }}" href="/lwadmin/subscriptions">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
@@ -997,7 +997,7 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item Subscription Management-->
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('admin.editPassword') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
@@ -1013,7 +1013,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
+												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 {{ Route::is('admin.editPassword') ? 'here show' : '' }}">
 													<!--begin:Menu link-->
 													<span class="menu-link">
 														<span class="menu-bullet">
@@ -1028,7 +1028,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/lwadmin/edit-password">
+															<a class="menu-link {{ Route::is('admin.editPassword') ? 'active here show' : '' }}" href="/lwadmin/edit-password">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>

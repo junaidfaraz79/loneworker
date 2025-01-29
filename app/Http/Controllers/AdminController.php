@@ -88,5 +88,9 @@ class AdminController extends Controller
             return response()->json($res, 500);
         }
     }
+
+    public function editPassword(Request $req) {
+        return view ('admin.edit-password');
+    }
 }
 

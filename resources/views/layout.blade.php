@@ -922,11 +922,11 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item-->
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('users') || Route::is('user.add') || Route::is('user.edit') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
-													<i class="ki-duotone ki-abstract-28 fs-1">
+													<i class="ki-duotone ki-user" style=" font-size: 18px;">
 														<span class="path1"></span>
 														<span class="path2"></span>
 													</i>
@@ -938,7 +938,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
+												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 {{ Route::is('users') || Route::is('user.add') || Route::is('user.edit') ? 'here show' : '' }}">
 													<!--begin:Menu link-->
 													<span class="menu-link">
 														<span class="menu-bullet">
@@ -953,7 +953,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/users">
+															<a class="menu-link {{ Route::is('users') ? 'active here show' : '' }}" href="/users">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -965,7 +965,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/user/add">
+															<a class="menu-link {{ Route::is('user.add') ? 'active' : '' }}" href="/user/add">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -979,7 +979,7 @@ License: For each use you must have a valid license purchased only from above li
 												</div>
 												<!--end:Menu item-->
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+												<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('roles') || Route::is('role.add') || Route::is('role.edit') ? 'here show' : '' }}">
 													<!--begin:Menu link-->
 													<span class="menu-link">
 														<span class="menu-bullet">
@@ -1036,13 +1036,16 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item-->
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('workers') || Route::is('worker.add') || Route::is('worker.edit') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
-													<i class="ki-duotone ki-abstract-28 fs-1">
+													<i class="ki-duotone ki-people" style=" font-size: 18px;">
 														<span class="path1"></span>
 														<span class="path2"></span>
+														<span class="path3"></span>
+														<span class="path4"></span>
+														<span class="path5"></span>
 													</i>
 												</span>
 												<span class="menu-title">Worker Management</span>
@@ -1052,7 +1055,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
+												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 {{ Route::is('workers') || Route::is('worker.add') || Route::is('worker.edit') ? 'here show' : '' }}">
 													<!--begin:Menu link-->
 													<span class="menu-link">
 														<span class="menu-bullet">
@@ -1067,7 +1070,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/workers">
+															<a class="menu-link {{ Route::is('workers') ? 'active here show' : '' }}" href="/workers">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -1079,7 +1082,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/worker/add">
+															<a class="menu-link {{ Route::is('worker.add') ? 'active here show' : '' }}" href="/worker/add">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -1150,11 +1153,11 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item-->
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('shifts') || Route::is('shift.add') || Route::is('shift.edit') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
-													<i class="ki-duotone ki-abstract-28 fs-1">
+													<i class="ki-duotone ki-time" style=" font-size: 18px;">
 														<span class="path1"></span>
 														<span class="path2"></span>
 													</i>
@@ -1166,7 +1169,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
+												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 {{ Route::is('shifts') || Route::is('shift.add') || Route::is('shift.edit') ? 'here show' : '' }}">
 													<!--begin:Menu link-->
 													<span class="menu-link">
 														<span class="menu-bullet">
@@ -1181,7 +1184,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/shifts">
+															<a class="menu-link {{ Route::is('shifts') ? 'active here show' : '' }}" href="/shifts">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -1197,7 +1200,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/shift/add">
+															<a class="menu-link {{ Route::is('shift.add') ? 'active here show' : '' }}" href="/shift/add">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -1214,11 +1217,11 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item-->										
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('customers') || Route::is('customer.add') || Route::is('customer.edit') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
-													<i class="ki-duotone ki-abstract-28 fs-1">
+													<i class="ki-duotone ki-briefcase" style=" font-size: 18px;">
 														<span class="path1"></span>
 														<span class="path2"></span>
 													</i>
@@ -1230,7 +1233,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
+												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 {{ Route::is('customers') || Route::is('customer.add') || Route::is('customer.edit') ? 'here show' : '' }}">
 													<!--begin:Menu link-->
 													<span class="menu-link">
 														<span class="menu-bullet">
@@ -1245,7 +1248,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/customers">
+															<a class="menu-link {{ Route::is('customers') ? 'active here show' : '' }}" href="/customers">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -1257,7 +1260,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/customer/add">
+															<a class="menu-link {{ Route::is('customer.add') ? 'active here show' : '' }}" href="/customer/add">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -1275,11 +1278,11 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item-->										
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('sites') || Route::is('site.add') || Route::is('site.edit') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
-													<i class="ki-duotone ki-abstract-28 fs-1">
+													<i class="ki-duotone ki-geolocation" style=" font-size: 18px;">
 														<span class="path1"></span>
 														<span class="path2"></span>
 													</i>
@@ -1291,7 +1294,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
+												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 {{ Route::is('sites') || Route::is('site.add') || Route::is('site.edit') ? 'here show' : '' }}">
 													<!--begin:Menu link-->
 													<span class="menu-link">
 														<span class="menu-bullet">
@@ -1306,7 +1309,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/sites">
+															<a class="menu-link {{ Route::is('sites') ? 'active here show' : '' }}" href="/sites">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -1318,7 +1321,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/site/add">
+															<a class="menu-link {{ Route::is('site.add') ? 'active here show' : '' }}" href="/site/add">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
@@ -1336,11 +1339,11 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item-->
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('editPassword') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
-													<i class="ki-duotone ki-abstract-28 fs-1">
+													<i class="ki-duotone ki-setting-2" style=" font-size: 18px;">
 														<span class="path1"></span>
 														<span class="path2"></span>
 													</i>
@@ -1352,7 +1355,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1">
+												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 {{ Route::is('editPassword') ? 'here show' : '' }}">
 													<!--begin:Menu link-->
 													<span class="menu-link">
 														<span class="menu-bullet">
@@ -1367,7 +1370,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin:Menu item-->
 														<div class="menu-item">
 															<!--begin:Menu link-->
-															<a class="menu-link" href="/edit-password">
+															<a class="menu-link {{ Route::is('editPassword') ? 'active here show' : '' }}" href="/edit-password">
 																<span class="menu-bullet">
 																	<span class="bullet bullet-dot"></span>
 																</span>
