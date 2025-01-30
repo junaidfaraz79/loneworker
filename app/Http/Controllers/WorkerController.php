@@ -268,21 +268,50 @@ class WorkerController extends Controller
 
     public function authenticateWorker(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'pin' => 'required',
             'password' => 'required',
         ]);
 
-        $worker = Worker::where('pin', $request->pin)->first();
+        // Start a transaction to ensure data integrity
+        DB::beginTransaction();
 
-        // if (! $worker || ! Hash::check($request->password, $worker->password)) {
-        if (!$worker || $request->password !== $worker->password) {
-            throw ValidationException::withMessages([
-                'pin' => ['The provided credentials are incorrect.']
-            ]);
+        try {
+            $worker = Worker::where('pin', $request->pin)->first();
+
+            // Check if worker exists and password is correct
+            if (!$worker || $request->password !== $worker->password) {
+                // if (!$worker || !Hash::check($request->password, $worker->password)) {
+                // If authentication fails, we rollback any changes and return an error
+                DB::rollback();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The provided credentials are incorrect.'
+                ], 422); // HTTP 422 Unprocessable Entity
+            }
+
+            // If authentication is successful, commit the transaction
+            DB::commit();
+
+            // Generate a new token for the session
+            $token = $worker->createToken('worker-access')->plainTextToken;
+
+            // Return the token and success message
+            return response()->json([
+                'success' => true,
+                'message' => 'Login successful!',
+                'token' => $token
+            ], 200);
+
+        } catch (\Exception $e) {
+            // If an exception occurs, rollback and return an error
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred during the login process.',
+                'error' => $e->getMessage()
+            ], 500); // HTTP 500 Internal Server Error
         }
-
-        return $worker->createToken($worker->id)->plainTextToken;
     }
 
     public function signoutWorker(Request $request)
