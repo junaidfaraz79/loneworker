@@ -9,7 +9,7 @@ class SigninController extends Controller
 {
     public function execute(Request $req) {
 
-        $user = DB::table('users')
+        $user = DB::table('user')
                         ->where(
                             [
                                 ['email', '=', $req->email],
@@ -52,7 +52,7 @@ class SigninController extends Controller
             $email = session('email'); // or use Auth::user()->email if using built-in Auth
 
             // Update the user's password
-            $updated = DB::table('users')
+            $updated = DB::table('user')
                 ->where('email', $email)
                 ->update(['password' => $req->password]);
                 // ->update(['password' => bcrypt($req->password)]);

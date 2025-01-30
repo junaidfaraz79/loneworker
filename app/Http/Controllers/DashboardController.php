@@ -11,7 +11,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $total_monitors = DB::table('users')->where('role','monitor')->get()->count();
+        $total_monitors = DB::table('user')->where('role','monitor')->get()->count();
         $total_workers = DB::table('workers')->get()->count();
         $total_customers = DB::table('customers')->get()->count();
         $total_sites = DB::table('sites')->get()->count();
@@ -22,7 +22,7 @@ class DashboardController extends Controller
 
     public function profile()
     {
-        $profile = DB::table('users')->where('email',session('email'))->get();
+        $profile = DB::table('user')->where('email',session('email'))->get();
         return view('edit-profile', ['profile'=>$profile[0]]);  
     }
 
@@ -47,7 +47,7 @@ class DashboardController extends Controller
             $user_image = ''; 
         }
 
-        DB::table('users')->where('id',session('user_id'))->update(['username'=>$req->username, 'email'=>$req->email, 'cell_no'=>$req->cell_no, 'phone_no'=>$req->phone_no, 'designation'=>$req->designation, 'company_name'=>$req->company_name, 'official_address'=>$req->official_address, 'user_image'=>$user_image]);
+        DB::table('user')->where('id',session('user_id'))->update(['username'=>$req->username, 'email'=>$req->email, 'cell_no'=>$req->cell_no, 'phone_no'=>$req->phone_no, 'designation'=>$req->designation, 'company_name'=>$req->company_name, 'official_address'=>$req->official_address, 'user_image'=>$user_image]);
 
         session()->put('username',$req->username);
 

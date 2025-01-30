@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function list()
     {
-        $users = DB::table('users')
+        $users = DB::table('user')
                             ->join('subscriptions', 'users.email','=','subscriptions.user_email')
                             ->select('subscriptions.id', 'subscriptions.plan_name', 'subscriptions.status', 'subscriptions.added_on', 'users.username', 'users.email', 'users.phone_no', 'users.company_name', 'users.designation')
                             ->where('user_type', 'user')
@@ -29,7 +29,7 @@ class UserController extends Controller
     public function save(Request $req)
     {
 
-        $duplicate = DB::table('users')->where('email','=',$req->email)->get();
+        $duplicate = DB::table('user')->where('email','=',$req->email)->get();
 
         if(count($duplicate))
         {            
@@ -38,7 +38,7 @@ class UserController extends Controller
         else
         {        
 
-            $id = DB::table('users')->insertGetId([
+            $id = DB::table('user')->insertGetId([
                         'username'=>$req->username, 
                         'role'=>'monitor', 
                         'email'=>$req->email,

@@ -37,7 +37,7 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        $total_monitors = DB::table('users')->where('role','monitor')->get()->count();
+        $total_monitors = DB::table('user')->where('role','monitor')->get()->count();
         $total_workers = DB::table('workers')->get()->count();
         $total_customers = DB::table('customers')->get()->count();
         $total_sites = DB::table('sites')->get()->count();

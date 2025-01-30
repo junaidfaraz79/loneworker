@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Worker;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Validation\ValidationException;
 
 class WorkerController extends Controller
 {
@@ -255,13 +258,59 @@ class WorkerController extends Controller
 
         return $mimeType;
     }
-
-
     public function delete(Request $req)
     {
 
         DB::table('workers')->where('id', $req->id)->delete();
         $res = ['id' => $req->id, 'status' => 'success'];
         return json_encode($res);
+    }
+
+    public function authenticateWorker(Request $request)
+    {
+        $validated = $request->validate([
+            'pin' => 'required',
+            'password' => 'required',
+        ]);
+
+        $worker = Worker::where('pin', $request->pin)->first();
+
+        // if (! $worker || ! Hash::check($request->password, $worker->password)) {
+        if (!$worker || $request->password !== $worker->password) {
+            throw ValidationException::withMessages([
+                'pin' => ['The provided credentials are incorrect.']
+            ]);
+        }
+
+        return $worker->createToken($worker->id)->plainTextToken;
+    }
+
+    public function signoutWorker(Request $request)
+    {
+        try {
+            // Retrieve the authenticated worker using the custom 'worker' guard
+            $worker = Auth::guard('worker')->user();
+
+            // Check if the worker was successfully retrieved
+            if (!$worker) {
+                return response()->json(['message' => 'Authentication failed. Worker not found.'], 401);
+            }
+
+            // Revoke the worker's current token
+            if ($request->user()->currentAccessToken()) {
+                $request->user()->currentAccessToken()->delete();
+            } else {
+                return response()->json(['message' => 'No active session found.'], 404);
+            }
+
+            // Successfully logged out
+            return response()->json(['message' => 'You have been successfully logged out.'], 200);
+        } catch (\Exception $e) {
+            // Generic error handling if an exception is thrown during the logout process
+            return response()->json([
+                'message' => 'Failed to logout.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
