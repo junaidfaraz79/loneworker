@@ -22,6 +22,8 @@ Route::get('/signin', function() {
     return view('signin');
 })->name('signin');
 
+Route::get('/pricing', function() { return view('pricing'); });
+
 Route::post('/execute', [SigninController::class, 'execute']);
 
 Route::get('/signout', function (Request $request) {
