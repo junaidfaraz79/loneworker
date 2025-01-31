@@ -1036,7 +1036,8 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end:Menu item-->
 										<!--begin:Menu item-->
-										<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ Route::is('workers') || Route::is('worker.add') || Route::is('worker.edit') ? 'here show' : '' }}">
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion  {{ Route::is('worker.view') ? 'active' : '' }}
+											{{ Route::is('workers') || Route::is('worker.add') || Route::is('worker.edit') || Route::is('worker.view') ? 'here show' : '' }}">
 											<!--begin:Menu link-->
 											<span class="menu-link">
 												<span class="menu-icon">
@@ -1055,7 +1056,8 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu sub-->
 											<div class="menu-sub menu-sub-accordion">
 												<!--begin:Menu item-->
-												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 {{ Route::is('workers') || Route::is('worker.add') || Route::is('worker.edit') ? 'here show' : '' }}">
+												<div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 {{ Route::is('worker.view') ? 'active' : '' }}
+													{{ Route::is('workers') || Route::is('worker.add') || Route::is('worker.edit') || Route::is('worker.view') ? 'here show' : '' }}">
 													<!--begin:Menu link-->
 													<span class="menu-link">
 														<span class="menu-bullet">
