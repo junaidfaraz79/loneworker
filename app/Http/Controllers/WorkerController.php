@@ -318,7 +318,6 @@ class WorkerController extends Controller
                 'message' => 'Login successful!',
                 'token' => $token
             ], 200);
-
         } catch (\Exception $e) {
             // If an exception occurs, rollback and return an error
             DB::rollback();
@@ -356,6 +355,57 @@ class WorkerController extends Controller
                 'message' => 'Failed to logout.',
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function changePassword(Request $request)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed', // ensure password is confirmed and meets a minimum length
+            'password_confirmation' => 'required' // ensure confirmation field is also provided
+        ]);
+
+        // Begin transaction
+        DB::beginTransaction();
+
+        try {
+            // Retrieve the authenticated worker
+            $worker = Auth::guard('worker')->user();
+
+            // Check if the provided password matches the confirmation
+            if ($request->password !== $request->password_confirmation) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Password confirmation does not match.'
+                ], 422); // Unprocessable Entity
+            }
+
+            // Update the worker's password
+            // $worker->password = Hash::make($request->password);
+            // $worker->save();
+            // $request->user()->password = Hash::make($request->password);
+            $request->user()->password = $request->password;
+            $request->user()->save();
+
+            // Commit the transaction
+            DB::commit();
+
+            // Return a success response
+            return response()->json([
+                'success' => true,
+                'message' => 'Password successfully changed.'
+            ], 200);
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of any error
+            DB::rollback();
+
+            // Return an error response
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while changing the password.',
+                'error' => $e->getMessage()
+            ], 500); // Internal Server Error
         }
     }
 }

@@ -69,7 +69,6 @@ class SigninController extends Controller
         } catch (\Exception $e) {
             // Log the error
             // \Log::error('Password update failed: ' . $e->getMessage());
-            dd($e->getMessage());
             // Redirect back with error message
             $res = ['status' => 'error'];
             return response()->json($res, 500);

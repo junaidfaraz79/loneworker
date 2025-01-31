@@ -24,7 +24,15 @@ class Worker extends Authenticatable
         'department',
         'check_in_frequency',
         'worker_image',
-        'worker_status'
+        'worker_status',
+        'sia_license_number',      
+        'sia_license_expiry_date', 
+        'emergency_contact_1',     
+        'emergency_contact_2',     
+        'nok_name',               
+        'nok_relation',          
+        'nok_address',    
+        'nok_contact'
     ];
 
     protected $hidden = [
