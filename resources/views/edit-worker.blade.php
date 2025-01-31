@@ -250,6 +250,7 @@
                             <div class="tab-pane fade show active" id="worker_details_tab" role="tab-panel">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <!--begin::General options-->
+                                    <!--begin::Worker details-->
                                     <div class="card card-flush py-4">
                                         <!--begin::Card header-->
                                         <div class="card-header">
@@ -401,9 +402,161 @@
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
+                                            
+                                            <!--begin::Input group-->
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label">SIA Licence Number</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" name="sia_license_number" class="form-control mb-2"
+                                                        placeholder="SIA Licence Number" value="{{ $worker->sia_license_number }}" {{
+                                                        $isViewMode==='y' ? 'readonly' : '' }} />
+                                                    <!--end::Input-->
+                                                    @if($isViewMode === 'n')
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">16 digit SIA Licence Number.</div>
+                                                    <!--end::Description-->
+                                                    @endif
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label">SIA Licence Expiry Date</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input class="form-control mb-2" name="sia_license_expiry_date" placeholder="Pick expiry date" 
+                                                    value="{{ $worker->sia_license_expiry_date }}" {{ $isViewMode==='y' ? 'readonly' : '' }} id="kt_calendar_datepicker_start_date" />
+                                                    <!--end::Input-->
+                                                    @if($isViewMode === 'n')
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Set SIA licence expiry date.</div>
+                                                    <!--end::Description-->
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <!--end::Input group-->
                                         </div>
                                         <!--end::Card header-->
                                     </div>
+                                    <!--end::Worker details-->
+                                    <!--begin::NOK details-->
+                                    <div class="card card-flush py-4">
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h2>Next of Kin Detail</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Next of Kin Name</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_name" class="form-control mb-2"
+                                                    placeholder="Next of Kin Name" value="{{ $worker->nok_name }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
+                                                <!--end::Input-->
+                                                @if($isViewMode === 'n')
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Next of Kin Name.</div>
+                                                <!--end::Description-->
+                                                @endif
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Next of Kin Relation</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_relation" class="form-control mb-2"
+                                                    placeholder="Next of Kin Relation" value="{{ $worker->nok_relation }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
+                                                <!--end::Input-->
+                                                @if($isViewMode === 'n')
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Next of Kin Relation.</div>
+                                                <!--end::Description-->
+                                                @endif
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Next of Kin Address</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_address" class="form-control mb-2"
+                                                    placeholder="Next of Kin Address" value="{{ $worker->nok_address }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
+                                                <!--end::Input-->
+                                                @if($isViewMode === 'n')
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Next of Kin Address.</div>
+                                                <!--end::Description-->
+                                                @endif
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Next of Kin Contact</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_contact" class="form-control mb-2"
+                                                    placeholder="Next of Kin Contact" value="{{ $worker->nok_contact }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
+                                                <!--end::Input-->
+                                                @if($isViewMode === 'n')
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Next of Kin Contact.</div>
+                                                <!--end::Description-->
+                                                @endif
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="required form-label">Primary Emergency Contact</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" name="emergency_contact_1" class="form-control mb-2"
+                                                        placeholder="Emergency phone number" value="{{ $worker->emergency_contact_1 }}" {{
+                                                        $isViewMode==='y' ? 'readonly' : '' }} />
+                                                    <!--end::Input-->
+                                                    @if($isViewMode === 'n')
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Set primary emergency phone number.</div>
+                                                    <!--end::Description-->
+                                                    @endif
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="required form-label">Secondary Emergency Contact</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" name="emergency_contact_2" class="form-control mb-2"
+                                                        placeholder="Emergency phone number" value="{{ $worker->emergency_contact_2 }}" {{
+                                                        $isViewMode==='y' ? 'readonly' : '' }} />
+                                                    <!--end::Input-->
+                                                    @if($isViewMode === 'n')
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Set secondary emergency phone number.</div>
+                                                    <!--end::Description-->
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Card header-->
+                                    </div>
+                                    <!--end::NOK details-->
                                     <!--end::General options-->
                                 </div>
                             </div>
@@ -453,42 +606,44 @@
                                                 Training Certificates).</div>
                                             @else
                                                 <div class="row g-6 g-xl-9 mb-6 mb-xl-9">
-                                                    @foreach ($documents as $document)
-                                                    <!--begin::Col-->
-                                                    <div class="col-md-6 col-lg-4 col-xl-3">
-                                                        <!--begin::Card-->
-                                                        <div class="card h-100">
-                                                            <!--begin::Card body-->
-                                                            <div class="card-body d-flex justify-content-center text-center flex-column p-8">
-                                                                @php
-                                                                    $extension = strtolower(pathinfo($document->file_path, PATHINFO_EXTENSION));
-                                                                    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'];
-                                                                    $isImage = in_array($extension, $imageExtensions);
-                                                                    $fileUrl = $isImage ? asset('storage/' . $document->file_path) : route('downloadDocument', $document->id);
-                                                                    $target = $isImage ? '_blank' : '_self';
-                                                                    $download = $isImage ? '' : 'download';
-                                                                    $imagePath = $isImage ? asset('storage/' . $document->file_path) : asset($fileTypeImages[$extension] ?? 'assets/media/svg/files/upload.svg');
-                                                                @endphp
-                                                                <!--begin::Name-->
-                                                                <a href="{{ $fileUrl }}" target="{{ $target }}" {{ $download }}
-                                                                    class="text-gray-800 text-hover-primary d-flex flex-column">
-                                                                    <div class="symbol symbol-60px mb-5">
-                                                                        @if ($isImage)
-                                                                            <img src="{{ asset('storage/' . $document->file_path) }}" alt="Document" />
-                                                                        @else
-                                                                            <img src="{{ $imagePath }}" alt="Document" />
-                                                                        @endif
-                                                                    </div>
-                                                                    <div class="fs-5 fw-bold mb-2">{{ $document->file_name }}</div>
-                                                                </a>
-                                                                <!--end::Name-->
+                                                    @forelse ($documents as $document)
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-6 col-lg-4 col-xl-3">
+                                                            <!--begin::Card-->
+                                                            <div class="card h-100">
+                                                                <!--begin::Card body-->
+                                                                <div class="card-body d-flex justify-content-center text-center flex-column p-8">
+                                                                    @php
+                                                                        $extension = strtolower(pathinfo($document->file_path, PATHINFO_EXTENSION));
+                                                                        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'];
+                                                                        $isImage = in_array($extension, $imageExtensions);
+                                                                        $fileUrl = $isImage ? asset('storage/' . $document->file_path) : route('downloadDocument', $document->id);
+                                                                        $target = $isImage ? '_blank' : '_self';
+                                                                        $download = $isImage ? '' : 'download';
+                                                                        $imagePath = $isImage ? asset('storage/' . $document->file_path) : asset($fileTypeImages[$extension] ?? 'assets/media/svg/files/upload.svg');
+                                                                    @endphp
+                                                                    <!--begin::Name-->
+                                                                    <a href="{{ $fileUrl }}" target="{{ $target }}" {{ $download }}
+                                                                        class="text-gray-800 text-hover-primary d-flex flex-column">
+                                                                        <div class="symbol symbol-60px mb-5">
+                                                                            @if ($isImage)
+                                                                                <img src="{{ asset('storage/' . $document->file_path) }}" alt="Document" />
+                                                                            @else
+                                                                                <img src="{{ $imagePath }}" alt="Document" />
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="fs-5 fw-bold mb-2">{{ $document->file_name }}</div>
+                                                                    </a>
+                                                                    <!--end::Name-->
+                                                                </div>
+                                                                <!--end::Card body-->
                                                             </div>
-                                                            <!--end::Card body-->
+                                                            <!--end::Card-->
                                                         </div>
-                                                        <!--end::Card-->
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    @endforeach
+                                                        <!--end::Col-->
+                                                    @empty
+                                                        <span>No documents found.</span>
+                                                    @endforelse
                                                 </div>
                                             @endif
                                             <!--end::Description-->

@@ -57,7 +57,15 @@ class WorkerController extends Controller
                 'department' => $req->department,
                 'check_in_frequency' => $req->check_in_frequency,
                 'worker_image' => $worker_image,
-                'worker_status' => $req->worker_status
+                'worker_status' => $req->worker_status,
+                'sia_license_number' => $req->sia_license_number,
+                'sia_license_expiry_date' => $req->sia_license_expiry_date,
+                'emergency_contact_1' => $req->emergency_contact_1,
+                'emergency_contact_2' => $req->emergency_contact_2,
+                'nok_name' => $req->nok_name,
+                'nok_relation' => $req->nok_relation,
+                'nok_address' => $req->nok_address,
+                'nok_contact' => $req->nok_contact,
             ]);
 
             if ($req->hasFile('worker_documents')) {
@@ -143,7 +151,15 @@ class WorkerController extends Controller
                     'department' => $req->department,
                     'check_in_frequency' => $req->check_in_frequency,
                     'worker_image' => $worker_image,
-                    'worker_status' => $req->worker_status
+                    'worker_status' => $req->worker_status,
+                    'sia_license_number' => $req->sia_license_number,
+                    'sia_license_expiry_date' => $req->sia_license_expiry_date,
+                    'emergency_contact_1' => $req->emergency_contact_1,
+                    'emergency_contact_2' => $req->emergency_contact_2,
+                    'nok_name' => $req->nok_name,
+                    'nok_relation' => $req->nok_relation,
+                    'nok_address' => $req->nok_address,
+                    'nok_contact' => $req->nok_contact,
                 ]);
 
             if ($req->hasFile('worker_documents')) {

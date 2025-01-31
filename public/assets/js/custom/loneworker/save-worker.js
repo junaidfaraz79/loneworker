@@ -2,7 +2,8 @@
 
 // Class definition
 var KTAppEcommerceSaveCategory = function () {
-
+    var startDatepicker;
+    var startFlatpickr;
     // Private functions
 
     // Init quill editor
@@ -50,6 +51,13 @@ var KTAppEcommerceSaveCategory = function () {
             addRemoveLinks: true,
             autoProcessQueue: false,
             acceptedFiles: 'image/*, .pdf, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        });
+    }
+
+    const initDatepickers = () => {
+        startFlatpickr = flatpickr(startDatepicker, {
+            enableTime: false,
+            dateFormat: "Y-m-d",
         });
     }
 
@@ -238,7 +246,7 @@ var KTAppEcommerceSaveCategory = function () {
 
                         // Disable submit button whilst loading
                         submitButton.disabled = true;
-
+                        // const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
                         let form = document.getElementById("kt_ecommerce_add_form");
                         let formData = new FormData(form);
 
@@ -260,7 +268,7 @@ var KTAppEcommerceSaveCategory = function () {
                             .done((data) => {
                                 console.log(data);
                                 let res = JSON.parse(data);
-                                console.log(res.status);
+                                console.log(res.message);
                                 if (res.status == "duplicate") {
 
                                     Swal.fire({
@@ -321,13 +329,14 @@ var KTAppEcommerceSaveCategory = function () {
     // Public methods
     return {
         init: function () {
+            startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
             // Init forms
             initQuill();
             initTagify();
             initFormRepeater();
             initConditionsSelect2();
             initDropzone();
-
+            initDatepickers();
             // Handle forms
             handleStatus();
             handleConditions();

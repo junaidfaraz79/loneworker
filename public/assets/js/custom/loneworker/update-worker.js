@@ -2,8 +2,16 @@
 
 // Class definition
 var KTAppEcommerceSaveCategory = function () {
-
+    var startDatepicker;
+    var startFlatpickr;
     // Private functions
+
+    const initDatepickers = () => {
+        startFlatpickr = flatpickr(startDatepicker, {
+            enableTime: false,
+            dateFormat: "Y-m-d",
+        });
+    }
 
     // Init quill editor
     const initQuill = () => {
@@ -325,12 +333,14 @@ var KTAppEcommerceSaveCategory = function () {
     // Public methods
     return {
         init: function () {
+            startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
             // Init forms
             initQuill();
             initTagify();
             initFormRepeater();
             initConditionsSelect2();
             initDropzone();
+            initDatepickers();
             // Handle forms
             handleStatus();
             handleConditions();

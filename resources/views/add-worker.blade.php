@@ -331,6 +331,130 @@
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label">SIA Licence Number</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" name="sia_license_number" class="form-control mb-2"
+                                                        placeholder="SIA Licence Number" value="" />
+                                                    <!--end::Input-->
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">16 digit SIA Licence Number.</div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label">SIA Licence Expiry Date</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input class="form-control mb-2" name="sia_license_expiry_date" placeholder="Pick expiry date" id="kt_calendar_datepicker_start_date" />
+                                                    <!--end::Input-->
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Set SIA licence expiry date.</div>
+                                                    <!--end::Description-->
+                                                </div>
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Card header-->
+                                    </div>
+                                    <div class="card card-flush py-4">
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h2>Next of Kin Detail</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Next of Kin Name</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_name" class="form-control mb-2"
+                                                    placeholder="Next of Kin Name" value="" />
+                                                <!--end::Input-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Next of Kin Name.</div>
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Next of Kin Relation</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_relation" class="form-control mb-2"
+                                                    placeholder="Next of Kin Relation" value="" />
+                                                <!--end::Input-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Next of Kin Relation.</div>
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Next of Kin Address</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_address" class="form-control mb-2"
+                                                    placeholder="Next of Kin Address" value="" />
+                                                <!--end::Input-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Next of Kin Address.</div>
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Next of Kin Contact</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_contact" class="form-control mb-2"
+                                                    placeholder="Next of Kin Contact" value="" />
+                                                <!--end::Input-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Next of Kin Contact.</div>
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="required form-label">Primary Emergency Contact</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" name="emergency_contact_1" class="form-control mb-2"
+                                                        placeholder="Emergency phone number" value="" />
+                                                    <!--end::Input-->
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Set primary emergency phone number.</div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="required form-label">Secondary Emergency Contact</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" name="emergency_contact_2" class="form-control mb-2"
+                                                        placeholder="Emergency phone number" value="" />
+                                                    <!--end::Input-->
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Set secondary emergency phone number.</div>
+                                                    <!--end::Description-->
+                                                </div>
+                                            </div>
+                                            <!--end::Input group-->
                                         </div>
                                         <!--end::Card header-->
                                     </div>
