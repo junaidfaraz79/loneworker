@@ -332,7 +332,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="row">
+                                            <div class="row mb-10">
                                                 <div class="col-lg-6">
                                                     <!--begin::Label-->
                                                     <label class="form-label">SIA Licence Number</label>
@@ -358,75 +358,7 @@
                                                 </div>
                                             </div>
                                             <!--end::Input group-->
-                                        </div>
-                                        <!--end::Card header-->
-                                    </div>
-                                    <div class="card card-flush py-4">
-                                        <!--begin::Card header-->
-                                        <div class="card-header">
-                                            <div class="card-title">
-                                                <h2>Next of Kin Detail</h2>
-                                            </div>
-                                        </div>
-                                        <!--end::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body pt-0">
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 row">
-                                                <!--begin::Label-->
-                                                <label class="form-label">Next of Kin Name</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text" name="nok_name" class="form-control mb-2"
-                                                    placeholder="Next of Kin Name" value="" />
-                                                <!--end::Input-->
-                                                <!--begin::Description-->
-                                                <div class="text-muted fs-7">Set Next of Kin Name.</div>
-                                                <!--end::Description-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 row">
-                                                <!--begin::Label-->
-                                                <label class="form-label">Next of Kin Relation</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text" name="nok_relation" class="form-control mb-2"
-                                                    placeholder="Next of Kin Relation" value="" />
-                                                <!--end::Input-->
-                                                <!--begin::Description-->
-                                                <div class="text-muted fs-7">Set Next of Kin Relation.</div>
-                                                <!--end::Description-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 row">
-                                                <!--begin::Label-->
-                                                <label class="form-label">Next of Kin Address</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text" name="nok_address" class="form-control mb-2"
-                                                    placeholder="Next of Kin Address" value="" />
-                                                <!--end::Input-->
-                                                <!--begin::Description-->
-                                                <div class="text-muted fs-7">Set Next of Kin Address.</div>
-                                                <!--end::Description-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="mb-10 row">
-                                                <!--begin::Label-->
-                                                <label class="form-label">Next of Kin Contact</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text" name="nok_contact" class="form-control mb-2"
-                                                    placeholder="Next of Kin Contact" value="" />
-                                                <!--end::Input-->
-                                                <!--begin::Description-->
-                                                <div class="text-muted fs-7">Set Next of Kin Contact.</div>
-                                                <!--end::Description-->
-                                            </div>
-                                            <!--end::Input group-->
+                                            
                                             <!--begin::Input group-->
                                             <div class="row">
                                                 <div class="col-lg-6">
@@ -453,6 +385,75 @@
                                                     <div class="text-muted fs-7">Set secondary emergency phone number.</div>
                                                     <!--end::Description-->
                                                 </div>
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Card header-->
+                                    </div>
+                                    <div class="card card-flush py-4">
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h2>Next of Kin Detail</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Name</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_name" class="form-control mb-2"
+                                                    placeholder="Name" value="" />
+                                                <!--end::Input-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Name.</div>
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Relation</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_relation" class="form-control mb-2"
+                                                    placeholder="Relation" value="" />
+                                                <!--end::Input-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Relation.</div>
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Address</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_address" class="form-control mb-2"
+                                                    placeholder="Address" value="" />
+                                                <!--end::Input-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Address.</div>
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Number</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="nok_contact" class="form-control mb-2"
+                                                    placeholder="Number" value="" />
+                                                <!--end::Input-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set Number.</div>
+                                                <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
                                         </div>
