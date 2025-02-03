@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Notifications\WorkerResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Support\Facades\Log;
 
 class Worker extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, CanResetPassword;
 
     protected $table = 'workers'; // Specify the table associated with the model
 
@@ -43,5 +46,10 @@ class Worker extends Authenticatable
         'added_on' => 'datetime',
         'updated_on' => 'datetime',
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new WorkerResetPasswordNotification($token));
+    }
 }
 

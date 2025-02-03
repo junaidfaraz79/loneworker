@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\WorkerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/worker/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('worker.password.email');
+Route::post('/worker/reset-password', [ResetPasswordController::class, 'reset'])->name('worker.password.update');
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();

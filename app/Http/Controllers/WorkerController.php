@@ -362,7 +362,8 @@ class WorkerController extends Controller
     {
         // Validate the incoming request
         $request->validate([
-            'password' => 'required|string|min:8|confirmed', // ensure password is confirmed and meets a minimum length
+            'old_password' => 'required', // ensure old password is provided
+            'password' => 'required|string|min:8|confirmed', // ensure new password is confirmed and meets a minimum length
             'password_confirmation' => 'required' // ensure confirmation field is also provided
         ]);
 
@@ -373,6 +374,15 @@ class WorkerController extends Controller
             // Retrieve the authenticated worker
             $worker = Auth::guard('worker')->user();
 
+            // Check if the provided old password matches the current password
+            if ($request->old_password !== $worker->password) {
+                // if (!Hash::check($request->old_password, $worker->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Old password is incorrect.'
+                ], 422); // Unprocessable Entity
+            }
+
             // Check if the provided password matches the confirmation
             if ($request->password !== $request->password_confirmation) {
                 return response()->json([
@@ -382,8 +392,6 @@ class WorkerController extends Controller
             }
 
             // Update the worker's password
-            // $worker->password = Hash::make($request->password);
-            // $worker->save();
             // $request->user()->password = Hash::make($request->password);
             $request->user()->password = $request->password;
             $request->user()->save();
