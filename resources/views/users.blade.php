@@ -327,8 +327,7 @@
                                         <th class="min-w-125px">Designation</th>
                                         <th class="min-w-125px">Company</th>
                                         <th class="min-w-125px">Email</th>
-                                        <th class="min-w-125px">Phone</th>                                        
-                                        <th class="min-w-125px">Status</th>
+                                        <th class="min-w-125px">Phone</th>              
                                         <th class="min-w-125px">User Date</th>
                                         <th class="text-end min-w-100px">Actions</th>
                                     </tr>
@@ -357,20 +356,6 @@
                                             <td> {{ $user->company_name }} </td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->phone_no }}</td>
-                                            <td>
-                                                @php 
-                                                    $badge = "";
-                                                    if($user->status=="active")
-                                                        $badge = "success";
-                                                    else if($user->status=="inactive")
-                                                        $badge = "warning";
-                                                    else if($user->status=="cancelled")
-                                                        $badge = "danger";
-                                                @endphp                                                
-                                                <span class="badge badge-light-{{$badge}} fw-bold fs-8 px-2 py-1 ms-2"> 
-                                                    {{ ucfirst($user->status) }}
-                                                </span>
-                                            </td>
                                             <td>
                                                 @php $user->added_on = date_create($user->added_on) @endphp
                                                 {{ date_format($user->added_on, 'd-M-Y h:ia') }}

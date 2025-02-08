@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('monitor.layout.layout')
 
 @section('content')    
 
@@ -14,13 +14,13 @@
                         <!--begin::Page title-->
                         <div class="page-title d-flex align-items-center gap-1 me-3">
                             <!--begin::Title-->
-                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Add Site</h1>
+                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Profile</h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
                             <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                    <a href="/dashboard" class="text-gray-500 text-hover-primary">
+                                    <a href="{{ route('monitor.dashboard') }}" class="text-gray-500 text-hover-primary">
                                         <i class="ki-duotone ki-home fs-3 text-gray-500 mx-n1"></i>
                                     </a>
                                 </li>
@@ -31,15 +31,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Site Management</li>
-                                <!--end::Item-->
-                                <!--begin::Item-->
-                                <li class="breadcrumb-item">
-                                    <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                                </li>
-                                <!--end::Item-->                                
-                                <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/sites">Sites</a></li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="{{ route('monitor.dashboard') }}">Dashboard</a></li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -47,7 +39,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700">Add Site</li>
+                                <li class="breadcrumb-item text-gray-700">Update Profile</li>
                                 <!--end::Item-->
                             </ul>
                             <!--end::Breadcrumb-->
@@ -63,7 +55,7 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/sites" action="save">
+                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="{{ route('monitor.profile') }}" action="{{ route('monitor.profile.update') }}">
                         @csrf
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -90,7 +82,7 @@
                                         <div class="image-input-wrapper w-150px h-150px"></div>
                                         <!--end::Preview existing avatar-->
                                         <!--begin::Label-->
-                                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change image">
                                             <!--begin::Icon-->
                                             <i class="ki-duotone ki-pencil fs-7">
                                                 <span class="path1"></span>
@@ -98,13 +90,13 @@
                                             </i>
                                             <!--end::Icon-->
                                             <!--begin::Inputs-->
-                                            <input type="file" name="site_image" accept=".png, .jpg, .jpeg" />
-                                            <input type="hidden" name="current_image" />
+                                            <input type="file" name="user_image" accept=".png, .jpg, .jpeg" />
+                                            <input type="hidden" name="current_image" value="{{ $profile->user_image }}" />
                                             <!--end::Inputs-->
                                         </label>
                                         <!--end::Label-->
                                         <!--begin::Cancel-->
-                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel">
                                             <i class="ki-duotone ki-cross fs-2">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
@@ -128,38 +120,6 @@
                                 <!--end::Card body-->
                             </div>
                             <!--end::Thumbnail settings-->
-                            <!--begin::Status-->
-                            <div class="card card-flush py-4">
-                                <!--begin::Card header-->
-                                <div class="card-header">
-                                    <!--begin::Card title-->
-                                    <div class="card-title">
-                                        <h2>Status</h2>
-                                    </div>
-                                    <!--end::Card title-->
-                                    <!--begin::Card toolbar-->
-                                    <div class="card-toolbar">
-                                        <div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_category_status"></div>
-                                    </div>
-                                    <!--begin::Card toolbar-->
-                                </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body pt-0">
-                                    <!--begin::Select2-->
-                                    <select name="site_status" class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_category_status_select">
-                                        <option></option>
-                                        <option value="active" selected="selected">Active</option>
-                                        <option value="inactive">Inactive</option>
-                                    </select>
-                                    <!--end::Select2-->
-                                    <!--begin::Description-->
-                                    <div class="text-muted fs-7">Set site status.</div>
-                                    <!--end::Description-->
-                                </div>
-                                <!--end::Card body-->
-                            </div>
-                            <!--end::Status-->
                         </div>
                         <!--end::Aside column-->
                         <!--begin::Main column-->
@@ -169,7 +129,7 @@
                                 <!--begin::Card header-->
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <h2>Site Detail</h2>
+                                        <h2>Profile Info</h2>
                                     </div>
                                 </div>
                                 <!--end::Card header-->
@@ -178,40 +138,84 @@
                                     <!--begin::Input group-->
                                     <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="required form-label">Site Name</label>
+                                        <label class="required form-label">Name</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="site_name" class="form-control mb-2" placeholder="Site name" value="" />
+                                        <input type="text" name="username" class="form-control mb-2" placeholder="Full Name" value="{{ $profile->username }}" />
                                         <!--end::Input-->
-                                        <!--begin::Description-->
-                                        <div class="text-muted fs-7">A site name is required.</div>
-                                        <!--end::Description-->
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="mb-10">
                                         <!--begin::Label-->
-                                        <label class="form-label">Site Address</label>
+                                        <label class="form-label">Designation</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="site_address" class="form-control mb-2" placeholder="Site Address" value="" />
+                                        <input type="text" name="designation" class="form-control mb-2" placeholder="Designation" value="{{ $profile->designation }}" />
                                         <!--end::Input-->
-                                        <!--begin::Description-->
-                                        <div class="text-muted fs-7">Set site address.</div>
-                                        <!--end::Description-->
+                                    </div>
+                                    <!--end::Input group-->                                     
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Email address</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $profile->email }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->                                    
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Cell Number</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="cell_no" class="form-control mb-2" placeholder="Phone number" value="{{ $profile->cell_no }}" />
+                                        <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Phone Number</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="{{ $profile->phone_no }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Company Name</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="company_name" class="form-control mb-2" placeholder="Company name" value="{{ $profile->company_name }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Official Address</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="official_address" class="form-control mb-2" placeholder="Official address" value="{{ $profile->official_address }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->                                     
                                 </div>
                                 <!--end::Card header-->
                             </div>
                             <!--end::General options-->
                             <div class="d-flex justify-content-end">
                                 <!--begin::Button-->
-                                <a href="/sites" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+                                <a href="/workers" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                 <!--end::Button-->
                                 <!--begin::Button-->
                                 <button type="submit" id="kt_ecommerce_add_submit" class="btn btn-primary">
-                                    <span class="indicator-label">Save Changes</span>
+                                    <span class="indicator-label">Update Info</span>
                                     <span class="indicator-progress">Please wait... 
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                 </button>
@@ -238,7 +242,7 @@
 
     <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 
-    <script src="/assets/js/custom/loneworker/save-site.js"></script>
+    <script src="/assets/js/custom/loneworker/update-profile.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

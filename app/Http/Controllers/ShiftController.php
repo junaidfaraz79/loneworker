@@ -13,14 +13,14 @@ class ShiftController extends Controller
     public function list()
     {
         $shifts = DB::table('shifts')->get();
-        return view('shifts', ['shifts' => $shifts]);
+        return view('monitor.shifts', ['shifts' => $shifts]);
     }
 
     public function add()
     {
         // $plans = DB::table('plans')->get();
         $timings = DB::table('timings')->get();
-        return view('add-shift', compact('timings'));
+        return view('monitor.add-shift', compact('timings'));
     }
 
     public function save(Request $req)
@@ -71,7 +71,7 @@ class ShiftController extends Controller
 
         if ($shift) {
             $timings = DB::table('timings')->get();
-            return view('edit-shift', ['shift' => $shift, 'timings' => $timings, 'isViewMode' => $isViewMode]);
+            return view('monitor.edit-shift', ['shift' => $shift, 'timings' => $timings, 'isViewMode' => $isViewMode]);
         } else
             return redirect(route('shifts'));
     }
@@ -83,7 +83,7 @@ class ShiftController extends Controller
 
         if ($shift) {
             $timings = DB::table('timings')->get();
-            return view('edit-shift', ['shift' => $shift, 'timings' => $timings, 'isViewMode' => $isViewMode]);
+            return view('monitor.edit-shift', ['shift' => $shift, 'timings' => $timings, 'isViewMode' => $isViewMode]);
         } else
             return redirect(route('shifts'));
     }

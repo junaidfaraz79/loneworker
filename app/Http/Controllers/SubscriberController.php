@@ -6,15 +6,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-
-class UserController extends Controller
+//*******************THIS IS A SUBSCRIBER CONTROLLER**********************
+class SubscriberController extends Controller
 {
     public function list()
     {
-        $users = DB::table('user')
-                            ->join('subscriptions', 'users.email','=','subscriptions.user_email')
-                            ->select('subscriptions.id', 'subscriptions.plan_name', 'subscriptions.status', 'subscriptions.added_on', 'users.username', 'users.email', 'users.phone_no', 'users.company_name', 'users.designation')
-                            ->where('user_type', 'user')
+        $userId = session('user_id');
+        $users = DB::table('subscribers')
+                            ->join('subscriptions', 'subscribers.email','=','subscriptions.user_email')
+                            ->select('subscriptions.id', 'subscriptions.plan_name', 'subscriptions.status', 'subscriptions.added_on', 'subscribers.username', 'subscribers.email', 'subscribers.phone_no', 'subscribers.company_name', 'subscribers.designation')
+                            ->where('subscribers.user_type', 'subscriber')
                             ->get();
 
         return view('users', ['users'=>$users]);
@@ -29,7 +30,7 @@ class UserController extends Controller
     public function save(Request $req)
     {
 
-        $duplicate = DB::table('user')->where('email','=',$req->email)->get();
+        $duplicate = DB::table('subscribers')->where('email','=',$req->email)->get();
 
         if(count($duplicate))
         {            
@@ -38,9 +39,9 @@ class UserController extends Controller
         else
         {        
 
-            $id = DB::table('user')->insertGetId([
+            $id = DB::table('subscribers')->insertGetId([
                         'username'=>$req->username, 
-                        'role'=>'monitor', 
+                        'role'=>'subscriber', 
                         'email'=>$req->email,
                         'password'=>'password', 
                         'cell_no'=>$req->cell_no, 
@@ -48,7 +49,7 @@ class UserController extends Controller
                         'company_name'=>$req->company_name, 
                         'official_address'=>$req->official_address,
                         'designation'=>$req->designation,
-                        'user_type'=>'user',
+                        'user_type'=>'subscriber',
                         // 'status'=>'active'
                     ]);
 
@@ -79,7 +80,7 @@ class UserController extends Controller
     public function edit(Request $req, string $id)
     {
         $subscription = DB::table('subscriptions')->where('subscriptions.id','=',$id)
-                            ->join('users', 'users.email','=','subscriptions.user_email')->get();
+                            ->join('subscribers', 'subscribers.email','=','subscriptions.user_email')->get();
 
         if(count($subscription))
         {
@@ -137,6 +138,4 @@ class UserController extends Controller
         return json_encode($res);
 
     }
-
-
 }

@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('monitor.layout.layout')
 
 @section('content')    
 
@@ -14,7 +14,7 @@
                         <!--begin::Page title-->
                         <div class="page-title d-flex align-items-center gap-1 me-3">
                             <!--begin::Title-->
-                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Edit Site</h1>
+                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Add Customer</h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
                             <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
@@ -31,7 +31,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Site Management</li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Customer Management</li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -39,7 +39,7 @@
                                 </li>
                                 <!--end::Item-->                                
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/sites">Sites</a></li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/customers">Customers</a></li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -47,7 +47,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700">Edit Site</li>
+                                <li class="breadcrumb-item text-gray-700">Add Customer</li>
                                 <!--end::Item-->
                             </ul>
                             <!--end::Breadcrumb-->
@@ -63,8 +63,7 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/sites" action="/site/update">
-                        <input type="hidden" name="id" value="{{ $site->id }}" />
+                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/customers" action="save">
                         @csrf
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -83,23 +82,7 @@
                                 <div class="card-body text-center pt-0">
                                     <!--begin::Image input-->
                                     <!--begin::Image input placeholder-->
-
-                                    @php
-                                        if(empty($site->site_image))
-                                        {
-                                            $image = 'assets/media/svg/files/blank-image.svg';
-                                            $dark_image = 'assets/media/svg/files/blank-image-dark.svg';
-                                        }
-                                        else
-                                        {
-                                            $image = str_replace('public/', 'storage/', $site->site_image);
-                                            $dark_image = '';
-                                            echo '<input type="hidden" name="current_image" id="current_image" value="'.$site->site_image.'">';
-                                        }
-                                    @endphp	                                    
-
-
-                                    <style>.image-input-placeholder { background-image: url($image); } [data-bs-theme="dark"] .image-input-placeholder { background-image: url($dark_image); }</style>
+                                    <style>.image-input-placeholder { background-image: url('assets/media/svg/files/blank-image.svg'); } [data-bs-theme="dark"] .image-input-placeholder { background-image: url('assets/media/svg/files/blank-image-dark.svg'); }</style>
                                     <!--end::Image input placeholder-->
                                     <!--begin::Image input-->
                                     <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
@@ -115,7 +98,8 @@
                                             </i>
                                             <!--end::Icon-->
                                             <!--begin::Inputs-->
-                                            <input type="file" name="site_image" accept=".png, .jpg, .jpeg" />
+                                            <input type="file" name="customer_image" accept=".png, .jpg, .jpeg" />
+                                            <input type="hidden" name="current_image" />
                                             <!--end::Inputs-->
                                         </label>
                                         <!--end::Label-->
@@ -153,25 +137,9 @@
                                         <h2>Status</h2>
                                     </div>
                                     <!--end::Card title-->
-                                    @php
-                                        $active_class = '';
-                                        $inactive_class = '';
-                                        $status_class = '';
-        
-                                        if ($site->site_status=='active')
-                                        {
-                                            $active_class = "selected='selected'";
-                                            $status_class = "bg-success";
-                                        }
-                                        if ($site->site_status=='inactive')
-                                        {
-                                            $inactive_class = "selected='selected'";
-                                            $status_class = "bg-danger";
-                                        }
-                                    @endphp
                                     <!--begin::Card toolbar-->
                                     <div class="card-toolbar">
-                                        <div class="rounded-circle {{ $status_class }} w-15px h-15px" id="kt_ecommerce_add_category_status"></div>
+                                        <div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_category_status"></div>
                                     </div>
                                     <!--begin::Card toolbar-->
                                 </div>
@@ -179,14 +147,14 @@
                                 <!--begin::Card body-->
                                 <div class="card-body pt-0">
                                     <!--begin::Select2-->
-                                    <select name="site_status" class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_category_status_select">
+                                    <select name="customer_status" class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_category_status_select">
                                         <option></option>
-                                        <option value="active" {{ $active_class }}>Active</option>
-                                        <option value="inactive" {{ $inactive_class }}>Inactive</option>
+                                        <option value="active" selected="selected">Active</option>
+                                        <option value="inactive">Inactive</option>
                                     </select>
                                     <!--end::Select2-->
                                     <!--begin::Description-->
-                                    <div class="text-muted fs-7">Set site status.</div>
+                                    <div class="text-muted fs-7">Set customer status.</div>
                                     <!--end::Description-->
                                 </div>
                                 <!--end::Card body-->
@@ -201,7 +169,7 @@
                                 <!--begin::Card header-->
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <h2>Site Detail</h2>
+                                        <h2>Customer Detail</h2>
                                     </div>
                                 </div>
                                 <!--end::Card header-->
@@ -210,36 +178,75 @@
                                     <!--begin::Input group-->
                                     <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="required form-label">Site Name</label>
+                                        <label class="required form-label">Customer Name</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="site_name" class="form-control mb-2" placeholder="Site name" value="{{ $site->site_name }}" />
+                                        <input type="text" name="customer_name" class="form-control mb-2" placeholder="Customer name" value="" />
                                         <!--end::Input-->
                                         <!--begin::Description-->
-                                        <div class="text-muted fs-7">A site name is required.</div>
+                                        <div class="text-muted fs-7">A customer name is required.</div>
                                         <!--end::Description-->
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="mb-10">
                                         <!--begin::Label-->
-                                        <label class="form-label">Site Address</label>
+                                        <label class="form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="site_address" class="form-control mb-2" placeholder="Site Address" value="{{ $site->site_address }}" />
+                                        <input type="text" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="" />
                                         <!--end::Input-->
                                         <!--begin::Description-->
-                                        <div class="text-muted fs-7">Set site address.</div>
+                                        <div class="text-muted fs-7">Set phone number.</div>
                                         <!--end::Description-->
                                     </div>
                                     <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Email address</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="email" class="form-control mb-2" placeholder="Email address" value="" />
+                                        <!--end::Input-->
+                                        <!--begin::Description-->
+                                        <div class="text-muted fs-7">Set email address.</div>
+                                        <!--end::Description-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Department</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="department" class="form-control mb-2" placeholder="Department" value="" />
+                                        <!--end::Input-->
+                                        <!--begin::Description-->
+                                        <div class="text-muted fs-7">Set department.</div>
+                                        <!--end::Description-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Role</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="role" class="form-control mb-2" placeholder="Role" value="" />
+                                        <!--end::Input-->
+                                        <!--begin::Description-->
+                                        <div class="text-muted fs-7">Set role.</div>
+                                        <!--end::Description-->
+                                    </div>
+                                    <!--end::Input group-->                                    
                                 </div>
                                 <!--end::Card header-->
                             </div>
                             <!--end::General options-->
                             <div class="d-flex justify-content-end">
                                 <!--begin::Button-->
-                                <a href="/sites" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+                                <a href="/customers" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                 <!--end::Button-->
                                 <!--begin::Button-->
                                 <button type="submit" id="kt_ecommerce_add_submit" class="btn btn-primary">
@@ -270,7 +277,7 @@
 
     <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 
-    <script src="/assets/js/custom/lonesite/update-site.js"></script>
+    <script src="/assets/js/custom/loneworker/save-customer.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

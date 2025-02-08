@@ -12,9 +12,9 @@ class SubscriptionController extends Controller
     public function list()
     {
         $subscriptions = DB::table('subscriptions')
-                            ->join('user', 'user.email','=','subscriptions.user_email')
-                            ->select('subscriptions.id', 'subscriptions.plan_name', 'subscriptions.status', 'subscriptions.added_on', 'user.username', 'user.email', 'user.phone_no', 'user.company_name', 'user.designation')
-                            ->where('user.user_type', 'subscriber')
+                            ->join('subscribers', 'subscribers.email','=','subscriptions.user_email')
+                            ->select('subscriptions.id', 'subscriptions.plan_name', 'subscriptions.status', 'subscriptions.added_on', 'subscribers.username', 'subscribers.email', 'subscribers.phone_no', 'subscribers.company_name', 'subscribers.designation')
+                            ->where('subscribers.user_type', 'subscriber')
                             ->get();
 
         return view('admin.subscriptions', ['subscriptions'=>$subscriptions]);
@@ -29,8 +29,8 @@ class SubscriptionController extends Controller
     public function edit(Request $req, string $id)
     {
         $subscription = DB::table('subscriptions')->where('subscriptions.id','=',$id)
-                            ->select('subscriptions.*', 'user.*', 'subscriptions.id as subscription_id')
-                            ->join('user', 'user.email','=','subscriptions.user_email')->get();
+                            ->select('subscriptions.*', 'subscribers.*', 'subscriptions.id as subscription_id')
+                            ->join('subscribers', 'subscribers.email','=','subscriptions.user_email')->get();
 
         if(count($subscription))
         {

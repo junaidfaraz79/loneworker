@@ -44,6 +44,10 @@ return [
             'driver' => 'sanctum',
             'provider' => 'workers',
         ],
+        'monitor' => [  // Adding the new guard
+            'driver' => 'session',
+            'provider' => 'monitors',
+        ],
     ],
 
     /*
@@ -71,6 +75,10 @@ return [
         'workers' => [
             'driver' => 'eloquent',
             'model' => App\Models\Worker::class,
+        ],
+        'monitors' => [  // Define the provider for monitors
+            'driver' => 'eloquent',
+            'model' => App\Models\Monitor::class,
         ],
         // 'users' => [
         //     'driver' => 'database',

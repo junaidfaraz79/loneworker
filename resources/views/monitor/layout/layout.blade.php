@@ -886,13 +886,11 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end::Avatar-->
 										<!--begin::Username-->
 										<div class="d-flex flex-column">
-											<div class="fw-bold d-flex align-items-center fs-5">{{ session('username')
-												}}
+											<div class="fw-bold d-flex align-items-center fs-5">{{ Auth::guard('monitor')->user()->username }}
 												<span
 													class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>
 											</div>
-											<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{
-												session('email') }} </a>
+											<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ Auth::guard('monitor')->user()->email }}</a>
 										</div>
 										<!--end::Username-->
 									</div>
@@ -903,7 +901,7 @@ License: For each use you must have a valid license purchased only from above li
 								<!--end::Menu separator-->
 								<!--begin::Menu item-->
 								<div class="menu-item px-5">
-									<a href="/profile" class="menu-link px-5">My Profile</a>
+									<a href="{{ route('monitor.profile') }}" class="menu-link px-5">My Profile</a>
 								</div>
 								<!--end::Menu item-->
 								<!--begin::Menu separator-->
@@ -975,7 +973,7 @@ License: For each use you must have a valid license purchased only from above li
 								<!--end::Menu item-->
 								<!--begin::Menu item-->
 								<div class="menu-item px-5">
-									<a href="/signout" class="menu-link px-5">Sign Out</a>
+									<a href="/monitor/signout" class="menu-link px-5">Sign Out</a>
 								</div>
 								<!--end::Menu item-->
 							</div>
@@ -1033,15 +1031,15 @@ License: For each use you must have a valid license purchased only from above li
 					<div class="app-sidebar-user-default app-sidebar-user-minimize bg-light border border-gray-300 rounded mx-9 mt-9 mt-lg-2"
 						id="kt_app_sidebar_user">
 						<!--begin::User info-->
-						<a href="/profile" class="d-flex align-items-center w-200px p-4 parent-hover">
+						<a href="{{ route('monitor.profile') }}" class="d-flex align-items-center w-200px p-4 parent-hover">
 							<span class="cursor-pointer symbol symbol-circle symbol-40px me-4">
 								<img src="/assets/media/avatars/300-3.jpg" alt="image" />
 							</span>
 							<!--begin::Name-->
 							<span class="d-flex flex-column">
-								<span class="text-gray-800 fs-7 fw-bold parent-hover-primary">{{ session('username')
+								<span class="text-gray-800 fs-7 fw-bold parent-hover-primary">{{  Auth::guard('monitor')->user()->username
 									}}</span>
-								<span class="text-gray-500 fs-8 fw-semibold">{{ ucfirst(session('role')) }}</span>
+								<span class="text-gray-500 fs-8 fw-semibold">{{ ucfirst(Auth::guard('monitor')->user()->user_type) }}</span>
 							</span>
 							<!--end::Name-->
 						</a>
@@ -1071,115 +1069,190 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end:Menu item-->
 									<!--begin:Menu item-->
 									<div data-kt-menu-trigger="click"
-										class="menu-item menu-accordion {{ Route::is('users') || Route::is('user.add') || Route::is('user.edit') ? 'here show' : '' }}">
+										class="menu-item menu-accordion  {{ Route::is('worker.view') ? 'active' : '' }}
+											{{ Route::is('workers') || Route::is('worker.add') || Route::is('worker.edit') || Route::is('worker.view') ? 'here show' : '' }}">
 										<!--begin:Menu link-->
 										<span class="menu-link">
 											<span class="menu-icon">
-												<i class="ki-duotone ki-user" style=" font-size: 18px;">
+												<i class="ki-duotone ki-people" style=" font-size: 18px;">
 													<span class="path1"></span>
 													<span class="path2"></span>
+													<span class="path3"></span>
+													<span class="path4"></span>
+													<span class="path5"></span>
 												</i>
 											</span>
-											<span class="menu-title">User Management</span>
+											<span class="menu-title">Worker Management</span>
 											<span class="menu-arrow"></span>
 										</span>
 										<!--end:Menu link-->
 										<!--begin:Menu sub-->
 										<div class="menu-sub menu-sub-accordion">
 											<!--begin:Menu item-->
-											<div data-kt-menu-trigger="click"
-												class="menu-item menu-accordion mb-1 {{ Route::is('users') || Route::is('user.add') || Route::is('user.edit') ? 'here show' : '' }}">
+											<div class="menu-item">
 												<!--begin:Menu link-->
-												<span class="menu-link">
+												<a class="menu-link {{ Route::is('workers') ? 'active here show' : '' }}"
+													href="{{ route('workers') }}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Users</span>
-													<span class="menu-arrow"></span>
-												</span>
+													<span class="menu-title">Workers List</span>
+												</a>
 												<!--end:Menu link-->
-												<!--begin:Menu sub-->
-												<div class="menu-sub menu-sub-accordion">
-													<!--begin:Menu item-->
-													<div class="menu-item">
-														<!--begin:Menu link-->
-														<a class="menu-link {{ Route::is('users') ? 'active here show' : '' }}"
-															href="/users">
-															<span class="menu-bullet">
-																<span class="bullet bullet-dot"></span>
-															</span>
-															<span class="menu-title">Users List</span>
-														</a>
-														<!--end:Menu link-->
-													</div>
-													<!--end:Menu item-->
-													<!--begin:Menu item-->
-													<div class="menu-item">
-														<!--begin:Menu link-->
-														<a class="menu-link {{ Route::is('user.add') ? 'active' : '' }}"
-															href="/user/add">
-															<span class="menu-bullet">
-																<span class="bullet bullet-dot"></span>
-															</span>
-															<span class="menu-title">Add User</span>
-														</a>
-														<!--end:Menu link-->
-													</div>
-													<!--end:Menu item-->
-												</div>
-												<!--end:Menu sub-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div data-kt-menu-trigger="click"
-												class="menu-item menu-accordion {{ Route::is('roles') || Route::is('role.add') || Route::is('role.edit') ? 'here show' : '' }}">
-												<!--begin:Menu link-->
-												<span class="menu-link">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Roles</span>
-													<span class="menu-arrow"></span>
-												</span>
-												<!--end:Menu link-->
-												<!--begin:Menu sub-->
-												<div class="menu-sub menu-sub-accordion">
-													<!--begin:Menu item-->
-													<div class="menu-item">
-														<!--begin:Menu link-->
-														<a class="menu-link" href="#">
-															<span class="menu-bullet">
-																<span class="bullet bullet-dot"></span>
-															</span>
-															<span class="menu-title">Roles List</span>
-														</a>
-														<!--end:Menu link-->
-													</div>
-													<!--end:Menu item-->
-													<!--begin:Menu item-->
-													<div class="menu-item">
-														<!--begin:Menu link-->
-														<a class="menu-link" href="#">
-															<span class="menu-bullet">
-																<span class="bullet bullet-dot"></span>
-															</span>
-															<span class="menu-title">View Role</span>
-														</a>
-														<!--end:Menu link-->
-													</div>
-													<!--end:Menu item-->
-												</div>
-												<!--end:Menu sub-->
 											</div>
 											<!--end:Menu item-->
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="#">
+												<a class="menu-link {{ Route::is('worker.add') ? 'active here show' : '' }}"
+													href="{{ route('worker.add') }}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Permissions</span>
+													<span class="menu-title">Add Worker</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											<!--end:Menu item-->
+											<!--end:Menu item-->
+										</div>
+										<!--end:Menu sub-->
+									</div>
+									<!--end:Menu item-->
+									<!--begin:Menu item-->
+									<div data-kt-menu-trigger="click"
+										class="menu-item menu-accordion {{ Route::is('shifts') || Route::is('shift.add') || Route::is('shift.edit') ? 'here show' : '' }}">
+										<!--begin:Menu link-->
+										<span class="menu-link">
+											<span class="menu-icon">
+												<i class="ki-duotone ki-time" style=" font-size: 18px;">
+													<span class="path1"></span>
+													<span class="path2"></span>
+												</i>
+											</span>
+											<span class="menu-title">Shift Management</span>
+											<span class="menu-arrow"></span>
+										</span>
+										<!--end:Menu link-->
+										<!--begin:Menu sub-->
+										<div class="menu-sub menu-sub-accordion">
+											<!--begin:Menu item-->
+											<!--begin:Menu item-->
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link {{ Route::is('shifts') ? 'active here show' : '' }}"
+													href="{{ route('shifts') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Shifts List</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											<!--end:Menu item-->
+											<!--begin:Menu item-->
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link {{ Route::is('shift.add') ? 'active here show' : '' }}"
+													href="{{ route('shift.add') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Add Shift</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											<!--end:Menu item-->
+										</div>
+										<!--end:Menu sub-->
+									</div>
+									<!--end:Menu item-->
+									<!--begin:Menu item-->
+									<div data-kt-menu-trigger="click"
+										class="menu-item menu-accordion {{ Route::is('customers') || Route::is('customer.add') || Route::is('customer.edit') ? 'here show' : '' }}">
+										<!--begin:Menu link-->
+										<span class="menu-link">
+											<span class="menu-icon">
+												<i class="ki-duotone ki-briefcase" style=" font-size: 18px;">
+													<span class="path1"></span>
+													<span class="path2"></span>
+												</i>
+											</span>
+											<span class="menu-title">Customer Management</span>
+											<span class="menu-arrow"></span>
+										</span>
+										<!--end:Menu link-->
+										<!--begin:Menu sub-->
+										<div class="menu-sub menu-sub-accordion">
+											<!--begin:Menu item-->
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link {{ Route::is('customers') ? 'active here show' : '' }}"
+													href="{{ route('customers') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Customers List</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											<!--end:Menu item-->
+											<!--begin:Menu item-->
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link {{ Route::is('customer.add') ? 'active here show' : '' }}"
+													href="{{ route('customer.add') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Add Customer</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											<!--end:Menu item-->
+										</div>
+										<!--end:Menu sub-->
+									</div>
+									<!--end:Menu item-->
+									<!--begin:Menu item-->
+									<div data-kt-menu-trigger="click"
+										class="menu-item menu-accordion {{ Route::is('sites') || Route::is('site.add') || Route::is('site.edit') ? 'here show' : '' }}">
+										<!--begin:Menu link-->
+										<span class="menu-link">
+											<span class="menu-icon">
+												<i class="ki-duotone ki-geolocation" style=" font-size: 18px;">
+													<span class="path1"></span>
+													<span class="path2"></span>
+												</i>
+											</span>
+											<span class="menu-title">Site Management</span>
+											<span class="menu-arrow"></span>
+										</span>
+										<!--end:Menu link-->
+										<!--begin:Menu sub-->
+										<div class="menu-sub menu-sub-accordion">
+											<!--begin:Menu item-->
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link {{ Route::is('sites') ? 'active here show' : '' }}"
+													href="{{ route('sites') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Sites List</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											<!--end:Menu item-->
+											<!--begin:Menu item-->
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link {{ Route::is('site.add') ? 'active here show' : '' }}"
+													href="{{ route('site.add') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Add Site</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -1223,7 +1296,7 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="menu-item">
 														<!--begin:Menu link-->
 														<a class="menu-link {{ Route::is('editPassword') ? 'active here show' : '' }}"
-															href="/edit-password">
+															href="{{ route('monitor.editPassword') }}">
 															<span class="menu-bullet">
 																<span class="bullet bullet-dot"></span>
 															</span>

@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('monitor.layout.layout')
 
 @section('content')    
     
@@ -14,7 +14,7 @@
                         <!--begin::Page title-->
                         <div class="page-title d-flex align-items-center gap-1 me-3">
                             <!--begin::Title-->
-                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Shifts List</h1>
+                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Customers List</h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
                             <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
@@ -31,7 +31,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Shift Management</li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Customer Management</li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -39,7 +39,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Shifts</li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Customers</li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -47,7 +47,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700">Shifts List</li>
+                                <li class="breadcrumb-item text-gray-700">Customers List</li>
                                 <!--end::Item-->
                             </ul>
                             <!--end::Breadcrumb-->
@@ -76,7 +76,7 @@
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
-                                    <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search shift" />
+                                    <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search customer" />
                                 </div>
                                 <!--end::Search-->
                             </div>
@@ -86,8 +86,8 @@
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                     <!--begin::Add user-->
-                                    <a href="/shift/add" class="btn btn-primary">
-                                    <i class="ki-duotone ki-plus fs-2"></i>Add Shift</a>
+                                    <a href="{{ route('customer.add') }}" class="btn btn-primary">
+                                    <i class="ki-duotone ki-plus fs-2"></i>Add Customer</a>
                                     <!--end::Add user-->
                                 </div>
                                 <!--end::Toolbar-->
@@ -323,34 +323,45 @@
                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
                                 <thead>
                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Shift Name</th>
-                                        <th class="min-w-125px">Start Time</th>
-                                        <th class="min-w-125px">End Time</th>
-                                        <th class="min-w-125px">Status</th>
+                                        <th class="min-w-125px">Customer Name</th>
+                                        <th class="min-w-125px">Email</th>
+                                        <th class="min-w-125px">Phone</th>
+                                        <th class="min-w-125px">Active Linked Sites</th>
                                         <th class="text-end min-w-100px">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-600 fw-semibold">
 
-                                    @foreach($shifts as $key => $shift)
+                                    @forelse($customers as $key => $customer)
                                         <tr>
                                             <td class="d-flex align-items-center">
+                                                <!--begin:: Avatar -->
+                                                <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                                                    <a href="apps/user-management/users/view.html">
+                                                        <div class="symbol-label">
+                                                            {{-- <img src="assets/media/avatars/300-6.jpg" alt="Emma Smith" class="w-100" /> --}}
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <!--end::Avatar-->
                                                 <!--begin::User details-->
                                                 <div class="d-flex flex-column">
-                                                    <a href="/shift/view/{{ $shift->id }}" class="text-gray-800 text-hover-primary mb-1">{{ $shift->name }}</a>
+                                                    <a href="{{ route('customer.edit', ['parameter' => $customer['id']]) }}" class="text-gray-800 text-hover-primary mb-1">{{ $customer['name'] }}</a>
                                                 </div>
                                                 <!--begin::User details-->
                                             </td>
-                                            <td>{{ $shift->start_time }}</td>
-                                            <td>{{ $shift->end_time }}</td>
+                                            <td>{{ $customer['email'] }}</td>
+                                            <td>{{ $customer['phone_no'] }}</td>
                                             <td>
-                                                @php 
-                                                    $badge = 'secondary'; // Default
-                                                    if ($shift->status == "active") $badge = "success";
-                                                    elseif ($shift->status == "inactive") $badge = "warning";
-                                                @endphp
-                                                <span class="badge badge-light-{{$badge}} fw-bold fs-7 px-2 py-1 ms-2">{{ ucfirst($shift->status) }}</span>
+                                                @if(count($customer['sites']) > 0)
+                                                    @foreach($customer['sites'] as $site)
+                                                        <a target="_blank" href="{{ route('site.edit', ['parameter' => $site['id']]) }}">{{ $site['name'] }}</a>{{ !$loop->last ? ', ' : '' }}
+                                                    @endforeach
+                                                @else
+                                                    <p>N/A</p>
+                                                @endif
                                             </td>
+                                            
                                             <td class="text-end">
                                                 <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
                                                 <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
@@ -358,7 +369,7 @@
                                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                     <!--begin::Menu item-->
                                                     <div class="menu-item px-3">
-                                                        <a href="/shift/edit/{{ $shift->id }}" class="menu-link px-3">Edit</a>
+                                                        <a href="{{ route('customer.edit', ['parameter' => $customer['id']]) }}" class="menu-link px-3">Edit</a>
                                                     </div>
                                                     <!--end::Menu item-->
                                                     <!--begin::Menu item-->
@@ -370,7 +381,11 @@
                                                 <!--end::Menu-->
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="100%" class="text-center">No customers found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             <!--end::Table-->
@@ -396,7 +411,7 @@
 
 @push('scripts')
 
-    <script src="/assets/js/custom/loneworker/workers.js"></script>
+    <script src="/assets/js/custom/loneworker/customers.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

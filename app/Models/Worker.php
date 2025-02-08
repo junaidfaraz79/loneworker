@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Support\Facades\Log;
 
 class Worker extends Authenticatable
 {
@@ -50,6 +49,11 @@ class Worker extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new WorkerResetPasswordNotification($token));
+    }
+
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class);
     }
 }
 

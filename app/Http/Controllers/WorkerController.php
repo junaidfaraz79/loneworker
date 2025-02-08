@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Worker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,13 +16,13 @@ class WorkerController extends Controller
     public function list()
     {
         $workers = DB::table('workers')->get();
-        return view('workers', ['workers' => $workers]);
+        return view('monitor.workers', ['workers' => $workers]);
     }
 
     public function add()
     {
         $frequency = DB::table('check_in_frequency')->get();
-        return view('add-worker', ['frequency' => $frequency]);
+        return view('monitor.add-worker', ['frequency' => $frequency]);
     }
 
     public function save(Request $req)
@@ -104,7 +105,7 @@ class WorkerController extends Controller
         $worker = DB::table('workers')->where('id', '=', $id)->get();
         if (count($worker)) {
             $frequency = DB::table('check_in_frequency')->get();
-            return view('edit-worker', ['worker' => $worker[0], 'frequency' => $frequency, 'isViewMode' => $isViewMode]);
+            return view('monitor.edit-worker', ['worker' => $worker[0], 'frequency' => $frequency, 'isViewMode' => $isViewMode]);
         } else
             return redirect(route('workers'));
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,12 +13,41 @@ class SiteController extends Controller
     public function list()
     {
         $sites = DB::table('sites')->get();
-        return view('sites', ['sites'=>$sites]);
+        return view('monitor.sites', ['sites'=>$sites]);
     }
 
     public function add()
     {
-        return view('add-site');  
+        $countries = [
+            "Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina",
+            "Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados",
+            "Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina",
+            "Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia",
+            "Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands",
+            "Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark",
+            "Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea",
+            "Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia",
+            "French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland",
+            "Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras",
+            "Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel",
+            "Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos",
+            "Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau",
+            "Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius",
+            "Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia",
+            "Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger",
+            "Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru",
+            "Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda",
+            "Saint Pierre &amp; Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia",
+            "Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain",
+            "Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland",
+            "Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga",
+            "Trinidad &amp; Tobago","Tunisia","Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine",
+            "United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam",
+            "Virgin Islands (US)","Yemen","Zambia","Zimbabwe"
+        ];
+
+        $customers = DB::table('customers')->get();
+        return view('monitor.add-site', compact('countries', 'customers'));  
     }         
 
     public function save(Request $req)
@@ -32,7 +62,19 @@ class SiteController extends Controller
             $site_image = ''; 
 
         $id = DB::table('sites')->insertGetId([
-            'site_name'=>$req->site_name, 'site_address'=>$req->site_address, 'site_image'=>$site_image, 'site_status'=>$req->site_status]);
+            'site_name'=>$req->site_name, 
+            'site_address_1'=>$req->site_address_1, 
+            'site_address_2'=>$req->site_address_2, 
+            'suburb_town_city'=>$req->suburb_town_city, 
+            'postal_code'=>$req->postal_code, 
+            'week_start'=>$req->week_start, 
+            'customer_id'=>$req->customer_id, 
+            'subscriber_id'=> Auth::guard('monitor')->user()->subscriber_id, 
+            'monitor_id'=> Auth::guard('monitor')->user()->id, 
+            'site_image'=>$site_image, 
+            'site_status'=>$req->site_status,
+            'country'=>$req->country
+        ]);
 
         $res = ['id'=>$id, 'status'=>'success'];
 
@@ -42,9 +84,38 @@ class SiteController extends Controller
 
     public function edit(Request $req, string $id)
     {
-        $site = DB::table('sites')->where('id','=',$id)->get();
-        if(count($site)) {
-            return view('edit-site', ['site'=>$site[0]]);
+        $site = DB::table('sites')->where('id','=',$id)->first();
+        $countries = [
+            "Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina",
+            "Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados",
+            "Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina",
+            "Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia",
+            "Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands",
+            "Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark",
+            "Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea",
+            "Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia",
+            "French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland",
+            "Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras",
+            "Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel",
+            "Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos",
+            "Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau",
+            "Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius",
+            "Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia",
+            "Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger",
+            "Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru",
+            "Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda",
+            "Saint Pierre &amp; Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia",
+            "Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain",
+            "Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland",
+            "Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga",
+            "Trinidad &amp; Tobago","Tunisia","Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine",
+            "United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam",
+            "Virgin Islands (US)","Yemen","Zambia","Zimbabwe"
+        ];
+
+        $customers = DB::table('customers')->get();
+        if($site) {
+            return view('monitor.edit-site', compact('countries', 'customers', 'site'));
         }
         else 
             return redirect(route('sites'));

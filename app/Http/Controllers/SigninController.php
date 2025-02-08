@@ -9,7 +9,7 @@ class SigninController extends Controller
 {
     public function execute(Request $req) {
 
-        $user = DB::table('user')
+        $user = DB::table('subscribers')
                         ->where(
                             [
                                 ['email', '=', $req->email],
@@ -25,6 +25,8 @@ class SigninController extends Controller
                 'role' => $user[0]->role, 
                 'email' => $req->email, 
                 'authenticated' => TRUE, 
+                'subscriber_authenticated' => TRUE, 
+                'monitor_authenticated' => FALSE, 
                 'admin_authenticated' => FALSE
             ]);
 

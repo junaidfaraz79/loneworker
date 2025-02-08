@@ -17,7 +17,6 @@ class DashboardController extends Controller
         $total_sites = DB::table('sites')->get()->count();
 
         return view('dashboard', ['total_monitors'=>$total_monitors, 'total_workers'=>$total_workers, 'total_customers'=>$total_customers, 'total_sites'=>$total_sites]);
-  
     }
 
     public function profile()

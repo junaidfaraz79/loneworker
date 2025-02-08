@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('monitor.layout.layout')
 
 @section('content')
 
@@ -16,7 +16,7 @@
                         <!--begin::Title-->
                         <h1
                             class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">
-                            Add Worker</h1>
+                            {{ $isViewMode === 'n' ? 'Edit Worker' : 'View Worker' }}</h1>
                         <!--end::Title-->
                         <!--begin::Breadcrumb-->
                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
@@ -41,7 +41,7 @@
                             </li>
                             <!--end::Item-->
                             <!--begin::Item-->
-                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/workers">Workers</a></li>
+                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="{{ route('workers') }}">Workers</a></li>
                             <!--end::Item-->
                             <!--begin::Item-->
                             <li class="breadcrumb-item">
@@ -49,7 +49,8 @@
                             </li>
                             <!--end::Item-->
                             <!--begin::Item-->
-                            <li class="breadcrumb-item text-gray-700">Add Worker</li>
+                            <li class="breadcrumb-item text-gray-700">{{ $isViewMode === 'n' ? 'Edit Worker' : 'View
+                                Worker'}}</li>
                             <!--end::Item-->
                         </ul>
                         <!--end::Breadcrumb-->
@@ -65,8 +66,9 @@
         <div id="kt_app_content" class="app-content px-lg-3">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-fluid">
-                <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/workers"
-                    action="save">
+                <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="{{ route('workers') }}"
+                    action="{{ route('worker.update') }}">
+                    <input type="hidden" name="id" value="{{ $worker->id }}" />
                     @csrf
                     <!--begin::Aside column-->
                     <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -85,13 +87,27 @@
                             <div class="card-body text-center pt-0">
                                 <!--begin::Image input-->
                                 <!--begin::Image input placeholder-->
+
+                                @php
+                                if (empty($worker->worker_image)) {
+                                $image = asset('assets/media/svg/files/blank-image.svg');
+                                $dark_image = asset('assets/media/svg/files/blank-image-dark.svg');
+                                } else {
+                                $image = asset('storage/' . $worker->worker_image);
+                                $dark_image = ''; // Assuming no dark mode image for user uploaded images
+                                echo '<input type="hidden" name="current_image" id="current_image"
+                                    value="'.$worker->worker_image.'">';
+                                }
+                                @endphp
+
+
                                 <style>
                                     .image-input-placeholder {
-                                        background-image: url('assets/media/svg/files/blank-image.svg');
+                                        background-image: url("{{ $image }}");
                                     }
 
                                     [data-bs-theme="dark"] .image-input-placeholder {
-                                        background-image: url('assets/media/svg/files/blank-image-dark.svg');
+                                        background-image: url("{{ $dark_image }}");
                                     }
                                 </style>
                                 <!--end::Image input placeholder-->
@@ -99,9 +115,11 @@
                                 <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                                     data-kt-image-input="true">
                                     <!--begin::Preview existing avatar-->
-                                    <div class="image-input-wrapper w-150px h-150px"></div>
+                                    <div class="image-input-wrapper w-150px h-150px"
+                                        style="background-image: url('{{ $image }}')"></div>
                                     <!--end::Preview existing avatar-->
                                     <!--begin::Label-->
+                                    @if($isViewMode === 'n')
                                     <label
                                         class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                         data-kt-image-input-action="change" data-bs-toggle="tooltip"
@@ -114,9 +132,9 @@
                                         <!--end::Icon-->
                                         <!--begin::Inputs-->
                                         <input type="file" name="worker_image" accept=".png, .jpg, .jpeg" />
-                                        <input type="hidden" name="current_image" />
                                         <!--end::Inputs-->
                                     </label>
+                                    @endif
                                     <!--end::Label-->
                                     <!--begin::Cancel-->
                                     <span
@@ -143,8 +161,10 @@
                                 </div>
                                 <!--end::Image input-->
                                 <!--begin::Description-->
+                                @if($isViewMode === 'n')
                                 <div class="text-muted fs-7">Set the thumbnail image. Only *.png, *.jpg and *.jpeg image
                                     files are accepted</div>
+                                @endif
                                 <!--end::Description-->
                             </div>
                             <!--end::Card body-->
@@ -159,9 +179,25 @@
                                     <h2>Status</h2>
                                 </div>
                                 <!--end::Card title-->
+                                @php
+                                $active_class = '';
+                                $inactive_class = '';
+                                $status_class = '';
+
+                                if ($worker->worker_status=='active')
+                                {
+                                $active_class = "selected='selected'";
+                                $status_class = "bg-success";
+                                }
+                                if ($worker->worker_status=='inactive')
+                                {
+                                $inactive_class = "selected='selected'";
+                                $status_class = "bg-danger";
+                                }
+                                @endphp
                                 <!--begin::Card toolbar-->
                                 <div class="card-toolbar">
-                                    <div class="rounded-circle bg-success w-15px h-15px"
+                                    <div class="rounded-circle {{ $status_class }} w-15px h-15px"
                                         id="kt_ecommerce_add_category_status"></div>
                                 </div>
                                 <!--begin::Card toolbar-->
@@ -170,16 +206,18 @@
                             <!--begin::Card body-->
                             <div class="card-body pt-0">
                                 <!--begin::Select2-->
-                                <select name="worker_status" class="form-select mb-2" data-control="select2"
-                                    data-hide-search="true" data-placeholder="Select an option"
-                                    id="kt_ecommerce_add_category_status_select">
+                                <select name="worker_status" class="form-select mb-2" {{ $isViewMode==='y' ? 'disabled'
+                                    : '' }} data-control="select2" data-hide-search="true"
+                                    data-placeholder="Select an option" id="kt_ecommerce_add_category_status_select">
                                     <option></option>
-                                    <option value="active" selected="selected">Active</option>
-                                    <option value="inactive">Inactive</option>
+                                    <option value="active" {{ $active_class }}>Active</option>
+                                    <option value="inactive" {{ $inactive_class }}>Inactive</option>
                                 </select>
                                 <!--end::Select2-->
                                 <!--begin::Description-->
+                                @if($isViewMode === 'n')
                                 <div class="text-muted fs-7">Set worker status.</div>
+                                @endif
                                 <!--end::Description-->
                             </div>
                             <!--end::Card body-->
@@ -190,7 +228,8 @@
                     <!--begin::Main column-->
                     <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                         <!--begin:::Tabs-->
-                        <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
+                        <ul
+                            class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
                             <!--begin:::Tab item-->
                             <li class="nav-item">
                                 <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
@@ -207,10 +246,11 @@
                         <!--end:::Tabs-->
                         <!--begin::Tab content-->
                         <div class="tab-content">
-                            <!--begin::Tab pane-->
+                            <!--begin::Tab pane (Worker Details)-->
                             <div class="tab-pane fade show active" id="worker_details_tab" role="tab-panel">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <!--begin::General options-->
+                                    <!--begin::Worker details-->
                                     <div class="card card-flush py-4">
                                         <!--begin::Card header-->
                                         <div class="card-header">
@@ -228,10 +268,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="worker_name" class="form-control mb-2"
-                                                    placeholder="Worker name" value="" />
+                                                    placeholder="Worker name" value="{{ $worker->worker_name }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">A worker name is required.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -242,10 +285,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="phone_no" class="form-control mb-2"
-                                                    placeholder="Phone number" value="" />
+                                                    placeholder="Phone number" value="{{ $worker->phone_no }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set phone number.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -256,10 +302,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="email" class="form-control mb-2"
-                                                    placeholder="Email address" value="" />
+                                                    placeholder="Email address" value="{{ $worker->email }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set email address.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -270,10 +319,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="department" class="form-control mb-2"
-                                                    placeholder="Department" value="" />
+                                                    placeholder="Department" value="{{ $worker->department }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set department.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -284,10 +336,13 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="role" class="form-control mb-2"
-                                                    placeholder="Role" value="" />
+                                                    placeholder="Role" value="{{ $worker->role }}" {{ $isViewMode==='y'
+                                                    ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set role.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -299,16 +354,21 @@
                                                 <!--begin::Input-->
                                                 <select class="form-select mb-2" data-control="select2"
                                                     data-hide-search="true" data-placeholder="Select an option"
-                                                    name="check_in_frequency">
-                                                    <option>Select frequency</option>
-                                                    @foreach ($frequency as $key => $f)
-                                                        <option value="{{$f->id}}">{{$f->time}}</option>
+                                                    name="check_in_frequency" {{ $isViewMode==='y' ? 'disabled' : '' }}>
+                                                    <option value="">Select frequency</option>
+                                                    @foreach ($frequency as $f)
+                                                    <option value="{{ $f->id }}" {{ $f->id ==
+                                                        $worker->check_in_frequency ? 'selected' : '' }}>
+                                                        {{ $f->time }}
+                                                    </option>
                                                     @endforeach
-
                                                 </select>
+
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set Check In Frequency.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
@@ -318,19 +378,31 @@
                                                 <label class="form-label">Phone Type</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <select class="form-select mb-2" data-control="select2"
-                                                    data-hide-search="true" data-placeholder="Select an option"
-                                                    name="phone_type">
+                                                <select class="form-select mb-2" {{ $isViewMode==='y' ? 'disabled' : ''
+                                                    }} data-control="select2" data-hide-search="true"
+                                                    data-placeholder="Select an option" name="phone_type">
+                                                    @php
+                                                    $old_class = '';
+                                                    $smart_class = '';
+
+                                                    if ($worker->phone_type=='old')
+                                                    $old_class = 'selected="selected"';
+                                                    elseif ($worker->phone_type=='smart')
+                                                    $smart_class = 'selected="selected"';
+                                                    @endphp
                                                     <option>Select type</option>
-                                                    <option value="old">Old Phone</option>
-                                                    <option value="smart">Smart Phone</option>
+                                                    <option {{ $old_class }} value="old">Old Phone</option>
+                                                    <option {{ $smart_class }} value="smart">Smart Phone</option>
                                                 </select>
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
+                                                @if($isViewMode === 'n')
                                                 <div class="text-muted fs-7">Set phone type.</div>
+                                                @endif
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
+                                            
                                             <!--begin::Input group-->
                                             <div class="row mb-10">
                                                 <div class="col-lg-6">
@@ -339,22 +411,28 @@
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <input type="text" name="sia_license_number" class="form-control mb-2"
-                                                        placeholder="SIA Licence Number" value="" />
+                                                        placeholder="SIA Licence Number" value="{{ $worker->sia_license_number }}" {{
+                                                        $isViewMode==='y' ? 'readonly' : '' }} />
                                                     <!--end::Input-->
+                                                    @if($isViewMode === 'n')
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">16 digit SIA Licence Number.</div>
                                                     <!--end::Description-->
+                                                    @endif
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <!--begin::Label-->
                                                     <label class="form-label">SIA Licence Expiry Date</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input class="form-control mb-2" name="sia_license_expiry_date" placeholder="Pick expiry date" id="kt_calendar_datepicker_start_date" />
+                                                    <input class="form-control mb-2" name="sia_license_expiry_date" placeholder="Pick expiry date" 
+                                                    value="{{ $worker->sia_license_expiry_date }}" {{ $isViewMode==='y' ? 'readonly' : '' }} id="kt_calendar_datepicker_start_date" />
                                                     <!--end::Input-->
+                                                    @if($isViewMode === 'n')
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set SIA licence expiry date.</div>
                                                     <!--end::Description-->
+                                                    @endif
                                                 </div>
                                             </div>
                                             <!--end::Input group-->
@@ -367,11 +445,14 @@
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <input type="text" name="emergency_contact_1" class="form-control mb-2"
-                                                        placeholder="Emergency phone number" value="" />
+                                                        placeholder="Emergency phone number" value="{{ $worker->emergency_contact_1 }}" {{
+                                                        $isViewMode==='y' ? 'readonly' : '' }} />
                                                     <!--end::Input-->
+                                                    @if($isViewMode === 'n')
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set primary emergency phone number.</div>
                                                     <!--end::Description-->
+                                                    @endif
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <!--begin::Label-->
@@ -379,17 +460,22 @@
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <input type="text" name="emergency_contact_2" class="form-control mb-2"
-                                                        placeholder="Emergency phone number" value="" />
+                                                        placeholder="Emergency phone number" value="{{ $worker->emergency_contact_2 }}" {{
+                                                        $isViewMode==='y' ? 'readonly' : '' }} />
                                                     <!--end::Input-->
+                                                    @if($isViewMode === 'n')
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set secondary emergency phone number.</div>
                                                     <!--end::Description-->
+                                                    @endif
                                                 </div>
                                             </div>
                                             <!--end::Input group-->
                                         </div>
                                         <!--end::Card header-->
                                     </div>
+                                    <!--end::Worker details-->
+                                    <!--begin::NOK details-->
                                     <div class="card card-flush py-4">
                                         <!--begin::Card header-->
                                         <div class="card-header">
@@ -407,11 +493,14 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="nok_name" class="form-control mb-2"
-                                                    placeholder="Name" value="" />
+                                                    placeholder="Name" value="{{ $worker->nok_name }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
+                                                @if($isViewMode === 'n')
                                                 <!--begin::Description-->
                                                 <div class="text-muted fs-7">Set Name.</div>
                                                 <!--end::Description-->
+                                                @endif
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
@@ -421,11 +510,14 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="nok_relation" class="form-control mb-2"
-                                                    placeholder="Relation" value="" />
+                                                    placeholder="Relation" value="{{ $worker->nok_relation }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
+                                                @if($isViewMode === 'n')
                                                 <!--begin::Description-->
                                                 <div class="text-muted fs-7">Set Relation.</div>
                                                 <!--end::Description-->
+                                                @endif
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
@@ -435,11 +527,14 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="nok_address" class="form-control mb-2"
-                                                    placeholder="Address" value="" />
+                                                    placeholder="Address" value="{{ $worker->nok_address }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
+                                                @if($isViewMode === 'n')
                                                 <!--begin::Description-->
                                                 <div class="text-muted fs-7">Set Address.</div>
                                                 <!--end::Description-->
+                                                @endif
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
@@ -449,23 +544,26 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="nok_contact" class="form-control mb-2"
-                                                    placeholder="Number" value="" />
+                                                    placeholder="Number" value="{{ $worker->nok_contact }}" {{
+                                                    $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
+                                                @if($isViewMode === 'n')
                                                 <!--begin::Description-->
                                                 <div class="text-muted fs-7">Set Number.</div>
                                                 <!--end::Description-->
+                                                @endif
                                             </div>
                                             <!--end::Input group-->
                                         </div>
                                         <!--end::Card header-->
                                     </div>
+                                    <!--end::NOK details-->
                                     <!--end::General options-->
                                 </div>
                             </div>
                             <!--end::Tab pane-->
-                            <!--begin::Tab pane-->
-                            <div class="tab-pane fade" id="worker_documents_tab"
-                                role="tab-panel">
+                            <!--begin::Tab pane (Worker Documents)-->
+                            <div class="tab-pane fade" id="worker_documents_tab" role="tab-panel">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <!--begin::General options-->
                                     <div class="card card-flush py-4">
@@ -479,6 +577,7 @@
                                         <!--begin::Card body-->
                                         <div class="card-body pt-0">
                                             <!--begin::Input group-->
+                                            @if($isViewMode === 'n')
                                             <div class="fv-row mb-2">
                                                 <!--begin::Dropzone-->
                                                 <div class="dropzone" id="add_worker_documents">
@@ -504,7 +603,50 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Description-->
-                                            <div class="text-muted fs-7">Set the worker documents (License, ID Card, Training Certificates).</div>
+                                            <div class="text-muted fs-7">Set the worker documents (License, ID Card,
+                                                Training Certificates).</div>
+                                            @else
+                                                <div class="row g-6 g-xl-9 mb-6 mb-xl-9">
+                                                    @forelse ($documents as $document)
+                                                        <!--begin::Col-->
+                                                        <div class="col-md-6 col-lg-4 col-xl-3">
+                                                            <!--begin::Card-->
+                                                            <div class="card h-100">
+                                                                <!--begin::Card body-->
+                                                                <div class="card-body d-flex justify-content-center text-center flex-column p-8">
+                                                                    @php
+                                                                        $extension = strtolower(pathinfo($document->file_path, PATHINFO_EXTENSION));
+                                                                        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'];
+                                                                        $isImage = in_array($extension, $imageExtensions);
+                                                                        $fileUrl = $isImage ? asset('storage/' . $document->file_path) : route('downloadDocument', $document->id);
+                                                                        $target = $isImage ? '_blank' : '_self';
+                                                                        $download = $isImage ? '' : 'download';
+                                                                        $imagePath = $isImage ? asset('storage/' . $document->file_path) : asset($fileTypeImages[$extension] ?? 'assets/media/svg/files/upload.svg');
+                                                                    @endphp
+                                                                    <!--begin::Name-->
+                                                                    <a href="{{ $fileUrl }}" target="{{ $target }}" {{ $download }}
+                                                                        class="text-gray-800 text-hover-primary d-flex flex-column">
+                                                                        <div class="symbol symbol-60px mb-5">
+                                                                            @if ($isImage)
+                                                                                <img src="{{ asset('storage/' . $document->file_path) }}" alt="Document" />
+                                                                            @else
+                                                                                <img src="{{ $imagePath }}" alt="Document" />
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="fs-5 fw-bold mb-2">{{ $document->file_name }}</div>
+                                                                    </a>
+                                                                    <!--end::Name-->
+                                                                </div>
+                                                                <!--end::Card body-->
+                                                            </div>
+                                                            <!--end::Card-->
+                                                        </div>
+                                                        <!--end::Col-->
+                                                    @empty
+                                                        <span>No documents found.</span>
+                                                    @endforelse
+                                                </div>
+                                            @endif
                                             <!--end::Description-->
                                         </div>
                                         <!--end::Card header-->
@@ -515,9 +657,10 @@
                             <!--end::Tab pane-->
                         </div>
                         <!--end::Tab content-->
+                        @if($isViewMode === 'n')
                         <div class="d-flex justify-content-end">
                             <!--begin::Button-->
-                            <a href="/workers" id="kt_ecommerce_add_product_cancel"
+                            <a href="{{ route('workers') }}" id="kt_ecommerce_add_product_cancel"
                                 class="btn btn-light me-5">Cancel</a>
                             <!--end::Button-->
                             <!--begin::Button-->
@@ -528,6 +671,7 @@
                             </button>
                             <!--end::Button-->
                         </div>
+                        @endif
                     </div>
                     <!--end::Main column-->
                 </form>
@@ -549,7 +693,7 @@
 
 <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 
-<script src="/assets/js/custom/loneworker/save-worker.js"></script>
+<script src="/assets/js/custom/loneworker/update-worker.js"></script>
 <script src="/assets/js/widgets.bundle.js"></script>
 <script src="/assets/js/custom/widgets.js"></script>
 <script src="/assets/js/custom/apps/chat/chat.js"></script>
