@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 
 class ShiftController extends Controller
@@ -13,14 +14,17 @@ class ShiftController extends Controller
     public function list()
     {
         $shifts = DB::table('shifts')->get();
-        return view('monitor.shifts', ['shifts' => $shifts]);
+        $sites = DB::table('sites')->get();
+        return view('monitor.shifts', ['shifts' => $shifts, 'sites' => $sites]);
     }
 
     public function add()
     {
         // $plans = DB::table('plans')->get();
         $timings = DB::table('timings')->get();
-        return view('monitor.add-shift', compact('timings'));
+        $frequency = DB::table('check_in_frequency')->get();
+        $sites = DB::table('sites')->get();
+        return view('monitor.add-shift', compact('timings', 'frequency', 'sites'));
     }
 
     public function save(Request $req)
@@ -34,6 +38,9 @@ class ShiftController extends Controller
                 'start_time' => $req->input('start_time'),  // Assuming 'start_time' is passed in the request
                 'end_time' => $req->input('end_time'),  // Assuming 'end_time' is passed in the request
                 'status' => $req->input('status'),  // Assuming 'status' is passed in the request
+                'site_id' => $req->input('site_id'),
+                'alert_frequency' => $req->input('alert_frequency'),
+                'monitor_id' => Auth::guard('monitor')->user()->id,                
                 'added_on' => now(),
                 'updated_on' => now(),
             ]);
@@ -71,7 +78,9 @@ class ShiftController extends Controller
 
         if ($shift) {
             $timings = DB::table('timings')->get();
-            return view('monitor.edit-shift', ['shift' => $shift, 'timings' => $timings, 'isViewMode' => $isViewMode]);
+            $frequency = DB::table('check_in_frequency')->get();
+            $sites = DB::table('sites')->get();
+            return view('monitor.edit-shift', ['shift' => $shift, 'timings' => $timings, 'frequency' => $frequency, 'sites' => $sites, 'isViewMode' => $isViewMode]);
         } else
             return redirect(route('shifts'));
     }
@@ -83,7 +92,8 @@ class ShiftController extends Controller
 
         if ($shift) {
             $timings = DB::table('timings')->get();
-            return view('monitor.edit-shift', ['shift' => $shift, 'timings' => $timings, 'isViewMode' => $isViewMode]);
+            $frequency = DB::table('check_in_frequency')->get();
+            return view('monitor.edit-shift', ['shift' => $shift, 'timings' => $timings, 'frequency' => $frequency, 'isViewMode' => $isViewMode]);
         } else
             return redirect(route('shifts'));
     }
@@ -99,7 +109,11 @@ class ShiftController extends Controller
                     'name' => $req->input('name'),
                     'start_time' => $req->input('start_time'),
                     'end_time' => $req->input('end_time'),
+                    'end_time' => $req->input('end_time'),
                     'status' => $req->input('status'),
+                    'site_id' => $req->input('site_id'),
+                    'alert_frequency' => $req->input('alert_frequency'),
+                    'monitor_id' => Auth::guard('monitor')->user()->id,
                     'updated_on' => now()
                 ]);
 

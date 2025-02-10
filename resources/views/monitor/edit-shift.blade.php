@@ -128,6 +128,48 @@
                                     <!--begin::Input group-->
                                     <div class="mb-10">
                                         <!--begin::Label-->
+                                        <label class="form-label">Alert Frequency</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <select class="form-select mb-2" data-control="select2"
+                                            data-hide-search="true" data-placeholder="Select an option"
+                                            name="alert_frequency">
+                                            <option>Select frequency</option>
+                                            @foreach ($frequency as $key => $f)
+                                                <option value="{{$f->value}}" @if($shift->alert_frequency == $f->value) selected @endif>{{$f->time}}</option>
+                                            @endforeach
+
+                                        </select>
+                                        <!--end::Input-->
+                                        <!--begin::Description-->
+                                        <div class="text-muted fs-7">After how many minutes the worker will be sent alert.</div>
+                                        <!--end::Description-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Site</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <select class="form-select mb-2" data-control="select2"
+                                            data-hide-search="true" data-placeholder="Select an option"
+                                            name="site_id">
+                                            <option>Select site</option>
+                                            @foreach ($sites as $key => $site)
+                                                <option value="{{$site->id}}"  @if($shift->site_id == $site->id) selected @endif>{{$site->site_name}}</option>
+                                            @endforeach
+
+                                        </select>
+                                        <!--end::Input-->
+                                        <!--begin::Description-->
+                                        <div class="text-muted fs-7">Set the site for this shift.</div>
+                                        <!--end::Description-->
+                                    </div>
+                                    <!--end::Input group-->                                      
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
                                         <label class="required form-label">Status</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
