@@ -14,6 +14,8 @@ use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\MonitorAuth;
+use App\Http\Middleware\SubscriberAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 Route::get('/', function () {
@@ -34,27 +36,27 @@ Route::get('/pricing', function () {
 
 Route::post('/execute', [SigninController::class, 'execute']);
 
-Route::get('/signout', function (Request $request) {
-    session()->flush();
-    return redirect()->route('signin')->with('message', 'You have successfully logged out from the system.');
+// Protected Subscriber Routes
+Route::middleware([SubscriberAuth::class])->group(function () {
+    Route::get('/edit-password', [SigninController::class, 'editPassword'])->name('editPassword');
+    Route::post('/update-password', [SigninController::class, 'updatePassword'])->name('updatePassword');
+
+    Route::get('/signout', [SigninController::class, 'signout']);
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    // Profile
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
+    Route::post('/profile/update', [DashboardController::class, 'update']);
+    Route::get('/subscription', [DashboardController::class, 'subscription'])->name('subscription');
+
+    // Monitor Routes
+    Route::get('/monitors', [MonitorController::class, 'list'])->name('monitors');
+    Route::get('/monitor/add', [MonitorController::class, 'add'])->name('monitor.add');
+    Route::post('/monitor/save', [MonitorController::class, 'save'])->name('monitor.save');
+    Route::get('/monitor/edit/{parameter}', [MonitorController::class, 'edit'])->name('monitor.edit');
+    Route::post('/monitor/update', [MonitorController::class, 'update'])->name('monitor.update');
 });
-
-Route::get('/edit-password', [SigninController::class, 'editPassword'])->name('editPassword');
-Route::post('/update-password', [SigninController::class, 'updatePassword'])->name('updatePassword');
-
-Route::get('/dashboard', [DashboardController::class, 'index']);
-
-// Profile
-Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
-Route::post('/profile/update', [DashboardController::class, 'update']);
-Route::get('/subscription', [DashboardController::class, 'subscription'])->name('subscription');
-
-// Users Routes
-Route::get('/users', [SubscriberController::class, 'list'])->name('users');
-Route::get('/user/add', [SubscriberController::class, 'add'])->name('user.add');
-Route::post('/user/save', [SubscriberController::class, 'save']);
-Route::get('/user/edit/{parameter}', [SubscriberController::class, 'edit'])->name('user.edit');
-Route::post('/user/update', [SubscriberController::class, 'update']);
 
 // Admin Routes
 Route::prefix('lwadmin')->group(function () {
@@ -88,7 +90,7 @@ Route::prefix('monitor')->group(function () {
     Route::post('/execute', [MonitorController::class, 'authenticateMonitor'])->name('monitor.executeLogin'); // Handles login attempts
 
     // Group for authenticated and role-specific routes
-    Route::middleware(MonitorAuth::class)->group(function () {
+    Route::middleware([MonitorAuth::class])->group(function () {
         Route::get('/dashboard', [MonitorController::class, 'dashboard'])->name('monitor.dashboard');
         Route::post('/signout', [MonitorController::class, 'logout'])->name('monitor.logout');
 
@@ -127,6 +129,6 @@ Route::prefix('monitor')->group(function () {
         Route::post('/update-password', [MonitorController::class, 'updatePassword'])->name('monitor.updatePassword');
 
         Route::get('/profile', [MonitorController::class, 'profile'])->name('monitor.profile');
-        Route::post('/profile/update', [MonitorController::class, 'update'])->name('monitor.profile.update');
+        Route::post('/profile/update', [MonitorController::class, 'profileUpdate'])->name('monitor.profile.update');
     });
 });

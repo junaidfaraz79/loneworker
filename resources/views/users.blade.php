@@ -14,7 +14,7 @@
                         <!--begin::Page title-->
                         <div class="page-title d-flex align-items-center gap-1 me-3">
                             <!--begin::Title-->
-                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Users List</h1>
+                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Monitors List</h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
                             <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
@@ -39,7 +39,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Users</li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Monitors</li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -47,7 +47,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700">Users List</li>
+                                <li class="breadcrumb-item text-gray-700">Monitors List</li>
                                 <!--end::Item-->
                             </ul>
                             <!--end::Breadcrumb-->
@@ -86,8 +86,8 @@
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                     <!--begin::Add user-->
-                                    <a href="/user/add" class="btn btn-primary">
-                                    <i class="ki-duotone ki-plus fs-2"></i>Add User</a>
+                                    <a href="{{ route('monitor.add') }}" class="btn btn-primary">
+                                    <i class="ki-duotone ki-plus fs-2"></i>Add Monitor</a>
                                     <!--end::Add user-->
                                 </div>
                                 <!--end::Toolbar-->                                
@@ -357,8 +357,8 @@
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->phone_no }}</td>
                                             <td>
-                                                @php $user->added_on = date_create($user->added_on) @endphp
-                                                {{ date_format($user->added_on, 'd-M-Y h:ia') }}
+                                                @php $user->created_at = date_create($user->created_at) @endphp
+                                                {{ date_format($user->created_at, 'd-M-Y h:ia') }}
                                             </td>
                                             <td class="text-end">
                                                 <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
@@ -367,7 +367,7 @@
                                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                     <!--begin::Menu item-->
                                                     <div class="menu-item px-3">
-                                                        <a href="/user/edit/{{ $user->id }}" class="menu-link px-3">Edit</a>
+                                                        <a href="{{ route('monitor.edit', ['parameter' => $user->id]) }}" class="menu-link px-3">Edit</a>
                                                     </div>
                                                     <!--end::Menu item-->
                                                 </div>

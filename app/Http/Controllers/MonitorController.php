@@ -12,6 +12,88 @@ use Illuminate\Support\Facades\Storage;
 class MonitorController extends Controller
 {
     //
+    public function list()
+    {
+        $monitors = DB::table('user')->where('subscriber_id', Auth::guard('subscriber')->user()->id)->get();
+        return view('users', ['users' => $monitors]);
+    }
+
+    public function add()
+    {
+        return view('add-monitor');
+    }
+
+    public function save(Request $req)
+    {
+
+        $duplicate = DB::table('user')->where('email', '=', $req->email)->get();
+
+        if (count($duplicate)) {
+            $res = ['id' => '', 'status' => 'duplicate'];
+        } else {
+            $monitor = Monitor::create([
+                'username' => $req->username,
+                'role' => 'monitor',
+                'email' => $req->email,
+                'password' => 'monitor', // This will be hashed if you've set the mutator
+                'cell_no' => $req->cell_no,
+                'phone_no' => $req->phone_no,
+                'company_name' => $req->company_name,
+                'official_address' => $req->official_address,
+                'designation' => $req->designation,
+                'user_type' => 'monitor',
+                'subscriber_id' => Auth::guard('subscriber')->user()->id
+            ]);
+
+            $id = $monitor->id;
+
+            $res = ['id' => $id, 'status' => 'success'];
+        }
+
+        return json_encode($res);
+    }
+
+    public function update(Request $req)
+    {
+        DB::beginTransaction(); // Start transaction
+
+        try {
+            // Check if the monitor exists
+            $monitor = Monitor::findOrFail($req->id);
+
+            // Update the monitor details
+            $monitor->update([
+                'username' => $req->username,
+                'role' => 'monitor',
+                'email' => $req->email,
+                'password' => 'monitor', // This will be hashed if you've set the mutator
+                'cell_no' => $req->cell_no,
+                'phone_no' => $req->phone_no,
+                'company_name' => $req->company_name,
+                'official_address' => $req->official_address,
+                'designation' => $req->designation,
+            ]);
+
+            DB::commit(); // Commit the transaction
+
+            return json_encode(['id' => $monitor->id, 'status' => 'success']);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction on error
+            // Log error or handle it as per your logging policy
+            return json_encode(['error' => 'Server error']); // Internal Server Error
+        }
+    }
+
+    public function edit(Request $req, string $id)
+    {
+        $monitor = Monitor::where('id', $id)->first();
+
+        if ($monitor) {
+            return view('edit-monitor', ['monitor' => $monitor]);
+        } else
+            return redirect(route('monitors'));
+    }
+
     public function login()
     {
         return view('monitor.signin');  // Return the login view for admins
@@ -82,8 +164,9 @@ class MonitorController extends Controller
         return view('monitor.dashboard', ['total_monitors' => $total_monitors, 'total_workers' => $total_workers, 'total_customers' => $total_customers, 'total_sites' => $total_sites]);
     }
 
-    public function editPassword(Request $req) {
-        return view ('monitor.edit-password');
+    public function editPassword(Request $req)
+    {
+        return view('monitor.edit-password');
     }
 
     public function updatePassword(Request $req)
@@ -124,45 +207,40 @@ class MonitorController extends Controller
     public function profile()
     {
         $profile = DB::table('user')->where('email', Auth::guard('monitor')->user()->email)->get();
-        return view('monitor.edit-profile', ['profile'=>$profile[0]]);  
+        return view('monitor.edit-profile', ['profile' => $profile[0]]);
     }
 
-    public function update(Request $req)
+    public function profileUpdate(Request $req)
     {
-        if($req->file('user_image'))
-        {
-            if($req->file('user_image')->isValid())
+        // Type-hint the $monitor variable
+        /** @var Monitor $monitor */
+        $monitor = Auth::guard('monitor')->user();
+
+        if ($req->file('user_image')) {
+            if ($req->file('user_image')->isValid())
                 $user_image = $req->file('user_image')->store('public');
 
-            if($req->current_image)
+            if ($req->current_image)
                 Storage::delete($req->current_image);
-        }            
-        elseif($req->current_image)
-        {
-            $user_image = $req->current_image; 
-        }
-        else
-        {
-            $user_image = ''; 
+        } elseif ($req->current_image) {
+            $user_image = $req->current_image;
+        } else {
+            $user_image = '';
         }
 
-        DB::table('user')->where('id', Auth::guard('monitor')->user()->id)
-            ->update(['username'=>$req->username, 
-                'email'=>$req->email, 
-                'cell_no'=>$req->cell_no, 
-                'phone_no'=>$req->phone_no, 
-                'designation'=>$req->designation, 
-                'company_name'=>$req->company_name, 
-                'official_address'=>$req->official_address, 
-                'user_image'=>$user_image
-            ]);
+        $monitor->update([
+            'username' => $req->username,
+            'email' => $req->email,
+            'cell_no' => $req->cell_no,
+            'phone_no' => $req->phone_no,
+            'designation' => $req->designation,
+            'company_name' => $req->company_name,
+            'official_address' => $req->official_address,
+            'user_image' => $user_image
+        ]);
 
-        session()->put('username',$req->username);
-
-        $res = ['id'=>$req->id, 'status'=>'success'];
-
+        $res = ['id' => $req->id, 'status' => 'success'];
 
         return json_encode($res);
-
     }
 }

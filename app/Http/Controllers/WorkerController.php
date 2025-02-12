@@ -37,62 +37,72 @@ class WorkerController extends Controller
         // else
         // {
 
-        try {
-            // Start transaction
-            DB::beginTransaction();
+        if (Auth::guard('monitor')->user()->user_type === 'monitor' && Auth::guard('monitor')->check()) 
+        {
+            try {
+                // Start transaction
+                DB::beginTransaction();
 
-            if ($req->file('worker_image')) {
-                if ($req->file('worker_image')->isValid())
-                    $filename = time() . '_' . $req->file('worker_image')->getClientOriginalName();
-                $worker_image = $req->file('worker_image')->storeAs('worker_images', $filename);
-            } else
-                $worker_image = '';
+                if ($req->file('worker_image')) {
+                    if ($req->file('worker_image')->isValid())
+                        $filename = time() . '_' . $req->file('worker_image')->getClientOriginalName();
+                    $worker_image = $req->file('worker_image')->storeAs('worker_images', $filename);
+                } else
+                    $worker_image = '';
 
-            $id = DB::table('workers')->insertGetId([
-                'worker_name' => $req->worker_name,
-                'phone_no' => $req->phone_no,
-                'email' => $req->email,
-                'pin' => '',
-                'phone_type' => $req->phone_type,
-                'role' => $req->role,
-                'department' => $req->department,
-                'check_in_frequency' => $req->check_in_frequency,
-                'worker_image' => $worker_image,
-                'worker_status' => $req->worker_status,
-                'sia_license_number' => $req->sia_license_number,
-                'sia_license_expiry_date' => $req->sia_license_expiry_date,
-                'emergency_contact_1' => $req->emergency_contact_1,
-                'emergency_contact_2' => $req->emergency_contact_2,
-                'nok_name' => $req->nok_name,
-                'nok_relation' => $req->nok_relation,
-                'nok_address' => $req->nok_address,
-                'nok_contact' => $req->nok_contact,
-            ]);
+                $id = DB::table('workers')->insertGetId([
+                    'worker_name' => $req->worker_name,
+                    'phone_no' => $req->phone_no,
+                    'email' => $req->email,
+                    'pin' => '',
+                    'phone_type' => $req->phone_type,
+                    'role' => $req->role,
+                    'department' => $req->department,
+                    'check_in_frequency' => $req->check_in_frequency,
+                    'worker_image' => $worker_image,
+                    'worker_status' => $req->worker_status,
+                    'sia_license_number' => $req->sia_license_number,
+                    'sia_license_expiry_date' => $req->sia_license_expiry_date,
+                    'emergency_contact_1' => $req->emergency_contact_1,
+                    'emergency_contact_2' => $req->emergency_contact_2,
+                    'nok_name' => $req->nok_name,
+                    'nok_relation' => $req->nok_relation,
+                    'nok_address' => $req->nok_address,
+                    'nok_contact' => $req->nok_contact,
+                    'subscriber_id' => Auth::guard('monitor')->user()->subscriber_id,
+                    'monitor_id' => Auth::guard('monitor')->user()->id,
+                ]);
 
-            if ($req->hasFile('worker_documents')) {
-                foreach ($req->file('worker_documents') as $file) {
-                    $filename = time() . '_' . $file->getClientOriginalName();
-                    $filePath = $file->storeAs('worker_documents', $filename); // Store file in public/worker_documents
+                if ($req->hasFile('worker_documents')) {
+                    foreach ($req->file('worker_documents') as $file) {
+                        $filename = time() . '_' . $file->getClientOriginalName();
+                        $filePath = $file->storeAs('worker_documents', $filename); // Store file in public/worker_documents
 
-                    $files[] = [
-                        'worker_id' => $id,
-                        'file_path' => $filePath,
-                        'file_name' => $filename,
-                    ];
+                        $files[] = [
+                            'worker_id' => $id,
+                            'file_path' => $filePath,
+                            'file_name' => $filename,
+                        ];
+                    }
+                    // dd($files);
+                    DB::table('worker_documents')->insert($files);
                 }
-                // dd($files);
-                DB::table('worker_documents')->insert($files);
+
+                DB::table('worker_monitor')->insert([
+                    'monitor_id' => Auth::guard('monitor')->user()->id,
+                    'worker_id' => $id,
+                ]);
+
+                DB::commit(); // Commit transaction
+
+                $res = ['id' => $id, 'status' => 'success'];
+                return json_encode($res);
+            } catch (\Exception $e) {
+                DB::rollback(); // Rollback transaction on error
+                $res = ['id' => null, 'status' => 'error', 'message' => 'Failed to process the order: ' . $e->getMessage()];
+                return json_encode($res);
+                // return response()->json(['error' => 'Failed to process the order: ' . $e->getMessage()], 500);
             }
-
-            DB::commit(); // Commit transaction
-
-            $res = ['id' => $id, 'status' => 'success'];
-            return json_encode($res);
-        } catch (\Exception $e) {
-            DB::rollback(); // Rollback transaction on error
-            $res = ['id' => null, 'status' => 'error', 'message' => 'Failed to process the order: ' . $e->getMessage()];
-            return json_encode($res);
-            // return response()->json(['error' => 'Failed to process the order: ' . $e->getMessage()], 500);
         }
 
         // }
@@ -232,7 +242,7 @@ class WorkerController extends Controller
                 ->select('worker_documents.*')  // You can modify the select statement based on the columns you need
                 ->get();
 
-            return view('edit-worker', [
+            return view('monitor.edit-worker', [
                 'worker' => $worker,
                 'frequency' => $frequency,
                 'isViewMode' => $isViewMode,

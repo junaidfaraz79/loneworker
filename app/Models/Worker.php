@@ -15,6 +15,8 @@ class Worker extends Authenticatable
 
     protected $table = 'workers'; // Specify the table associated with the model
 
+    protected $primaryKey = 'id';
+    
     protected $fillable = [
         'worker_name',
         'phone_no',

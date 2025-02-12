@@ -886,13 +886,11 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end::Avatar-->
 										<!--begin::Username-->
 										<div class="d-flex flex-column">
-											<div class="fw-bold d-flex align-items-center fs-5">{{ session('username')
-												}}
+											<div class="fw-bold d-flex align-items-center fs-5">{{ Auth::guard('subscriber')->user()->username }}
 												<span
 													class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>
 											</div>
-											<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{
-												session('email') }} </a>
+											<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ Auth::guard('subscriber')->user()->email }} </a>
 										</div>
 										<!--end::Username-->
 									</div>
@@ -1039,9 +1037,8 @@ License: For each use you must have a valid license purchased only from above li
 							</span>
 							<!--begin::Name-->
 							<span class="d-flex flex-column">
-								<span class="text-gray-800 fs-7 fw-bold parent-hover-primary">{{ session('username')
-									}}</span>
-								<span class="text-gray-500 fs-8 fw-semibold">{{ ucfirst(session('role')) }}</span>
+								<span class="text-gray-800 fs-7 fw-bold parent-hover-primary">{{ Auth::guard('subscriber')->user()->username }}</span>
+								<span class="text-gray-500 fs-8 fw-semibold">{{ ucfirst(Auth::guard('subscriber')->user()->user_type) }}</span>
 							</span>
 							<!--end::Name-->
 						</a>
@@ -1071,7 +1068,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end:Menu item-->
 									<!--begin:Menu item-->
 									<div data-kt-menu-trigger="click"
-										class="menu-item menu-accordion {{ Route::is('users') || Route::is('user.add') || Route::is('user.edit') ? 'here show' : '' }}">
+										class="menu-item menu-accordion {{ Route::is('monitors') || Route::is('monitor.add') || Route::is('monitor.edit') ? 'here show' : '' }}">
 										<!--begin:Menu link-->
 										<span class="menu-link">
 											<span class="menu-icon">
@@ -1088,13 +1085,13 @@ License: For each use you must have a valid license purchased only from above li
 										<div class="menu-sub menu-sub-accordion">
 											<!--begin:Menu item-->
 											<div data-kt-menu-trigger="click"
-												class="menu-item menu-accordion mb-1 {{ Route::is('users') || Route::is('user.add') || Route::is('user.edit') ? 'here show' : '' }}">
+												class="menu-item menu-accordion mb-1 {{ Route::is('monitors') || Route::is('monitor.add') || Route::is('monitor.edit') ? 'here show' : '' }}">
 												<!--begin:Menu link-->
 												<span class="menu-link">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Users</span>
+													<span class="menu-title">Monitors</span>
 													<span class="menu-arrow"></span>
 												</span>
 												<!--end:Menu link-->
@@ -1103,12 +1100,12 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link {{ Route::is('users') ? 'active here show' : '' }}"
-															href="/users">
+														<a class="menu-link {{ Route::is('monitors') ? 'active here show' : '' }}"
+															href="{{ route('monitors') }}">
 															<span class="menu-bullet">
 																<span class="bullet bullet-dot"></span>
 															</span>
-															<span class="menu-title">Users List</span>
+															<span class="menu-title">Monitors List</span>
 														</a>
 														<!--end:Menu link-->
 													</div>
@@ -1116,12 +1113,12 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link {{ Route::is('user.add') ? 'active' : '' }}"
-															href="/user/add">
+														<a class="menu-link {{ Route::is('monitor.add') ? 'active' : '' }}"
+															href="{{ route('monitor.add') }}">
 															<span class="menu-bullet">
 																<span class="bullet bullet-dot"></span>
 															</span>
-															<span class="menu-title">Add User</span>
+															<span class="menu-title">Add Monitor</span>
 														</a>
 														<!--end:Menu link-->
 													</div>

@@ -64,8 +64,8 @@
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
                     <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="{{ route('sites') }}" action="{{ route('site.update') }}">
-                        <input type="hidden" name="id" value="{{ $site->id }}" />
                         @csrf
+                        <input type="hidden" name="id" value="{{ $site->id }}" />
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
                             <!--begin::Thumbnail settings-->
@@ -223,7 +223,7 @@
                                     <!--begin::Input group-->
                                     <div class="mb-10">
                                         <!--begin::Label-->
-                                        <label class="form-label">Site Address</label>
+                                        <label class="form-label">Address Line 1</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="text" name="site_address_1" class="form-control mb-2" placeholder="Site Address" value="{{ $site->site_address_1 }}" />
@@ -331,7 +331,7 @@
 
     <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 
-    <script src="/assets/js/custom/lonesite/update-site.js"></script>
+    <script src="/assets/js/custom/loneworker/update-site.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

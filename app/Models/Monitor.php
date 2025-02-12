@@ -8,6 +8,8 @@ class Monitor extends Authenticatable
 {
     protected $table = 'user'; // The name of the table in the database
 
+    protected $primaryKey = 'id';
+    
     protected $fillable = [
         'subscriber_id', 'username', 'role', 'email', 'password', 'cell_no',
         'phone_no', 'company_name', 'official_address', 'designation', 'user_image',

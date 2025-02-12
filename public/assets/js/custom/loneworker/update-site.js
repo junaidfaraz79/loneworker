@@ -305,14 +305,14 @@ var KTAppEcommerceSaveCategory = function () {
     return {
         init: function () {
             // Init forms
-            initQuill();
-            initTagify();
-            initFormRepeater();
+            // initQuill();
+            // initTagify();
+            // initFormRepeater();
             initConditionsSelect2();
 
             // Handle forms
             handleStatus();
-            handleConditions();
+            // handleConditions();
             handleSubmit();
         }
     };

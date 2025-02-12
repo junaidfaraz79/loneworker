@@ -14,7 +14,7 @@
                         <!--begin::Page title-->
                         <div class="page-title d-flex align-items-center gap-1 me-3">
                             <!--begin::Title-->
-                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Add User</h1>
+                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Add Monitor</h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
                             <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
@@ -39,7 +39,7 @@
                                 </li>
                                 <!--end::Item-->                                
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/users">Users</a></li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="{{ route('monitors') }}">Monitors</a></li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -47,7 +47,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700">Add User</li>
+                                <li class="breadcrumb-item text-gray-700">Add Monitor</li>
                                 <!--end::Item-->
                             </ul>
                             <!--end::Breadcrumb-->
@@ -63,7 +63,7 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_add_user" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/users" action="/user/save" method="post">
+                    <form id="kt_ecommerce_add_user" class="form d-flex flex-column flex-lg-row" data-kt-redirect="{{ route('monitors') }}" action="{{ route('monitor.save') }}" method="post">
                         @csrf
                         <!--begin::Main column-->
                         <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
@@ -72,7 +72,7 @@
                                 <!--begin::Card header-->
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <h2>User Detail</h2>
+                                        <h2>Monitor Detail</h2>
                                     </div>
                                 </div>
                                 <!--end::Card header-->
@@ -148,28 +148,13 @@
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="mb-10">
-                                        <!--begin::Label-->
-                                        <label class="required form-label">Select user plan</label>
-                                        <!--end::Label-->
-                                        <!--begin::Input-->
-                                        <select name="plan_id" class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select a plan" id="kt_ecommerce_add_category_status_plan">
-                                            <option></option>
-                                            @foreach ($plans as $key => $plan)
-                                                <option value="{{$plan->id}}">{{$plan->plan_name}}</option>                                                
-                                            @endforeach
-                                        </select>
-                                        <!--end::Input-->
-                                    </div>
-                                    <!--end::Input group-->
                                     <div class="d-flex justify-content-end">
                                         <!--begin::Button-->
-                                        <a href="/users" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+                                        <a href="{{ route('monitors') }}" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                         <!--end::Button-->
                                         <!--begin::Button-->
                                         <button type="submit" id="kt_ecommerce_add_submit" class="btn btn-primary">
-                                            <span class="indicator-label">Add User</span>
+                                            <span class="indicator-label">Add Monitor</span>
                                             <span class="indicator-progress">Please wait... 
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                         </button>

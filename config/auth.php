@@ -48,6 +48,10 @@ return [
             'driver' => 'session',
             'provider' => 'monitors',
         ],
+        'subscriber' => [  // Adding the new guard
+            'driver' => 'session',
+            'provider' => 'subscribers',
+        ],
     ],
 
     /*
@@ -79,6 +83,10 @@ return [
         'monitors' => [  // Define the provider for monitors
             'driver' => 'eloquent',
             'model' => App\Models\Monitor::class,
+        ],
+        'subscribers' => [  // Define the provider for monitors
+            'driver' => 'eloquent',
+            'model' => App\Models\Subscriber::class,
         ],
         // 'users' => [
         //     'driver' => 'database',

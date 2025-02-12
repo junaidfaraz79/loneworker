@@ -39,7 +39,7 @@
                                 </li>
                                 <!--end::Item-->                                
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/customers">Customers</a></li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="{{ route('customers') }}">Customers</a></li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -63,7 +63,7 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/customers" action="save">
+                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="{{ route('customers') }}" action="{{ route('customer.save') }}">
                         @csrf
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -189,9 +189,9 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="required form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="text" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="" />
@@ -202,9 +202,9 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Email address</label>
+                                        <label class="required form-label">Email address</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="text" name="email" class="form-control mb-2" placeholder="Email address" value="" />
@@ -215,9 +215,9 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Department</label>
+                                        <label class="required form-label">Department</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="text" name="department" class="form-control mb-2" placeholder="Department" value="" />
@@ -228,9 +228,9 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Role</label>
+                                        <label class="required form-label">Role</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="text" name="role" class="form-control mb-2" placeholder="Role" value="" />
@@ -246,7 +246,7 @@
                             <!--end::General options-->
                             <div class="d-flex justify-content-end">
                                 <!--begin::Button-->
-                                <a href="/customers" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+                                <a href="{{ route('customers') }}" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                 <!--end::Button-->
                                 <!--begin::Button-->
                                 <button type="submit" id="kt_ecommerce_add_submit" class="btn btn-primary">
@@ -275,14 +275,14 @@
 
 @push('scripts')
 
-    <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
+    <script src="{{ asset('assets/js/custom/loneworker/save-customer.js') }}"></script>
 
-    <script src="/assets/js/custom/loneworker/save-customer.js"></script>
-    <script src="/assets/js/widgets.bundle.js"></script>
-    <script src="/assets/js/custom/widgets.js"></script>
-    <script src="/assets/js/custom/apps/chat/chat.js"></script>
-    <script src="/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-    <script src="/assets/js/custom/utilities/modals/create-app.js"></script>
-    <script src="/assets/js/custom/utilities/modals/users-search.js"></script>
+    <script src="{{ asset('/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
+    <script src="{{ asset('/assets/js/widgets.bundle.js') }}"></script>
+    <script src="{{ asset('/assets/js/custom/apps/chat/chat.js') }}"></script>
+    <script src="{{ asset('/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+    <script src="{{ asset('/assets/js/custom/utilities/modals/create-app.js') }}"></script>
+    <script src="{{ asset('/assets/js/custom/utilities/modals/users-search.js') }}"></script>
+
 
 @endpush

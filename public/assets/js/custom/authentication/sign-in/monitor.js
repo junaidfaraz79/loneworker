@@ -77,7 +77,7 @@ var KTSigninMonitor = function () {
 
                           $.ajax({
                             type: 'POST',
-                            url: '/monitor/execute',
+                            url: form.getAttribute("action"),
                             data: JSON.stringify(formData),
                             contentType: 'application/json',
                           })

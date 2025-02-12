@@ -2,44 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subscriber;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SigninController extends Controller
 {
-    public function execute(Request $req) {
+    public function execute(Request $req)
+    {
 
-        $user = DB::table('subscribers')
-                        ->where(
-                            [
-                                ['email', '=', $req->email],
-                                ['password', '=', $req->password],
-                            ]
-                        )->get();
-        
-        if(count($user)) {
+        $req->validate([
+            'email' => 'email|required',
+            'password' => 'required',
+        ]);
+        $subscriber = Subscriber::where('email', $req->email)->first();
 
-            session([
-                'username'=>$user[0]->username, 
-                'user_id' => $user[0]->id, 
-                'role' => $user[0]->role, 
-                'email' => $req->email, 
-                'authenticated' => TRUE, 
-                'subscriber_authenticated' => TRUE, 
-                'monitor_authenticated' => FALSE, 
-                'admin_authenticated' => FALSE
-            ]);
-
-            return "success";
-        }
-            
-        else
+        // Check if monitor exists and password is correct
+        if (!$subscriber || $req->password !== $subscriber->password) {
             return "fail";
+        }
 
+        Auth::guard('subscriber')->login($subscriber);
+
+        return "success";
     }
 
-    public function editPassword(Request $req) {
-        return view ('edit-password');
+    public function editPassword(Request $req)
+    {
+        return view('edit-password');
     }
 
     public function updatePassword(Request $req)
@@ -51,16 +42,18 @@ class SigninController extends Controller
 
         try {
             // Assuming email is stored in session and the user is authenticated
-            $email = session('email'); // or use Auth::user()->email if using built-in Auth
+            // $email = Auth::guard('subscriber')->user()->email; // or use Auth::user()->email if using built-in Auth
 
             // Update the user's password
-            $updated = DB::table('user')
-                ->where('email', $email)
-                ->update(['password' => $req->password]);
-                // ->update(['password' => bcrypt($req->password)]);
+            // $updated = DB::table('user')
+            //     ->where('email', $email)
+            //     ->update(['password' => $req->password]);
+            // ->update(['password' => bcrypt($req->password)]);
 
-            // Check if the update was successful
-            if ($updated) {
+            if (Auth::guard('subscriber')->check()) {
+                $req->user()->password = $req->password;
+                $req->user()->save();
+
                 $res = ['status' => 'success'];
                 return response()->json($res, 200);
             } else {
@@ -77,4 +70,16 @@ class SigninController extends Controller
         }
     }
 
+    public function signout(Request $req)
+    {
+        // Using the 'subscriber' guard to log out the user
+        Auth::guard('subscriber')->logout();
+
+        // Optionally, you might want to invalidate the user's session completely.
+        $req->session()->invalidate();
+
+        // Regenerate the session ID to avoid session fixation attacks
+        $req->session()->regenerateToken();
+        return redirect()->route('signin')->with('message', 'You have successfully logged out from the system.');
+    }
 }

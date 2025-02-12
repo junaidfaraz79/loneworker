@@ -195,9 +195,37 @@ var KTAppEcommerceSaveCategory = function () {
                     'customer_name': {
                         validators: {
                             notEmpty: {
-                                message: 'Customer name is required'
+                                message: 'Customer name is required.'
                             }
                         }
+                    },
+                    'phone_no': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Phone number is required.'
+                            }
+                        }
+                    },
+                    'email': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email is required.'
+                            }
+                        }                       
+                    },
+                    'department': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Department is required.'
+                            }
+                        }                       
+                    },
+                    'role': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Role is required.'
+                            }
+                        }                       
                     }
                 },
                 plugins: {
@@ -214,13 +242,14 @@ var KTAppEcommerceSaveCategory = function () {
         // Handle submit button
         submitButton.addEventListener('click', e => {
             e.preventDefault();
-
+            console.log('submitting....')
             // Validate form before submit
             if (validator) {
                 validator.validate().then(function (status) {
                     console.log('validated!');
-
+                    
                     if (status == 'Valid') {
+                        console.log('status:', status);
                         submitButton.setAttribute('data-kt-indicator', 'on');
 
                         // Disable submit button whilst loading
@@ -305,14 +334,14 @@ var KTAppEcommerceSaveCategory = function () {
     return {
         init: function () {
             // Init forms
-            initQuill();
-            initTagify();
-            initFormRepeater();
+            // initQuill();
+            // initTagify();
+            // initFormRepeater();
             initConditionsSelect2();
 
             // Handle forms
             handleStatus();
-            handleConditions();
+            // handleConditions();
             handleSubmit();
         }
     };
