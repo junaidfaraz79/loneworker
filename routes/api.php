@@ -25,5 +25,5 @@ Route::middleware('auth:worker')->group(function () {
     });
     Route::post('/worker/signout', [WorkerController::class, 'signoutWorker']);
     Route::post('/worker/change-password', [WorkerController::class, 'changePassword']);
-    Route::post('/worker/checkin', [AttendanceController::class, 'checkin']);
+    Route::post('/worker/attendance', [AttendanceController::class, 'attendance']);
 });

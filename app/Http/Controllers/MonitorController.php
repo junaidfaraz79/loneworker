@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Monitor;
+use App\Models\Worker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -153,16 +154,16 @@ class MonitorController extends Controller
         return redirect()->route('monitor.login')->with('status', 'You have been successfully logged out.');
     }
 
-    public function dashboard()
-    {
-        // dd('redirecting to dashboard');
-        $total_monitors = DB::table('user')->where('user_type', 'monitor')->get()->count();
-        $total_workers = DB::table('workers')->get()->count();
-        $total_customers = DB::table('customers')->get()->count();
-        $total_sites = DB::table('sites')->get()->count();
+    // public function dashboard()
+    // {
+    //     // dd('redirecting to dashboard');
+    //     $total_monitors = DB::table('user')->where('user_type', 'monitor')->get()->count();
+    //     $total_workers = DB::table('workers')->get()->count();
+    //     $total_customers = DB::table('customers')->get()->count();
+    //     $total_sites = DB::table('sites')->get()->count();
 
-        return view('monitor.dashboard', ['total_monitors' => $total_monitors, 'total_workers' => $total_workers, 'total_customers' => $total_customers, 'total_sites' => $total_sites]);
-    }
+    //     return view('monitor.dashboard', ['total_monitors' => $total_monitors, 'total_workers' => $total_workers, 'total_customers' => $total_customers, 'total_sites' => $total_sites]);
+    // }
 
     public function editPassword(Request $req)
     {
@@ -242,5 +243,16 @@ class MonitorController extends Controller
         $res = ['id' => $req->id, 'status' => 'success'];
 
         return json_encode($res);
+    }
+
+    public function dashboard(Request $req)
+    {
+        $activeWorkers = Worker::whereHas('attendance', function($query) {
+            $query->where('status', 'active');  // Assuming 'status' is the column for the status in the attendance table
+        })->get();
+
+        dd($activeWorkers);
+
+        // return view('workers.active', ['workers' => $activeWorkers]);
     }
 }

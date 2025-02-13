@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Worker;
+use App\Models\WorkerCheckIns;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
     //
-    public function checkin(Request $request)
+    public function attendance(Request $request)
     {
         // Validate the incoming request
         $request->validate([
@@ -29,10 +31,22 @@ class AttendanceController extends Controller
                 ->first(['check_in_frequency.value']);
 
             // Insert check-in time into attendance table
-            $attendance = new Attendance();
-            $attendance->worker_id = $worker->id;
-            $attendance->checkin = $request->checkin_time;
-            $attendance->save();
+            $attendance = Attendance::create([
+                'worker_id' => $worker->id,
+                'start_time' => $request->checkin_time,
+                'status' => 'active',
+            ]);
+
+            // Assume $frequencyInSeconds holds the frequency in seconds retrieved from your frequency table.
+            // $frequencyInSeconds = 300; // For example, 300 seconds for 5 minutes
+            $carbonCheckInTime  = Carbon::parse($request->checkin_time); // Get the current time
+            $scheduledTime = $carbonCheckInTime ->addSeconds($frequency->value); // Add the frequency to the current time to get the scheduled time
+
+            $checkin = WorkerCheckIns::create([
+                'attendance_id' => $attendance->id,
+                'scheduled_time' => $scheduledTime,
+                'status' => 'pending',
+            ]);
 
             DB::commit();
 
@@ -40,6 +54,7 @@ class AttendanceController extends Controller
                 'success' => true,
                 'message' => 'Worker checked in successfully.',
                 'check_in_frequency' => $frequency->value,
+                'worker_check_in_id' => $checkin->id,
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();

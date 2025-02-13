@@ -17,13 +17,13 @@ class Attendance extends Model
 
     // Attributes that are mass assignable
     protected $fillable = [
-        'worker_id', 'checkin', 'checkout'
+        'worker_id', 'start_time', 'end_time', 'status'
     ];
 
     // Attributes that should be cast to native types
     protected $casts = [
-        'checkin' => 'datetime',
-        'checkout' => 'datetime',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -34,5 +34,11 @@ class Attendance extends Model
     public function worker()
     {
         return $this->belongsTo(Worker::class, 'worker_id', 'id');
+    }
+
+    // Relationship with CheckIn model
+    public function workerCheckIns()
+    {
+        return $this->hasMany(WorkerCheckIns::class, 'attendance_id', 'id');
     }
 }
