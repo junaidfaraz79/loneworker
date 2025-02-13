@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\WorkerCheckInsController;
 use App\Http\Controllers\WorkerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,4 +27,5 @@ Route::middleware('auth:worker')->group(function () {
     Route::post('/worker/signout', [WorkerController::class, 'signoutWorker']);
     Route::post('/worker/change-password', [WorkerController::class, 'changePassword']);
     Route::post('/worker/attendance', [AttendanceController::class, 'attendance']);
+    Route::post('/worker/checkin', [WorkerCheckInsController::class, 'checkin']);
 });

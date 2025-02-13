@@ -40,12 +40,14 @@ class AttendanceController extends Controller
             // Assume $frequencyInSeconds holds the frequency in seconds retrieved from your frequency table.
             // $frequencyInSeconds = 300; // For example, 300 seconds for 5 minutes
             $carbonCheckInTime  = Carbon::parse($request->checkin_time); // Get the current time
-            $scheduledTime = $carbonCheckInTime ->addSeconds($frequency->value); // Add the frequency to the current time to get the scheduled time
+            $scheduledTime = $carbonCheckInTime ->addSeconds(120); // Add the frequency to the current time to get the scheduled time
+            // $scheduledTime = $carbonCheckInTime ->addSeconds($frequency->value); // Add the frequency to the current time to get the scheduled time
 
             $checkin = WorkerCheckIns::create([
                 'attendance_id' => $attendance->id,
                 'scheduled_time' => $scheduledTime,
                 'status' => 'pending',
+                'worker_id' => $worker->id,
             ]);
 
             DB::commit();
