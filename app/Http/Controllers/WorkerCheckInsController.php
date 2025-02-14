@@ -26,7 +26,7 @@ class WorkerCheckInsController extends Controller
             $worker = Auth::user();
 
             // Find the WorkerCheckIns record by ID and update it
-            $workerCheckIn = WorkerCheckIns::find($request->worker_check_in_id);
+            $workerCheckIn = WorkerCheckIns::find(intval($request->worker_check_in_id));
             
             if (!$workerCheckIn) {
                 return response()->json(['message' => 'WorkerCheckIn not found'], 404); // Or handle this case as needed
