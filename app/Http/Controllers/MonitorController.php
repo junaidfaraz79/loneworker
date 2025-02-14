@@ -260,9 +260,6 @@ class MonitorController extends Controller
             ->select('workers.*', 'check_in_frequency.time as check_in_frequency_time')
             ->get();
 
-        // Debugging: Uncomment to check the fetched data
-        // dd($workers);
-
         return view('monitor.dashboard', ['workers' => $workers]);
     }
 }

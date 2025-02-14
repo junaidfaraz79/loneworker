@@ -5,6 +5,11 @@
     .border-bottom-1px {
         border-bottom: 1px solid #000;
     }
+
+    .spinner-border {
+        vertical-align: middle;
+        margin-left: 5px;
+    }
 </style>
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
     <!--begin::Content wrapper-->
@@ -43,7 +48,10 @@
                         <!--end::Breadcrumb-->
                     </div>
                     <!--end::Page title-->
-                    <button type="button" class="btn btn-light">Refresh</button>
+                    <button id="refreshButton" type="button" class="btn btn-light">
+                        <span id="refreshText">Refresh</span>
+                        <span id="refreshSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
                 </div>
                 <!--end::Toolbar wrapper-->
             </div>
@@ -54,103 +62,10 @@
         <div id="kt_app_content" class="app-content px-lg-3">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-fluid">
-                @foreach($workers as $worker)
-                @php
-                // Safely fetch the latest attendance and check-in
-                $latestAttendance = $worker->attendance->first() ?? null;
-                $latestCheckin = $latestAttendance?->workerCheckIns->first() ?? null;
-
-                // Calculate the remaining time for the check-in
-                $isCheckinDue = false;
-                if ($latestCheckin?->scheduled_time) {
-                    $scheduledTime = \Carbon\Carbon::parse($latestCheckin->scheduled_time);
-                    $remainingSeconds = now()->diffInSeconds($scheduledTime, false); // false ensures negative values if overdue
-                    // dd($remainingSeconds);
-                    $isCheckinDue = $remainingSeconds <= 60; // Check if due in 1 minute or less
-                }
-                @endphp
-
-                <!--begin::Row-->
-                <div class="row">
-                    <!--begin::Col-->
-                    <div class="col-xl-12 mb-5 mb-xl-10">
-                        <!--begin::Chart widget 4-->
-                        <div class="card overflow-hidden h-md-100">
-                            <!--begin::Header-->
-                            <div class="card-header align-items-center justify-content-between py-0 
-                                {{ $latestAttendance?->status === 'active' ? ($isCheckinDue ? 'bg-danger' : 'bg-success') : '' }}">
-                                <!--begin::Title-->
-                                <h2 class="card-title align-items-start flex-column py-0">
-                                    {{ $worker->pin . ' - ' . $worker->worker_name }}
-                                </h2>
-                                <!--end::Title-->
-
-                                <!--begin::Actions-->
-                                <a target="_blank" href="{{ route('worker.view', ['parameter' => $worker->id]) }}">
-                                    <i class="fas fa-info-circle fs-1 text-black"></i>
-                                </a>
-                                <!--end::Actions-->
-                            </div>
-                            <!--end::Header-->
-
-                            <!--begin::Card body-->
-                            <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
-                                <!--begin::Info-->
-                                <div class="col-xl-8">
-                                    @if($latestAttendance && $latestAttendance->status === 'active')
-                                    <!--begin::Alert-->
-                                    <div class="alert alert-success d-flex align-items-center ms-3">
-                                        <!--begin::Wrapper-->
-                                        <div class="d-flex flex-column">
-                                            <!--begin::Content-->
-                                            <span>
-                                                Check in due in {{ $worker->check_in_frequency_time }} at
-                                                @if($latestCheckin?->scheduled_time)
-                                                {{ \Carbon\Carbon::parse($latestCheckin->scheduled_time)->format('d M Y
-                                                g:i a') }}
-                                                @else
-                                                [Time not set]
-                                                @endif
-                                            </span>
-                                            <!--end::Content-->
-                                        </div>
-                                        <!--end::Wrapper-->
-                                    </div>
-                                    <!--end::Alert-->
-                                    @endif
-
-                                    <!--begin::Worker Information-->
-                                    <div class="ms-3">
-                                        <table class="table table-bordered table-striped text-center">
-                                            <tbody>
-                                                <tr>
-                                                    <td><strong>Phone: </strong>{{ $worker->phone_no ?? 'N/A' }}</td>
-                                                    <td><strong>Check In: </strong>{{ $worker->check_in_frequency_time
-                                                        ?? 'N/A' }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Email: </strong>{{ $worker->email ?? 'N/A' }}</td>
-                                                    <td><strong>Man Down: </strong>Off</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Monitors: </strong></td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!--end::Worker Information-->
-                                </div>
-                                <!--end::Info-->
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Chart widget 4-->
-                    </div>
-                    <!--end::Col-->
+                <!-- Worker Cards -->
+                <div id="workerCards">
+                    @include('monitor.partials.worker_cards', ['workers' => $workers])
                 </div>
-                <!--end::Row-->
-                @endforeach
             </div>
             <!--end::Content container-->
         </div>
@@ -163,5 +78,41 @@
 
     <!--end::Footer-->
 </div>
+
+<script>
+    // Function to refresh the worker cards
+    function refreshWorkerCards() {
+        // Show spinner and disable button
+        const refreshButton = document.getElementById('refreshButton');
+        const refreshText = document.getElementById('refreshText');
+        const refreshSpinner = document.getElementById('refreshSpinner');
+
+        refreshText.textContent = 'Refreshing...'; // Change button text
+        refreshSpinner.classList.remove('d-none'); // Show spinner
+        refreshButton.disabled = true; // Disable button to prevent multiple clicks
+
+        fetch("{{ route('monitor.dashboard') }}")
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const newWorkerCards = doc.getElementById('workerCards').innerHTML;
+                document.getElementById('workerCards').innerHTML = newWorkerCards;
+            })
+            .catch(error => console.error('Error fetching worker cards:', error))
+            .finally(() => {
+                // Hide spinner and re-enable button
+                refreshText.textContent = 'Refresh'; // Reset button text
+                refreshSpinner.classList.add('d-none'); // Hide spinner
+                refreshButton.disabled = false; // Re-enable button
+            });
+    }
+
+    // Auto-refresh every 5 minutes
+    setInterval(refreshWorkerCards, 5 * 60 * 1000);
+
+    // Manual refresh button
+    document.getElementById('refreshButton').addEventListener('click', refreshWorkerCards);
+</script>
 
 @endsection
