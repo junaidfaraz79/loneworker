@@ -80,6 +80,43 @@
 </div>
 
 <script>
+    let countdownInterval;
+    let countdown = 300; // 5 minutes in seconds
+
+    // Function to update the button label with the countdown
+    function updateButtonLabel() {
+        const refreshText = document.getElementById('refreshText');
+        const minutes = Math.floor(countdown / 60);
+        const seconds = countdown % 60;
+        refreshText.textContent = `Refresh (${minutes}:${seconds.toString().padStart(2, '0')})`;
+    }
+
+    // Function to start the countdown
+    function startCountdown() {
+        // Clear any existing interval
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+        }
+
+        // Reset countdown to 300 seconds
+        countdown = 300;
+        updateButtonLabel();
+
+        // Start the countdown interval
+        countdownInterval = setInterval(() => {
+            countdown--;
+
+            if (countdown <= 0) {
+                // Automatically trigger the refresh when countdown reaches 0
+                clearInterval(countdownInterval);
+                refreshWorkerCards();
+            } else {
+                // Update the button label
+                updateButtonLabel();
+            }
+        }, 1000); // Update every second
+    }
+
     // Function to refresh the worker cards
     function refreshWorkerCards() {
         // Show spinner and disable button
@@ -105,14 +142,23 @@
                 refreshText.textContent = 'Refresh'; // Reset button text
                 refreshSpinner.classList.add('d-none'); // Hide spinner
                 refreshButton.disabled = false; // Re-enable button
+
+                // Restart the countdown after refresh
+                startCountdown();
             });
     }
 
-    // Auto-refresh every 5 minutes
-    setInterval(refreshWorkerCards, 5 * 60 * 1000);
+    // Start the initial countdown
+    startCountdown();
 
     // Manual refresh button
-    document.getElementById('refreshButton').addEventListener('click', refreshWorkerCards);
+    document.getElementById('refreshButton').addEventListener('click', () => {
+        // Refresh the worker cards
+        refreshWorkerCards();
+
+        // Reset the countdown to 300 seconds
+        startCountdown();
+    });
 </script>
 
 @endsection

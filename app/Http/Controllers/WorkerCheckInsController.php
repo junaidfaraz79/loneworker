@@ -40,10 +40,12 @@ class WorkerCheckInsController extends Controller
             $carbonCheckInTime  = Carbon::parse($request->checkin_time); // Get the current time
             $scheduledTime = $carbonCheckInTime ->addSeconds(120); // Add the frequency to the current time to get the scheduled time
             // $scheduledTime = $carbonCheckInTime ->addSeconds($frequency->value); // Add the frequency to the current time to get the scheduled time
+            $gracePeriodEnd = $scheduledTime->copy()->addMinutes(16);
 
             $checkin = WorkerCheckIns::create([
                 'attendance_id' => $workerCheckIn->attendance_id,
                 'scheduled_time' => $scheduledTime,
+                'grace_period_end' => $gracePeriodEnd,
                 'status' => 'pending',
                 'worker_id' => $worker->id,
             ]);
@@ -54,6 +56,7 @@ class WorkerCheckInsController extends Controller
                 'success' => true,
                 'message' => 'Worker checked in successfully.',
                 'worker_check_in_id' => $checkin->id,
+                'grace_period_end' => $gracePeriodEnd,
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();
