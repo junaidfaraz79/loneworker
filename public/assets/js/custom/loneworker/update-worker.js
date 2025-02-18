@@ -4,6 +4,9 @@
 var KTAppEcommerceSaveCategory = function () {
     var startDatepicker;
     var startFlatpickr;
+    var table = document.getElementById('workerCheckInsTable');
+    var isViewMode = document.getElementById('isViewMode').value === 'y';
+    var datatable;
     // Private functions
 
     const initDatepickers = () => {
@@ -13,6 +16,30 @@ var KTAppEcommerceSaveCategory = function () {
         });
     }
 
+    var initCheckinsTable = function () {
+        console.log('hereeeeee')
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            pageLength: 1,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: workerViewUrl,
+                dataSrc: 'data', // This should match the key in your JSON response
+                error: function(xhr, status, error) {
+                    console.log("AJAX Error: ", status, error);
+                }
+            },
+            columns: [
+                { data: 'date' },
+                { data: 'scheduled_time' },
+                { data: 'actual_time' },
+                { data: 'grace_period_end' },
+                { data: 'location' },
+                { data: 'status' }
+            ]
+        });
+    }
     // Init quill editor
     const initQuill = () => {
         // Define all elements for quill editor
@@ -263,12 +290,12 @@ var KTAppEcommerceSaveCategory = function () {
                             url: form.getAttribute("action"),
                             data: formData,
                             contentType: false,
-                            processData:false,                 
-                          })
+                            processData: false,
+                        })
                             .done((data) => {
                                 console.log(data);
-                                let res = JSON.parse(data);        
-                                if(res.status == "duplicate") {
+                                let res = JSON.parse(data);
+                                if (res.status == "duplicate") {
 
                                     Swal.fire({
                                         html:
@@ -277,13 +304,13 @@ var KTAppEcommerceSaveCategory = function () {
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
                                         customClass: { confirmButton: "btn btn-primary" },
-                                    }); 
+                                    });
 
                                     submitButton.setAttribute('data-kt-indicator', 'off');
                                     submitButton.disabled = false;
 
                                 }
-                                else if(res.status == "success") {
+                                else if (res.status == "success") {
 
                                     setTimeout(function () {
                                         submitButton.removeAttribute('data-kt-indicator');
@@ -310,7 +337,7 @@ var KTAppEcommerceSaveCategory = function () {
                                 }
                                 else {
 
-                                    } 
+                                }
 
                             })
 
@@ -333,18 +360,26 @@ var KTAppEcommerceSaveCategory = function () {
     // Public methods
     return {
         init: function () {
-            startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
             // Init forms
-            initQuill();
-            initTagify();
-            initFormRepeater();
-            initConditionsSelect2();
-            initDropzone();
-            initDatepickers();
+            // initQuill();
+            // initTagify();
+            // initFormRepeater();
+            // initDropzone();
             // Handle forms
-            handleStatus();
-            handleConditions();
-            handleSubmit();
+            if(!isViewMode) {
+                startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
+                initConditionsSelect2();
+                initDatepickers();
+                handleStatus();
+                handleConditions();
+                handleSubmit();
+            }
+
+            // if (!table) {
+            //     return;
+            // }
+
+            initCheckinsTable();
         }
     };
 }();

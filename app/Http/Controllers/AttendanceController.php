@@ -42,7 +42,7 @@ class AttendanceController extends Controller
             $carbonCheckInTime  = Carbon::parse($request->checkin_time); // Get the current time
             $scheduledTime = $carbonCheckInTime ->addSeconds(120); // Add the frequency to the current time to get the scheduled time
             // $scheduledTime = $carbonCheckInTime ->addSeconds($frequency->value); // Add the frequency to the current time to get the scheduled time
-            $gracePeriodEnd = $scheduledTime->copy()->addMinutes(16);
+            $gracePeriodEnd = $scheduledTime->copy()->addMinutes(15);
 
             $checkin = WorkerCheckIns::create([
                 'attendance_id' => $attendance->id,

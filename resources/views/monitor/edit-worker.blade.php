@@ -41,7 +41,8 @@
                             </li>
                             <!--end::Item-->
                             <!--begin::Item-->
-                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="{{ route('workers') }}">Workers</a></li>
+                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a
+                                    href="{{ route('workers') }}">Workers</a></li>
                             <!--end::Item-->
                             <!--begin::Item-->
                             <li class="breadcrumb-item">
@@ -66,9 +67,10 @@
         <div id="kt_app_content" class="app-content px-lg-3">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-fluid">
-                <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="{{ route('workers') }}"
-                    action="{{ route('worker.update') }}">
+                <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row"
+                    data-kt-redirect="{{ route('workers') }}" action="{{ route('worker.update') }}">
                     <input type="hidden" name="id" value="{{ $worker->id }}" />
+                    <input type="hidden" name="isViewMode" id="isViewMode" value="{{ $isViewMode }}" />
                     @csrf
                     <!--begin::Aside column-->
                     <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -242,6 +244,14 @@
                                     href="#worker_documents_tab">Documents</a>
                             </li>
                             <!--end:::Tab item-->
+                            @if($isViewMode === 'y')
+                            <!--begin:::Tab item-->
+                            <li class="nav-item">
+                                <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                    href="#worker_checkins_tab">Check Ins</a>
+                            </li>
+                            <!--end:::Tab item-->
+                            @endif
                         </ul>
                         <!--end:::Tabs-->
                         <!--begin::Tab content-->
@@ -402,7 +412,7 @@
                                                 <!--end::Description-->
                                             </div>
                                             <!--end::Input group-->
-                                            
+
                                             <!--begin::Input group-->
                                             <div class="row mb-10">
                                                 <div class="col-lg-6">
@@ -410,9 +420,10 @@
                                                     <label class="form-label">SIA Licence Number</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="sia_license_number" class="form-control mb-2"
-                                                        placeholder="SIA Licence Number" value="{{ $worker->sia_license_number }}" {{
-                                                        $isViewMode==='y' ? 'readonly' : '' }} />
+                                                    <input type="text" name="sia_license_number"
+                                                        class="form-control mb-2" placeholder="SIA Licence Number"
+                                                        value="{{ $worker->sia_license_number }}" {{ $isViewMode==='y'
+                                                        ? 'readonly' : '' }} />
                                                     <!--end::Input-->
                                                     @if($isViewMode === 'n')
                                                     <!--begin::Description-->
@@ -425,8 +436,11 @@
                                                     <label class="form-label">SIA Licence Expiry Date</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input class="form-control mb-2" name="sia_license_expiry_date" placeholder="Pick expiry date" 
-                                                    value="{{ $worker->sia_license_expiry_date }}" {{ $isViewMode==='y' ? 'readonly' : '' }} id="kt_calendar_datepicker_start_date" />
+                                                    <input class="form-control mb-2" name="sia_license_expiry_date"
+                                                        placeholder="Pick expiry date"
+                                                        value="{{ $worker->sia_license_expiry_date }}" {{
+                                                        $isViewMode==='y' ? 'readonly' : '' }}
+                                                        id="kt_calendar_datepicker_start_date" />
                                                     <!--end::Input-->
                                                     @if($isViewMode === 'n')
                                                     <!--begin::Description-->
@@ -436,7 +450,7 @@
                                                 </div>
                                             </div>
                                             <!--end::Input group-->
-                                            
+
                                             <!--begin::Input group-->
                                             <div class="row">
                                                 <div class="col-lg-6">
@@ -444,28 +458,33 @@
                                                     <label class="required form-label">Primary Emergency Contact</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="emergency_contact_1" class="form-control mb-2"
-                                                        placeholder="Emergency phone number" value="{{ $worker->emergency_contact_1 }}" {{
-                                                        $isViewMode==='y' ? 'readonly' : '' }} />
+                                                    <input type="text" name="emergency_contact_1"
+                                                        class="form-control mb-2" placeholder="Emergency phone number"
+                                                        value="{{ $worker->emergency_contact_1 }}" {{ $isViewMode==='y'
+                                                        ? 'readonly' : '' }} />
                                                     <!--end::Input-->
                                                     @if($isViewMode === 'n')
                                                     <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set primary emergency phone number.</div>
+                                                    <div class="text-muted fs-7">Set primary emergency phone number.
+                                                    </div>
                                                     <!--end::Description-->
                                                     @endif
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <!--begin::Label-->
-                                                    <label class="required form-label">Secondary Emergency Contact</label>
+                                                    <label class="required form-label">Secondary Emergency
+                                                        Contact</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="emergency_contact_2" class="form-control mb-2"
-                                                        placeholder="Emergency phone number" value="{{ $worker->emergency_contact_2 }}" {{
-                                                        $isViewMode==='y' ? 'readonly' : '' }} />
+                                                    <input type="text" name="emergency_contact_2"
+                                                        class="form-control mb-2" placeholder="Emergency phone number"
+                                                        value="{{ $worker->emergency_contact_2 }}" {{ $isViewMode==='y'
+                                                        ? 'readonly' : '' }} />
                                                     <!--end::Input-->
                                                     @if($isViewMode === 'n')
                                                     <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set secondary emergency phone number.</div>
+                                                    <div class="text-muted fs-7">Set secondary emergency phone number.
+                                                    </div>
                                                     <!--end::Description-->
                                                     @endif
                                                 </div>
@@ -606,52 +625,99 @@
                                             <div class="text-muted fs-7">Set the worker documents (License, ID Card,
                                                 Training Certificates).</div>
                                             @else
-                                                <div class="row g-6 g-xl-9 mb-6 mb-xl-9">
-                                                    @forelse ($documents as $document)
-                                                        <!--begin::Col-->
-                                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                                            <!--begin::Card-->
-                                                            <div class="card h-100">
-                                                                <!--begin::Card body-->
-                                                                <div class="card-body d-flex justify-content-center text-center flex-column p-8">
-                                                                    @php
-                                                                        $extension = strtolower(pathinfo($document->file_path, PATHINFO_EXTENSION));
-                                                                        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'];
-                                                                        $isImage = in_array($extension, $imageExtensions);
-                                                                        $fileUrl = $isImage ? asset('storage/' . $document->file_path) : route('downloadDocument', $document->id);
-                                                                        $target = $isImage ? '_blank' : '_self';
-                                                                        $download = $isImage ? '' : 'download';
-                                                                        $imagePath = $isImage ? asset('storage/' . $document->file_path) : asset($fileTypeImages[$extension] ?? 'assets/media/svg/files/upload.svg');
-                                                                    @endphp
-                                                                    <!--begin::Name-->
-                                                                    <a href="{{ $fileUrl }}" target="{{ $target }}" {{ $download }}
-                                                                        class="text-gray-800 text-hover-primary d-flex flex-column">
-                                                                        <div class="symbol symbol-60px mb-5">
-                                                                            @if ($isImage)
-                                                                                <img src="{{ asset('storage/' . $document->file_path) }}" alt="Document" />
-                                                                            @else
-                                                                                <img src="{{ $imagePath }}" alt="Document" />
-                                                                            @endif
-                                                                        </div>
-                                                                        <div class="fs-5 fw-bold mb-2">{{ $document->file_name }}</div>
-                                                                    </a>
-                                                                    <!--end::Name-->
+                                            <div class="row g-6 g-xl-9 mb-6 mb-xl-9">
+                                                @forelse ($documents as $document)
+                                                <!--begin::Col-->
+                                                <div class="col-md-6 col-lg-4 col-xl-3">
+                                                    <!--begin::Card-->
+                                                    <div class="card h-100">
+                                                        <!--begin::Card body-->
+                                                        <div
+                                                            class="card-body d-flex justify-content-center text-center flex-column p-8">
+                                                            @php
+                                                            $extension = strtolower(pathinfo($document->file_path,
+                                                            PATHINFO_EXTENSION));
+                                                            $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp',
+                                                            'avif'];
+                                                            $isImage = in_array($extension, $imageExtensions);
+                                                            $fileUrl = $isImage ? asset('storage/' .
+                                                            $document->file_path) : route('downloadDocument',
+                                                            $document->id);
+                                                            $target = $isImage ? '_blank' : '_self';
+                                                            $download = $isImage ? '' : 'download';
+                                                            $imagePath = $isImage ? asset('storage/' .
+                                                            $document->file_path) : asset($fileTypeImages[$extension] ??
+                                                            'assets/media/svg/files/upload.svg');
+                                                            @endphp
+                                                            <!--begin::Name-->
+                                                            <a href="{{ $fileUrl }}" target="{{ $target }}" {{ $download
+                                                                }}
+                                                                class="text-gray-800 text-hover-primary d-flex flex-column">
+                                                                <div class="symbol symbol-60px mb-5">
+                                                                    @if ($isImage)
+                                                                    <img src="{{ asset('storage/' . $document->file_path) }}"
+                                                                        alt="Document" />
+                                                                    @else
+                                                                    <img src="{{ $imagePath }}" alt="Document" />
+                                                                    @endif
                                                                 </div>
-                                                                <!--end::Card body-->
-                                                            </div>
-                                                            <!--end::Card-->
+                                                                <div class="fs-5 fw-bold mb-2">{{ $document->file_name
+                                                                    }}</div>
+                                                            </a>
+                                                            <!--end::Name-->
                                                         </div>
-                                                        <!--end::Col-->
-                                                    @empty
-                                                        <span>No documents found.</span>
-                                                    @endforelse
+                                                        <!--end::Card body-->
+                                                    </div>
+                                                    <!--end::Card-->
                                                 </div>
+                                                <!--end::Col-->
+                                                @empty
+                                                <span>No documents found.</span>
+                                                @endforelse
+                                            </div>
                                             @endif
                                             <!--end::Description-->
                                         </div>
                                         <!--end::Card header-->
                                     </div>
                                     <!--end::General options-->
+                                </div>
+                            </div>
+                            <!--end::Tab pane-->
+                            <!--begin::Tab pane (Worker CheckIns)-->
+                            <div class="tab-pane fade show active" id="worker_checkins_tab" role="tab-panel">
+                                <div class="d-flex flex-column gap-7 gap-lg-10">
+                                    <!--begin::General options-->
+                                    <!--begin::Worker details-->
+                                    <div class="card card-flush py-4">
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h2>Worker Check In History</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <table id="workerCheckInsTable"
+                                                class="table align-middle table-row-dashed fs-6 gy-5">
+                                                <thead>
+                                                    <tr
+                                                        class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                                        <th>Date</th>
+                                                        <th>Scheduled Check In Time</th>
+                                                        <th>Actual Check In Time</th>
+                                                        <th>Grace Period End</th>
+                                                        <th>Location</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-gray-600 fw-semibold">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--end::Card header-->
+                                    </div>
                                 </div>
                             </div>
                             <!--end::Tab pane-->
@@ -690,15 +756,15 @@
 @endsection
 
 @push('scripts')
-
-<script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
-
-<script src="/assets/js/custom/loneworker/update-worker.js"></script>
-<script src="/assets/js/widgets.bundle.js"></script>
-<script src="/assets/js/custom/widgets.js"></script>
-<script src="/assets/js/custom/apps/chat/chat.js"></script>
-<script src="/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-<script src="/assets/js/custom/utilities/modals/create-app.js"></script>
-<script src="/assets/js/custom/utilities/modals/users-search.js"></script>
+<script src="{{ asset('/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
+<script src="{{ asset('/assets/js/widgets.bundle.js') }}"></script>
+<script src="{{ asset('/assets/js/custom/widgets.js') }}"></script>
+<script src="{{ asset('/assets/js/custom/apps/chat/chat.js') }}"></script>
+<script src="{{ asset('/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+<script src="{{ asset('/assets/js/custom/utilities/modals/create-app.js') }}"></script>
+<script src="{{ asset('/assets/js/custom/loneworker/update-worker.js') }}"></script>
+<script>
+    var workerViewUrl = "{{ route('worker.view', ['parameter' => $worker->id]) }}";
+</script>
 
 @endpush

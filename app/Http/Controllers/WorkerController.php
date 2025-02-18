@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Worker;
+use App\Models\WorkerCheckIns;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -37,8 +39,7 @@ class WorkerController extends Controller
         // else
         // {
 
-        if (Auth::guard('monitor')->user()->user_type === 'monitor' && Auth::guard('monitor')->check()) 
-        {
+        if (Auth::guard('monitor')->user()->user_type === 'monitor' && Auth::guard('monitor')->check()) {
             try {
                 // Start transaction
                 DB::beginTransaction();
@@ -221,6 +222,31 @@ class WorkerController extends Controller
     // }
     public function view(Request $req, $id)
     {
+        // Fetching the worker details
+        $worker = Worker::find($id);
+
+        // Paginate worker check-ins
+        if ($req->ajax()) {
+            $workerCheckIns = $worker->checkIns()->orderBy('created_at', 'desc')->paginate(10);
+
+            $data = $workerCheckIns->getCollection()->transform(function ($checkIn) {
+                return [
+                    'date' => $checkIn->created_at->format('jS M Y'), // Day as 1st, 2nd, etc., Month as Jan, Feb, etc., Year as 2024
+                    'scheduled_time' => optional($checkIn->scheduled_time)->format('g:i:s A') ?? 'Not Scheduled', // Time in AM/PM format with seconds
+                    'actual_time' => optional($checkIn->actual_time)->format('g:i:s A') ?? 'Not Checked In', // Time in AM/PM format with seconds
+                    'grace_period_end' => optional($checkIn->grace_period_end)->format('g:i:s A') ?? 'No Grace Period', // Time in AM/PM format with seconds
+                    'location' => $checkIn->location ?? 'N/A',
+                    'status' => $checkIn->status ?? 'Unknown'
+                ];
+            });
+            return response()->json([
+                'draw' => intval($req->input('draw')), // This value must come from the client side
+                'recordsTotal' => $workerCheckIns->total(),
+                'recordsFiltered' => $workerCheckIns->total(), // Adjust if you apply further filtering
+                'data' => $data,
+            ]);
+        }
+        
         $fileTypeImages = [
             'pdf' => 'assets/media/svg/files/pdf.svg',
             'doc' => 'assets/media/svg/files/doc.svg',
@@ -228,30 +254,27 @@ class WorkerController extends Controller
         ];
 
         $isViewMode = 'y';
-
-        // Fetching the worker details
-        $worker = DB::table('workers')->where('id', $id)->first();
-        if ($worker) {
-            // Fetching check-in frequencies
-            $frequency = DB::table('check_in_frequency')->get();
-
-            // Joining worker_documents with workers to fetch all documents related to the worker
-            $documents = DB::table('worker_documents')
-                ->join('workers', 'worker_documents.worker_id', '=', 'workers.id')
-                ->where('worker_documents.worker_id', $id)
-                ->select('worker_documents.*')  // You can modify the select statement based on the columns you need
-                ->get();
-
-            return view('monitor.edit-worker', [
-                'worker' => $worker,
-                'frequency' => $frequency,
-                'isViewMode' => $isViewMode,
-                'documents' => $documents,  // Pass the documents to the view
-                'fileTypeImages' => $fileTypeImages
-            ]);
-        } else {
+        if (!$worker) {
             return redirect(route('workers'));
         }
+
+        // Fetching check-in frequencies
+        $frequency = DB::table('check_in_frequency')->get();
+
+        // Joining worker_documents with workers to fetch all documents related to the worker
+        $documents = DB::table('worker_documents')
+            ->join('workers', 'worker_documents.worker_id', '=', 'workers.id')
+            ->where('worker_documents.worker_id', $id)
+            ->select('worker_documents.*')  // You can modify the select statement based on the columns you need
+            ->get();
+
+        return view('monitor.edit-worker', [
+            'worker' => $worker,
+            'frequency' => $frequency,
+            'isViewMode' => $isViewMode,
+            'documents' => $documents,  // Pass the documents to the view
+            'fileTypeImages' => $fileTypeImages
+        ]);
     }
 
     public function downloadDocument($id)
