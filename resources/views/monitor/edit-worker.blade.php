@@ -387,7 +387,7 @@
                                                     <label class="form-label">Check In History Visibility</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option" name="check_in_visibility">
+                                                    <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option" name="check_in_visibility" {{ $isViewMode==='y' ? 'disabled' : '' }}>
                                                         <option value="">Select visibility</option>
                                                         <option value="today" {{ $worker->check_in_visibility === 'today' ? 'selected' : '' }}>Today</option>
                                                         <option value="7days" {{ $worker->check_in_visibility === '7days' ? 'selected' : '' }}>Last 7 Days</option>
@@ -706,6 +706,7 @@
                                 </div>
                             </div>
                             <!--end::Tab pane-->
+                            @if($isViewMode === 'y')
                             <!--begin::Tab pane (Worker CheckIns)-->
                             <div class="tab-pane fade show active" id="worker_checkins_tab" role="tab-panel">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
@@ -749,6 +750,7 @@
                                 </div>
                             </div>
                             <!--end::Tab pane-->
+                            @endif
                         </div>
                         <!--end::Tab content-->
                         @if($isViewMode === 'n')
@@ -791,8 +793,10 @@
 <script src="{{ asset('/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/utilities/modals/create-app.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/loneworker/update-worker.js') }}"></script>
-<script>
-    var workerViewUrl = "{{ route('worker.view', ['parameter' => $worker->id]) }}";
-</script>
+@if($isViewMode === 'y')
+    <script>
+        var workerViewUrl = "{{ route('worker.view', ['parameter' => $worker->id]) }}";
+    </script>
+@endif
 
 @endpush

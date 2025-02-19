@@ -246,6 +246,10 @@ class WorkerController extends Controller
                 $query->whereBetween('created_at', [$startDate, $endDate]);
             }
         
+            // Clone the query for counting total records
+            $totalQuery = clone $query;
+        
+            // Fetch the paginated results
             $workerCheckIns = $query->skip($start)
                 ->take($length)
                 ->get();
@@ -263,7 +267,7 @@ class WorkerController extends Controller
             });
         
             // Get the total number of records (for pagination)
-            $totalRecords = $query->count();
+            $totalRecords = $totalQuery->count();
         
             return response()->json([
                 'draw' => intval($req->input('draw')),

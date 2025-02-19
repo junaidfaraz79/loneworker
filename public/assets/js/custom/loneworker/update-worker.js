@@ -4,9 +4,11 @@
 var KTAppEcommerceSaveCategory = function () {
     var startDatepicker;
     var startFlatpickr;
-    var table = document.getElementById('workerCheckInsTable');
     var isViewMode = document.getElementById('isViewMode').value === 'y';
-    var datatable;
+    if (isViewMode) {
+        var table = document.getElementById('workerCheckInsTable');
+        var datatable;
+    }
     // Private functions
 
     const initDatepickers = () => {
@@ -17,6 +19,8 @@ var KTAppEcommerceSaveCategory = function () {
     }
 
     var initCheckinsTable = function (startDate = null, endDate = null) {
+        if(startDate && endDate)
+        {console.log(startDate.format('YYYY-MM-DD HH:mm:ss'), endDate.format('YYYY-MM-DD HH:mm:ss'));}
         datatable = $(table).DataTable({
             pageLength: 10,
             processing: true,
@@ -27,12 +31,12 @@ var KTAppEcommerceSaveCategory = function () {
                 data: function (d) {
                     // Add date range parameters to the request if they are provided
                     if (startDate && endDate) {
-                        d.startDate = startDate.format('YYYY-MM-DD H:i:s');
-                        d.endDate = endDate.format('YYYY-MM-DD H:i:s');
+                        d.startDate = startDate.format('YYYY-MM-DD HH:mm:ss');
+                        d.endDate = endDate.format('YYYY-MM-DD HH:mm:ss');
                     }
                 },
                 dataSrc: 'data',
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.log("AJAX Error: ", status, error);
                 }
             },
@@ -54,20 +58,21 @@ var KTAppEcommerceSaveCategory = function () {
         });
     }
 
+    // DATE RANGE PICKER FOR CHECKIN FILTERING
     var initDateRangePicker = () => {
         var start = moment().subtract(29, "days");
         var end = moment();
-    
+
         function cb(start, end) {
             $("#kt_daterangepicker_2").html(start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY"));
-    
+
             // Destroy the existing DataTable (if it exists) and reinitialize it with the new date range
             if (datatable) {
                 datatable.destroy();
             }
             initCheckinsTable(start, end); // Pass the selected date range to initCheckinsTable
         }
-    
+
         $("#kt_daterangepicker_2").daterangepicker({
             startDate: start,
             endDate: end,
@@ -80,7 +85,7 @@ var KTAppEcommerceSaveCategory = function () {
                 "Last Month": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
             }
         }, cb);
-    
+
         cb(start, end); // Initialize with the default date range
     };
 
@@ -312,13 +317,7 @@ var KTAppEcommerceSaveCategory = function () {
     // Public methods
     return {
         init: function () {
-            // Init forms
-            // initQuill();
-            // initTagify();
-            // initFormRepeater();
-            // initDropzone();
-            // Handle forms
-            if(!isViewMode) {
+            if (!isViewMode) {
                 startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
                 initConditionsSelect2();
                 initDatepickers();
@@ -326,12 +325,10 @@ var KTAppEcommerceSaveCategory = function () {
                 handleConditions();
                 handleSubmit();
             }
-
-            // if (!table) {
-            //     return;
-            // }
-            initCheckinsTable();
-            initDateRangePicker();
+            if(isViewMode) {
+                initCheckinsTable();
+                initDateRangePicker();
+            }
             // handleSearchDatatable();
         }
     };
