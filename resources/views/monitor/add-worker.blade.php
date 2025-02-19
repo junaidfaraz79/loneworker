@@ -292,24 +292,46 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label">Check In Frequency</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <select class="form-select mb-2" data-control="select2"
-                                                    data-hide-search="true" data-placeholder="Select an option"
-                                                    name="check_in_frequency">
-                                                    <option>Select frequency</option>
-                                                    @foreach ($frequency as $key => $f)
-                                                        <option value="{{$f->id}}">{{$f->time}}</option>
-                                                    @endforeach
+                                            <div class="row mb-10">
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label">Check In Frequency</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <select class="form-select mb-2" data-control="select2"
+                                                        data-hide-search="true" data-placeholder="Select an option"
+                                                        name="check_in_frequency">
+                                                        <option>Select frequency</option>
+                                                        @foreach ($frequency as $key => $f)
+                                                            <option value="{{$f->id}}">{{$f->time}}</option>
+                                                        @endforeach
 
-                                                </select>
-                                                <!--end::Input-->
-                                                <!--begin::Description-->
-                                                <div class="text-muted fs-7">Set Check In Frequency.</div>
-                                                <!--end::Description-->
+                                                    </select>
+                                                    <!--end::Input-->
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Set Check In Frequency.</div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label">Check In History Visibility</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <select class="form-select mb-2" data-control="select2"
+                                                        data-placeholder="Select an option"
+                                                        name="check_in_visibility">
+                                                        <option>Select visibility</option>
+                                                        <option value="today">Today</option>
+                                                        <option value="7days">Last 7 Days</option>
+                                                        <option value="30days">Last 30 Days</option>
+                                                        <option value="this_month">This Month</option>
+                                                        <option value="last_month">Last Month</option>
+                                                    </select>
+                                                    <!--end::Input-->
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Set Check In History Visibility.</div>
+                                                    <!--end::Description-->
+                                                </div>
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->

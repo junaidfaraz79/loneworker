@@ -72,6 +72,7 @@ class WorkerController extends Controller
                     'nok_contact' => $req->nok_contact,
                     'subscriber_id' => Auth::guard('monitor')->user()->subscriber_id,
                     'monitor_id' => Auth::guard('monitor')->user()->id,
+                    'check_in_visibility' => $req->check_in_visibility ?? '7days',
                 ]);
 
                 if ($req->hasFile('worker_documents')) {
@@ -172,6 +173,7 @@ class WorkerController extends Controller
                     'nok_relation' => $req->nok_relation,
                     'nok_address' => $req->nok_address,
                     'nok_contact' => $req->nok_contact,
+                    'check_in_visibility' => $req->check_in_visibility
                 ]);
 
             if ($req->hasFile('worker_documents')) {
@@ -227,22 +229,46 @@ class WorkerController extends Controller
 
         // Paginate worker check-ins
         if ($req->ajax()) {
-            $workerCheckIns = $worker->checkIns()->orderBy('created_at', 'desc')->paginate(10);
-
-            $data = $workerCheckIns->getCollection()->transform(function ($checkIn) {
+            // Get pagination parameters from the request
+            $start = $req->input('start');
+            $length = $req->input('length');
+        
+            // Get date range parameters from the request (if provided)
+            $startDate = $req->input('startDate');
+            $endDate = $req->input('endDate');
+        
+            // Fetch paginated check-ins
+            $query = $worker->checkIns()
+                ->orderBy('created_at', 'desc');
+        
+            // Apply date range filtering if parameters are provided
+            if ($startDate && $endDate) {
+                $query->whereBetween('created_at', [$startDate, $endDate]);
+            }
+        
+            $workerCheckIns = $query->skip($start)
+                ->take($length)
+                ->get();
+        
+            // Transform the data
+            $data = $workerCheckIns->transform(function ($checkIn) {
                 return [
-                    'date' => $checkIn->created_at->format('jS M Y'), // Day as 1st, 2nd, etc., Month as Jan, Feb, etc., Year as 2024
-                    'scheduled_time' => optional($checkIn->scheduled_time)->format('g:i:s A') ?? 'Not Scheduled', // Time in AM/PM format with seconds
-                    'actual_time' => optional($checkIn->actual_time)->format('g:i:s A') ?? 'Not Checked In', // Time in AM/PM format with seconds
-                    'grace_period_end' => optional($checkIn->grace_period_end)->format('g:i:s A') ?? 'No Grace Period', // Time in AM/PM format with seconds
+                    'date' => $checkIn->created_at->format('d-M-y'),
+                    'scheduled_time' => optional($checkIn->scheduled_time)->format('g:i:s A') ?? 'N/A',
+                    'actual_time' => optional($checkIn->actual_time)->format('g:i:s A') ?? 'N/A',
+                    'grace_period_end' => optional($checkIn->grace_period_end)->format('g:i:s A') ?? 'N/A',
                     'location' => $checkIn->location ?? 'N/A',
-                    'status' => $checkIn->status ?? 'Unknown'
+                    'status' => $checkIn->status ?? 'N/A'
                 ];
             });
+        
+            // Get the total number of records (for pagination)
+            $totalRecords = $query->count();
+        
             return response()->json([
-                'draw' => intval($req->input('draw')), // This value must come from the client side
-                'recordsTotal' => $workerCheckIns->total(),
-                'recordsFiltered' => $workerCheckIns->total(), // Adjust if you apply further filtering
+                'draw' => intval($req->input('draw')),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $totalRecords,
                 'data' => $data,
             ]);
         }

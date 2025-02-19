@@ -16,16 +16,22 @@ var KTAppEcommerceSaveCategory = function () {
         });
     }
 
-    var initCheckinsTable = function () {
-        console.log('hereeeeee')
-        // Init datatable --- more info on datatables: https://datatables.net/manual/
+    var initCheckinsTable = function (startDate = null, endDate = null) {
         datatable = $(table).DataTable({
-            pageLength: 1,
+            pageLength: 10,
             processing: true,
             serverSide: true,
             ajax: {
                 url: workerViewUrl,
-                dataSrc: 'data', // This should match the key in your JSON response
+                type: 'GET',
+                data: function (d) {
+                    // Add date range parameters to the request if they are provided
+                    if (startDate && endDate) {
+                        d.startDate = startDate.format('YYYY-MM-DD H:i:s');
+                        d.endDate = endDate.format('YYYY-MM-DD H:i:s');
+                    }
+                },
+                dataSrc: 'data',
                 error: function(xhr, status, error) {
                     console.log("AJAX Error: ", status, error);
                 }
@@ -39,98 +45,44 @@ var KTAppEcommerceSaveCategory = function () {
                 { data: 'status' }
             ]
         });
+    };
+
+    var handleSearchDatatable = () => {
+        const filterSearch = document.querySelector('[data-kt-user-table-filter="search"]');
+        filterSearch.addEventListener('keyup', function (e) {
+            datatable.search(e.target.value).draw();
+        });
     }
-    // Init quill editor
-    const initQuill = () => {
-        // Define all elements for quill editor
-        const elements = [
-            '#plan_description'
-        ];
 
-        // Loop all elements
-        elements.forEach(element => {
-            // Get quill element
-            let quill = document.querySelector(element);
-
-            // Break if element not found
-            if (!quill) {
-                return;
+    var initDateRangePicker = () => {
+        var start = moment().subtract(29, "days");
+        var end = moment();
+    
+        function cb(start, end) {
+            $("#kt_daterangepicker_2").html(start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY"));
+    
+            // Destroy the existing DataTable (if it exists) and reinitialize it with the new date range
+            if (datatable) {
+                datatable.destroy();
             }
-
-            // Init quill --- more info: https://quilljs.com/docs/quickstart/
-            quill = new Quill(element, {
-                modules: {
-                    toolbar: [
-                        [{
-                            header: [1, 2, false]
-                        }],
-                        ['bold', 'italic', 'underline'],
-                        ['image', 'code-block']
-                    ]
-                },
-                placeholder: 'Type your text here...',
-                theme: 'snow' // or 'bubble'
-            });
-        });
-
-    }
-
-    // Init DropzoneJS --- more info:
-    const initDropzone = () => {
-        var myDropzone = new Dropzone("#add_worker_documents", {
-            url: "/",
-            paramName: "file", // The name that will be used to transfer the file
-            maxFiles: 10,
-            maxFilesize: 10, // MB
-            addRemoveLinks: true,
-            autoProcessQueue: false,
-            acceptedFiles: 'image/*, .pdf, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        });
-    }
-
-    // Init tagify
-    const initTagify = () => {
-        // Define all elements for tagify
-        const elements = [
-            '#kt_ecommerce_add_category_meta_keywords'
-        ];
-
-        // Loop all elements
-        elements.forEach(element => {
-            // Get tagify element
-            const tagify = document.querySelector(element);
-
-            // Break if element not found
-            if (!tagify) {
-                return;
+            initCheckinsTable(start, end); // Pass the selected date range to initCheckinsTable
+        }
+    
+        $("#kt_daterangepicker_2").daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                "Today": [moment(), moment()],
+                "Yesterday": [moment().subtract(1, "days"), moment().subtract(1, "days")],
+                "Last 7 Days": [moment().subtract(6, "days"), moment()],
+                "Last 30 Days": [moment().subtract(29, "days"), moment()],
+                "This Month": [moment().startOf("month"), moment().endOf("month")],
+                "Last Month": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
             }
-
-            // Init tagify --- more info: https://yaireo.github.io/tagify/
-            new Tagify(tagify);
-        });
-    }
-
-    // Init form repeater --- more info: https://github.com/DubFriend/jquery.repeater
-    const initFormRepeater = () => {
-        $('#kt_ecommerce_add_category_conditions').repeater({
-            initEmpty: false,
-
-            defaultValues: {
-                'text-input': 'foo'
-            },
-
-            show: function () {
-                $(this).slideDown();
-
-                // Init select2 on new repeated items
-                initConditionsSelect2();
-            },
-
-            hide: function (deleteElement) {
-                $(this).slideUp(deleteElement);
-            }
-        });
-    }
+        }, cb);
+    
+        cb(start, end); // Initialize with the default date range
+    };
 
     // Init condition select2
     const initConditionsSelect2 = () => {
@@ -378,8 +330,9 @@ var KTAppEcommerceSaveCategory = function () {
             // if (!table) {
             //     return;
             // }
-
             initCheckinsTable();
+            initDateRangePicker();
+            // handleSearchDatatable();
         }
     };
 }();

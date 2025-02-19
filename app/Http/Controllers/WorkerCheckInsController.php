@@ -72,33 +72,64 @@ class WorkerCheckInsController extends Controller
     public function historyByWorkerId(Request $request)
     {
         $user = Auth::user();
-
-        // If the user is not authenticated, Laravel will automatically handle this
         if (!$user) {
             abort(401, 'Unauthenticated.');
         }
 
-        // Directly use findOrFail to automatically return a 404 response if not found
         $worker = Worker::findOrFail($user->id);
+        $visibility = $worker->check_in_visibility;
 
-        // Eager load checkIns relationship and use pagination
-        $workerCheckIns = $worker->checkIns()->orderBy('created_at', 'desc')->paginate(10);
+        $query = $worker->checkIns()->orderBy('created_at', 'desc');
 
-        // Transform the pagination result (no need to check, it will return empty if no records found)
+        // Apply date filters based on visibility configured by the monitor
+        switch ($visibility) {
+            case 'today':
+                $query->whereDate('created_at', now()->startOfDay());
+                break;
+            case '7days':
+                $query->whereDate('created_at', '>=', now()->subDays(6)->startOfDay());
+                break;
+            case '30days':
+                $query->whereDate('created_at', '>=', now()->subDays(29)->startOfDay());
+                break;
+            case 'this_month':
+                $query->whereMonth('created_at', '=', now()->month)
+                      ->whereYear('created_at', '=', now()->year);
+                break;
+            case 'last_month':
+                $lastMonth = now()->subMonth();
+                $query->whereMonth('created_at', '=', $lastMonth->month)
+                      ->whereYear('created_at', '=', $lastMonth->year);
+                break;
+        }
+        
+        $perPage = 10;
+        $page = $request->query('page', 1);
+
+        $workerCheckIns = $query->paginate($perPage, ['*'], 'page', $page);
+
         $data = $workerCheckIns->getCollection()->transform(function ($checkIn) {
             return [
-                'date' => $checkIn->created_at->format('jS M Y'), // Day as 1st, 2nd, etc., Month as Jan, Feb, etc., Year as 2024
-                'scheduled_time' => optional($checkIn->scheduled_time)->format('g:i:s A') ?? 'Not Scheduled', // Time in AM/PM format with seconds
-                'actual_time' => optional($checkIn->actual_time)->format('g:i:s A') ?? 'Not Checked In', // Time in AM/PM format with seconds
-                'grace_period_end' => optional($checkIn->grace_period_end)->format('g:i:s A') ?? 'No Grace Period', // Time in AM/PM format with seconds
+                'date' => $checkIn->created_at->format('d-M-y'),
+                'scheduled_time' => optional($checkIn->scheduled_time)->format('g:i:s A') ?? 'N/A',
+                'actual_time' => optional($checkIn->actual_time)->format('g:i:s A') ?? 'N/A',
+                'grace_period_end' => optional($checkIn->grace_period_end)->format('g:i:s A') ?? 'N/A',
                 'location' => $checkIn->location ?? 'N/A',
-                'status' => $checkIn->status ?? 'Unknown'
+                'status' => $checkIn->status ?? 'N/A'
             ];
         });
 
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
+            'pagination' => [
+                'total' => $workerCheckIns->total(),
+                'per_page' => $workerCheckIns->perPage(),
+                'current_page' => $workerCheckIns->currentPage(),
+                'last_page' => $workerCheckIns->lastPage(),
+                'from' => $workerCheckIns->firstItem(),
+                'to' => $workerCheckIns->lastItem()
+            ]
         ], 200);
     }
 }

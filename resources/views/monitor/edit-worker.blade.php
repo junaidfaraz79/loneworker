@@ -357,29 +357,51 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label">Check In Frequency</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <select class="form-select mb-2" data-control="select2"
-                                                    data-hide-search="true" data-placeholder="Select an option"
-                                                    name="check_in_frequency" {{ $isViewMode==='y' ? 'disabled' : '' }}>
-                                                    <option value="">Select frequency</option>
-                                                    @foreach ($frequency as $f)
-                                                    <option value="{{ $f->id }}" {{ $f->id ==
-                                                        $worker->check_in_frequency ? 'selected' : '' }}>
-                                                        {{ $f->time }}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
+                                            <div class="row mb-10">
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label">Check In Frequency</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <select class="form-select mb-2" data-control="select2"
+                                                        data-hide-search="true" data-placeholder="Select an option"
+                                                        name="check_in_frequency" {{ $isViewMode==='y' ? 'disabled' : '' }}>
+                                                        <option value="">Select frequency</option>
+                                                        @foreach ($frequency as $f)
+                                                        <option value="{{ $f->id }}" {{ $f->id ==
+                                                            $worker->check_in_frequency ? 'selected' : '' }}>
+                                                            {{ $f->time }}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
 
-                                                <!--end::Input-->
-                                                <!--begin::Description-->
-                                                @if($isViewMode === 'n')
-                                                <div class="text-muted fs-7">Set Check In Frequency.</div>
-                                                @endif
-                                                <!--end::Description-->
+                                                    <!--end::Input-->
+                                                    <!--begin::Description-->
+                                                    @if($isViewMode === 'n')
+                                                    <div class="text-muted fs-7">Set Check In Frequency.</div>
+                                                    @endif
+                                                    <!--end::Description-->
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <!--begin::Label-->
+                                                    <label class="form-label">Check In History Visibility</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option" name="check_in_visibility">
+                                                        <option value="">Select visibility</option>
+                                                        <option value="today" {{ $worker->check_in_visibility === 'today' ? 'selected' : '' }}>Today</option>
+                                                        <option value="7days" {{ $worker->check_in_visibility === '7days' ? 'selected' : '' }}>Last 7 Days</option>
+                                                        <option value="30days" {{ $worker->check_in_visibility === '30days' ? 'selected' : '' }}>Last 30 Days</option>
+                                                        <option value="this_month" {{ $worker->check_in_visibility === 'this_month' ? 'selected' : '' }}>This Month</option>
+                                                        <option value="last_month" {{ $worker->check_in_visibility === 'last_month' ? 'selected' : '' }}>Last Month</option>
+                                                    </select>                                                    
+                                                    <!--end::Input-->
+                                                    @if($isViewMode === 'n')
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Set Check In History Visibility.</div>
+                                                    <!--end::Description-->
+                                                    @endif
+                                                </div>
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
@@ -692,9 +714,15 @@
                                     <div class="card card-flush py-4">
                                         <!--begin::Card header-->
                                         <div class="card-header">
-                                            <div class="card-title">
+                                            <div class="card-title col-lg-4">
                                                 <h2>Worker Check In History</h2>
                                             </div>
+                                            <!--begin::Search-->
+                                            <div class="d-flex align-items-center position-relative col-lg-5">
+                                                <label class="form-label">Date Range:</label>
+                                                <input class="form-control form-control-solid" placeholder="Pick date range" id="kt_daterangepicker_2"/>
+                                            </div>
+                                            <!--end::Search-->
                                         </div>
                                         <!--end::Card header-->
                                         <!--begin::Card body-->
