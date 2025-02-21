@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Monitor;
 use App\Models\Worker;
 use App\Models\WorkerCheckIns;
+use App\Models\WorkerMonitor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,8 +25,21 @@ class WorkerController extends Controller
 
     public function add()
     {
+        $monitor = Auth::guard('monitor')->user();
+
+        $assignedMonitors = Monitor::where('id', $monitor->id)->get();
+        $unassignedMonitors = Monitor::where('subscriber_id', $monitor->subscriber_id)
+                ->whereNotIn('id', $assignedMonitors->pluck('id'))
+                ->select('id', 'username')
+                ->get();
+
         $frequency = DB::table('check_in_frequency')->get();
-        return view('monitor.add-worker', ['frequency' => $frequency]);
+
+        return view('monitor.add-worker', [
+            'frequency' => $frequency,
+            'assignedMonitors' => $assignedMonitors,
+            'unassignedMonitors' => $unassignedMonitors
+        ]);
     }
 
     public function save(Request $req)
@@ -40,16 +55,18 @@ class WorkerController extends Controller
         // {
 
         if (Auth::guard('monitor')->user()->user_type === 'monitor' && Auth::guard('monitor')->check()) {
+
+            $assignedMonitors = json_decode($req->input('assignedMonitors'), true);
+
+            if ($req->file('worker_image')) {
+                if ($req->file('worker_image')->isValid())
+                    $filename = time() . '_' . $req->file('worker_image')->getClientOriginalName();
+                $worker_image = $req->file('worker_image')->storeAs('worker_images', $filename);
+            } else
+                $worker_image = '';
             try {
                 // Start transaction
                 DB::beginTransaction();
-
-                if ($req->file('worker_image')) {
-                    if ($req->file('worker_image')->isValid())
-                        $filename = time() . '_' . $req->file('worker_image')->getClientOriginalName();
-                    $worker_image = $req->file('worker_image')->storeAs('worker_images', $filename);
-                } else
-                    $worker_image = '';
 
                 $id = DB::table('workers')->insertGetId([
                     'worker_name' => $req->worker_name,
@@ -90,11 +107,16 @@ class WorkerController extends Controller
                     DB::table('worker_documents')->insert($files);
                 }
 
-                DB::table('worker_monitor')->insert([
-                    'monitor_id' => Auth::guard('monitor')->user()->id,
-                    'worker_id' => $id,
-                ]);
-
+                if(!empty($assignedMonitors))
+                {
+                    foreach ($assignedMonitors as $monitorId) {
+                        WorkerMonitor::create([
+                            'worker_id' => $id,
+                            'monitor_id' => $monitorId
+                        ]);
+                    }
+                }
+                
                 DB::commit(); // Commit transaction
 
                 $res = ['id' => $id, 'status' => 'success'];
@@ -113,14 +135,32 @@ class WorkerController extends Controller
 
     public function edit(Request $req, string $id)
     {
-        $isViewMode = 'n';
-        $worker = DB::table('workers')->where('id', '=', $id)->get();
-        if (count($worker)) {
+        $worker = Worker::with(['monitors'])->find($id);
+
+        if ($worker) {
             $frequency = DB::table('check_in_frequency')->get();
-            return view('monitor.edit-worker', ['worker' => $worker[0], 'frequency' => $frequency, 'isViewMode' => $isViewMode]);
-        } else
+
+            // Use relationship loaded above
+            $assignedMonitors = $worker->monitors()->select('id', 'username')->get();
+
+            // Fetch unassigned monitors
+            $unassignedMonitors = Monitor::where('subscriber_id', $worker->subscriber_id)
+                ->whereNotIn('id', $assignedMonitors->pluck('id'))
+                ->select('id', 'username')
+                ->get();
+
+            return view('monitor.edit-worker', [
+                'worker' => $worker,
+                'frequency' => $frequency,
+                'isViewMode' => 'n',
+                'assignedMonitors' => $assignedMonitors,
+                'unassignedMonitors' => $unassignedMonitors
+            ]);
+        } else {
             return redirect(route('workers'));
+        }
     }
+
 
     public function update(Request $req)
     {
@@ -149,16 +189,41 @@ class WorkerController extends Controller
         // {
         $worker_image = '';
         // }
+        $workerId = $req->id;
+
+        $assignedMonitors = json_decode($req->input('assignedMonitors'), true);
+
+        // Fetch all current associations for this worker
+        $currentAssociations = WorkerMonitor::where('worker_id', $workerId)->get();
+        $currentMonitorIds = $currentAssociations->pluck('monitor_id')->all();
+
+        // Determine the monitors to add and remove
+        $monitorsToAdd = array_diff($assignedMonitors, $currentMonitorIds);
+        $monitorsToRemove = array_diff($currentMonitorIds, $assignedMonitors);
 
         try {
             DB::beginTransaction();
+
+            // Add new monitors
+            foreach ($monitorsToAdd as $monitorId) {
+                WorkerMonitor::create([
+                    'worker_id' => $workerId,
+                    'monitor_id' => $monitorId
+                ]);
+            }
+
+            // Remove unassigned monitors
+            if (!empty($monitorsToRemove)) {
+                WorkerMonitor::where('worker_id', $workerId)
+                    ->whereIn('monitor_id', $monitorsToRemove)
+                    ->delete();
+            }
 
             DB::table('workers')->where('id', $req->id)
                 ->update([
                     'worker_name' => $req->worker_name,
                     'phone_no' => $req->phone_no,
                     'email' => $req->email,
-                    'pin' => '',
                     'phone_type' => $req->phone_type,
                     'role' => $req->role,
                     'department' => $req->department,
@@ -232,28 +297,25 @@ class WorkerController extends Controller
             // Get pagination parameters from the request
             $start = $req->input('start');
             $length = $req->input('length');
-        
+
             // Get date range parameters from the request (if provided)
             $startDate = $req->input('startDate');
             $endDate = $req->input('endDate');
-        
+
             // Fetch paginated check-ins
             $query = $worker->checkIns()
                 ->orderBy('created_at', 'desc');
-        
+
             // Apply date range filtering if parameters are provided
             if ($startDate && $endDate) {
                 $query->whereBetween('created_at', [$startDate, $endDate]);
             }
-        
-            // Clone the query for counting total records
-            $totalQuery = clone $query;
-        
-            // Fetch the paginated results
-            $workerCheckIns = $query->skip($start)
-                ->take($length)
-                ->get();
-        
+
+            // Get the total number of records (for pagination) before pagination is applied
+            $totalRecords = $query->count();
+
+            $workerCheckIns = $query->skip($start)->take($length)->get();
+
             // Transform the data
             $data = $workerCheckIns->transform(function ($checkIn) {
                 return [
@@ -265,10 +327,7 @@ class WorkerController extends Controller
                     'status' => $checkIn->status ?? 'N/A'
                 ];
             });
-        
-            // Get the total number of records (for pagination)
-            $totalRecords = $totalQuery->count();
-        
+
             return response()->json([
                 'draw' => intval($req->input('draw')),
                 'recordsTotal' => $totalRecords,
@@ -276,7 +335,7 @@ class WorkerController extends Controller
                 'data' => $data,
             ]);
         }
-        
+
         $fileTypeImages = [
             'pdf' => 'assets/media/svg/files/pdf.svg',
             'doc' => 'assets/media/svg/files/doc.svg',
@@ -287,6 +346,15 @@ class WorkerController extends Controller
         if (!$worker) {
             return redirect(route('workers'));
         }
+
+        // Use relationship loaded above
+        $assignedMonitors = $worker->monitors()->select('id', 'username')->get();
+
+        // Fetch unassigned monitors
+        $unassignedMonitors = Monitor::where('subscriber_id', $worker->subscriber_id)
+            ->whereNotIn('id', $assignedMonitors->pluck('id'))
+            ->select('id', 'username')
+            ->get();
 
         // Fetching check-in frequencies
         $frequency = DB::table('check_in_frequency')->get();
@@ -303,7 +371,9 @@ class WorkerController extends Controller
             'frequency' => $frequency,
             'isViewMode' => $isViewMode,
             'documents' => $documents,  // Pass the documents to the view
-            'fileTypeImages' => $fileTypeImages
+            'fileTypeImages' => $fileTypeImages,
+            'assignedMonitors' => $assignedMonitors,
+            'unassignedMonitors' => $unassignedMonitors
         ]);
     }
 

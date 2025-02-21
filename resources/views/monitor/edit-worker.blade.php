@@ -244,6 +244,12 @@
                                     href="#worker_documents_tab">Documents</a>
                             </li>
                             <!--end:::Tab item-->
+                            <!--begin:::Tab item-->
+                            <li class="nav-item">
+                                <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                    href="#monitors_tab">Monitors</a>
+                            </li>
+                            <!--end:::Tab item-->
                             @if($isViewMode === 'y')
                             <!--begin:::Tab item-->
                             <li class="nav-item">
@@ -257,7 +263,7 @@
                         <!--begin::Tab content-->
                         <div class="tab-content">
                             <!--begin::Tab pane (Worker Details)-->
-                            <div class="tab-pane fade show active" id="worker_details_tab" role="tab-panel">
+                            <div class="tab-pane fade show active" id="worker_details_tab" role="tabpanel">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <!--begin::General options-->
                                     <!--begin::Worker details-->
@@ -365,7 +371,8 @@
                                                     <!--begin::Input-->
                                                     <select class="form-select mb-2" data-control="select2"
                                                         data-hide-search="true" data-placeholder="Select an option"
-                                                        name="check_in_frequency" {{ $isViewMode==='y' ? 'disabled' : '' }}>
+                                                        name="check_in_frequency" {{ $isViewMode==='y' ? 'disabled' : ''
+                                                        }}>
                                                         <option value="">Select frequency</option>
                                                         @foreach ($frequency as $f)
                                                         <option value="{{ $f->id }}" {{ $f->id ==
@@ -387,14 +394,21 @@
                                                     <label class="form-label">Check In History Visibility</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option" name="check_in_visibility" {{ $isViewMode==='y' ? 'disabled' : '' }}>
+                                                    <select class="form-select mb-2" data-control="select2"
+                                                        data-placeholder="Select an option" name="check_in_visibility"
+                                                        {{ $isViewMode==='y' ? 'disabled' : '' }}>
                                                         <option value="">Select visibility</option>
-                                                        <option value="today" {{ $worker->check_in_visibility === 'today' ? 'selected' : '' }}>Today</option>
-                                                        <option value="7days" {{ $worker->check_in_visibility === '7days' ? 'selected' : '' }}>Last 7 Days</option>
-                                                        <option value="30days" {{ $worker->check_in_visibility === '30days' ? 'selected' : '' }}>Last 30 Days</option>
-                                                        <option value="this_month" {{ $worker->check_in_visibility === 'this_month' ? 'selected' : '' }}>This Month</option>
-                                                        <option value="last_month" {{ $worker->check_in_visibility === 'last_month' ? 'selected' : '' }}>Last Month</option>
-                                                    </select>                                                    
+                                                        <option value="today" {{ $worker->check_in_visibility ===
+                                                            'today' ? 'selected' : '' }}>Today</option>
+                                                        <option value="7days" {{ $worker->check_in_visibility ===
+                                                            '7days' ? 'selected' : '' }}>Last 7 Days</option>
+                                                        <option value="30days" {{ $worker->check_in_visibility ===
+                                                            '30days' ? 'selected' : '' }}>Last 30 Days</option>
+                                                        <option value="this_month" {{ $worker->check_in_visibility ===
+                                                            'this_month' ? 'selected' : '' }}>This Month</option>
+                                                        <option value="last_month" {{ $worker->check_in_visibility ===
+                                                            'last_month' ? 'selected' : '' }}>Last Month</option>
+                                                    </select>
                                                     <!--end::Input-->
                                                     @if($isViewMode === 'n')
                                                     <!--begin::Description-->
@@ -604,7 +618,7 @@
                             </div>
                             <!--end::Tab pane-->
                             <!--begin::Tab pane (Worker Documents)-->
-                            <div class="tab-pane fade" id="worker_documents_tab" role="tab-panel">
+                            <div class="tab-pane fade" id="worker_documents_tab" role="tabpanel">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <!--begin::General options-->
                                     <div class="card card-flush py-4">
@@ -708,7 +722,7 @@
                             <!--end::Tab pane-->
                             @if($isViewMode === 'y')
                             <!--begin::Tab pane (Worker CheckIns)-->
-                            <div class="tab-pane fade show active" id="worker_checkins_tab" role="tab-panel">
+                            <div class="tab-pane fade" id="worker_checkins_tab" role="tabpanel">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <!--begin::General options-->
                                     <!--begin::Worker details-->
@@ -721,7 +735,8 @@
                                             <!--begin::Search-->
                                             <div class="d-flex align-items-center position-relative col-lg-5">
                                                 <label class="form-label">Date Range:</label>
-                                                <input class="form-control form-control-solid" placeholder="Pick date range" id="kt_daterangepicker_2"/>
+                                                <input class="form-control form-control-solid"
+                                                    placeholder="Pick date range" id="kt_daterangepicker_2" />
                                             </div>
                                             <!--end::Search-->
                                         </div>
@@ -751,6 +766,28 @@
                             </div>
                             <!--end::Tab pane-->
                             @endif
+                            <!--begin::Tab pane (Worker Monitors)-->
+                            <div class="tab-pane fade" id="monitors_tab" role="tabpanel">
+                                <div class="d-flex flex-column gap-7 gap-lg-10">
+                                    <!--begin::General options-->
+                                    <!--begin::Worker details-->
+                                    <div class="card card-flush py-4">
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title col-lg-4">
+                                                <h2>Worker Monitors</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <div id="kt_docs_jkanban_restricted"></div>
+                                        </div>
+                                        <!--end::Card header-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Tab pane-->
                         </div>
                         <!--end::Tab content-->
                         @if($isViewMode === 'n')
@@ -793,10 +830,16 @@
 <script src="{{ asset('/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/utilities/modals/create-app.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/loneworker/update-worker.js') }}"></script>
+<link href="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.css') }}" rel="stylesheet" type="text/css" />
+<script src="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.js') }}"></script>
+<script>
+    var assignedMonitors = @json($assignedMonitors);
+    var unassignedMonitors = @json($unassignedMonitors);
+</script>
 @if($isViewMode === 'y')
-    <script>
-        var workerViewUrl = "{{ route('worker.view', ['parameter' => $worker->id]) }}";
-    </script>
+<script>
+    var workerViewUrl = "{{ route('worker.view', ['parameter' => $worker->id]) }}";
+</script>
 @endif
 
 @endpush

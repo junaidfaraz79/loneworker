@@ -203,12 +203,18 @@
                                     href="#worker_documents_tab">Documents</a>
                             </li>
                             <!--end:::Tab item-->
+                            <!--begin:::Tab item-->
+                            <li class="nav-item">
+                                <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                    href="#monitors_tab">Monitors</a>
+                            </li>
+                            <!--end:::Tab item-->
                         </ul>
                         <!--end:::Tabs-->
                         <!--begin::Tab content-->
                         <div class="tab-content">
                             <!--begin::Tab pane-->
-                            <div class="tab-pane fade show active" id="worker_details_tab" role="tab-panel">
+                            <div class="tab-pane fade show active" id="worker_details_tab" role="tabpanel">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <!--begin::General options-->
                                     <div class="card card-flush py-4">
@@ -486,8 +492,7 @@
                             </div>
                             <!--end::Tab pane-->
                             <!--begin::Tab pane-->
-                            <div class="tab-pane fade" id="worker_documents_tab"
-                                role="tab-panel">
+                            <div class="tab-pane fade" id="worker_documents_tab" role="tabpanel">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <!--begin::General options-->
                                     <div class="card card-flush py-4">
@@ -535,6 +540,28 @@
                                 </div>
                             </div>
                             <!--end::Tab pane-->
+                            <!--begin::Tab pane (Worker Monitors)-->
+                            <div class="tab-pane fade" id="monitors_tab" role="tabpanel">
+                                <div class="d-flex flex-column gap-7 gap-lg-10">
+                                    <!--begin::General options-->
+                                    <!--begin::Worker details-->
+                                    <div class="card card-flush py-4">
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title col-lg-4">
+                                                <h2>Worker Monitors</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <div id="kt_docs_jkanban_restricted"></div>
+                                        </div>
+                                        <!--end::Card header-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Tab pane-->
                         </div>
                         <!--end::Tab content-->
                         <div class="d-flex justify-content-end">
@@ -578,5 +605,10 @@
 <script src="/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 <script src="/assets/js/custom/utilities/modals/create-app.js"></script>
 <script src="/assets/js/custom/utilities/modals/users-search.js"></script>
-
+<link href="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.css') }}" rel="stylesheet" type="text/css" />
+<script src="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.js') }}"></script>
+<script>
+    var assignedMonitors = @json($assignedMonitors);
+    var unassignedMonitors = @json($unassignedMonitors);
+</script>
 @endpush

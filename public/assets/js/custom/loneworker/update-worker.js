@@ -4,6 +4,8 @@
 var KTAppEcommerceSaveCategory = function () {
     var startDatepicker;
     var startFlatpickr;
+    var kanbanEl;
+    var kanban;
     var isViewMode = document.getElementById('isViewMode').value === 'y';
     if (isViewMode) {
         var table = document.getElementById('workerCheckInsTable');
@@ -19,8 +21,7 @@ var KTAppEcommerceSaveCategory = function () {
     }
 
     var initCheckinsTable = function (startDate = null, endDate = null) {
-        if(startDate && endDate)
-        {console.log(startDate.format('YYYY-MM-DD HH:mm:ss'), endDate.format('YYYY-MM-DD HH:mm:ss'));}
+        if (startDate && endDate) { console.log(startDate.format('YYYY-MM-DD HH:mm:ss'), endDate.format('YYYY-MM-DD HH:mm:ss')); }
         datatable = $(table).DataTable({
             pageLength: 10,
             processing: true,
@@ -231,9 +232,29 @@ var KTAppEcommerceSaveCategory = function () {
                         // Disable submit button whilst loading
                         submitButton.disabled = true;
 
+                        const assignedMonitors = [];
+                        const unassignedMonitors = [];
+
+                        // Get assigned monitors
+                        const assignedBoard = kanban.getBoardElements('_assigned_monitors');
+                        assignedBoard.forEach(item => {
+                            assignedMonitors.push(item.getAttribute('data-eid'));
+                        });
+
+                        // Get unassigned monitors
+                        const unassignedBoard = kanban.getBoardElements('_unassigned_monitors');
+                        unassignedBoard.forEach(item => {
+                            unassignedMonitors.push(item.getAttribute('data-eid'));
+                        });
+
                         let form = document.getElementById("kt_ecommerce_add_form");
                         let formData = new FormData(form);
 
+                        // Add serialized data to formData
+                        formData.append('assignedMonitors', JSON.stringify(assignedMonitors));
+                        formData.append('unassignedMonitors', JSON.stringify(unassignedMonitors));
+
+                        console.log(JSON.stringify(assignedMonitors), JSON.stringify(unassignedMonitors))
                         const dropzoneElement = document.querySelector('#add_worker_documents');
                         if (dropzoneElement.dropzone) {
                             const files = dropzoneElement.dropzone.files;
@@ -314,6 +335,52 @@ var KTAppEcommerceSaveCategory = function () {
         })
     }
 
+    // Private functions
+    var initKanban = function () {
+        kanban = new jKanban({
+            element: '#kt_docs_jkanban_restricted',
+            gutter: '0',
+            widthBoard: '250px',
+            dragItems: isViewMode ? false : true,
+            boards: [
+                {
+                    'id': '_assigned_monitors',
+                    'title': 'Current Monitors',
+                    'dragTo': ['_unassigned_monitors'],
+                    'item': assignedMonitors.map(function (monitor) {
+                        return {
+                            'id': monitor.id,
+                            'title': monitor.username,
+                            'class': 'kanban-item', // Add custom class if needed
+                            'drag': true, // Ensure drag is enabled
+                            'data-id': monitor.id // Important for identifying the item uniquely
+                        }
+                    })
+                },
+                {
+                    'id': '_unassigned_monitors',
+                    'title': 'Available Monitors',
+                    'dragTo': ['_assigned_monitors'],
+                    'item': unassignedMonitors.map(function (monitor) {
+                        return {
+                            'id': monitor.id,
+                            'title': monitor.username,
+                            'class': 'kanban-item', // Add custom class if needed
+                            'drag': true, // Ensure drag is enabled
+                            'data-id': monitor.id // Important for identifying the item uniquely
+                        }
+                    })
+                }
+            ]
+        });
+
+        // Set jKanban max height
+        const allItems = kanbanEl.querySelectorAll('.kanban-item');
+        allItems.forEach(item => {
+            item.style.padding = '8px';
+        });
+    }
+
     // Public methods
     return {
         init: function () {
@@ -325,10 +392,12 @@ var KTAppEcommerceSaveCategory = function () {
                 handleConditions();
                 handleSubmit();
             }
-            if(isViewMode) {
+            if (isViewMode) {
                 initCheckinsTable();
                 initDateRangePicker();
             }
+            kanbanEl = document.querySelector('#kt_docs_jkanban_restricted');
+            initKanban();
             // handleSearchDatatable();
         }
     };

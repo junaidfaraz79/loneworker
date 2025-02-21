@@ -62,5 +62,10 @@ class Worker extends Authenticatable
     {
         return $this->hasMany(WorkerCheckIns::class, 'worker_id', 'id');
     }
+
+    public function monitors()
+    {
+        return $this->belongsToMany(Monitor::class, 'worker_monitor', 'worker_id', 'monitor_id');
+    }
 }
 

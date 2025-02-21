@@ -248,15 +248,18 @@ class MonitorController extends Controller
     // Fetch all workers for the logged-in monitor without filtering by active attendance status
     public function dashboard(Request $req)
     {
-        // Fetch all workers with optional latest attendance and workerCheckIns
+        // Fetch all workers associated with the current monitor
+        $monitorId = Auth::guard('monitor')->user()->id;
+
         $workers = Worker::with(['attendance' => function ($query) {
-            $query->latest() // Fetch the latest attendance (if exists)
+            $query->latest() // Fetch the latest attendance record, if any
                 ->with(['workerCheckIns' => function ($query) {
-                    $query->latest(); // Fetch the latest WorkerCheckIns record (if exists)
+                    $query->latest(); // Fetch the latest WorkerCheckIns record, if any
                 }]);
         }])
-            ->leftJoin('check_in_frequency', 'workers.check_in_frequency', '=', 'check_in_frequency.id')
-            ->where('monitor_id', Auth::guard('monitor')->user()->id)
+            ->join('worker_monitor', 'workers.id', '=', 'worker_monitor.worker_id') // Join with worker_monitor
+            ->leftJoin('check_in_frequency', 'workers.check_in_frequency', '=', 'check_in_frequency.id') // Join with check_in_frequency
+            ->where('worker_monitor.monitor_id', $monitorId) // Filter by monitor_id
             ->select('workers.*', 'check_in_frequency.time as check_in_frequency_time')
             ->get();
 
