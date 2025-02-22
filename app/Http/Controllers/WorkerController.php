@@ -29,14 +29,17 @@ class WorkerController extends Controller
 
         $assignedMonitors = Monitor::where('id', $monitor->id)->get();
         $unassignedMonitors = Monitor::where('subscriber_id', $monitor->subscriber_id)
-                ->whereNotIn('id', $assignedMonitors->pluck('id'))
-                ->select('id', 'username')
-                ->get();
+            ->whereNotIn('id', $assignedMonitors->pluck('id'))
+            ->select('id', 'username')
+            ->get();
+
+        $shifts = DB::table('shifts')->where('status', 'active')->get();
 
         $frequency = DB::table('check_in_frequency')->get();
 
         return view('monitor.add-worker', [
             'frequency' => $frequency,
+            'shifts' => $shifts,
             'assignedMonitors' => $assignedMonitors,
             'unassignedMonitors' => $unassignedMonitors
         ]);
@@ -87,6 +90,7 @@ class WorkerController extends Controller
                     'nok_relation' => $req->nok_relation,
                     'nok_address' => $req->nok_address,
                     'nok_contact' => $req->nok_contact,
+                    'shift_id' => $req->shift_id,
                     'subscriber_id' => Auth::guard('monitor')->user()->subscriber_id,
                     'monitor_id' => Auth::guard('monitor')->user()->id,
                     'check_in_visibility' => $req->check_in_visibility ?? '7days',
@@ -107,8 +111,7 @@ class WorkerController extends Controller
                     DB::table('worker_documents')->insert($files);
                 }
 
-                if(!empty($assignedMonitors))
-                {
+                if (!empty($assignedMonitors)) {
                     foreach ($assignedMonitors as $monitorId) {
                         WorkerMonitor::create([
                             'worker_id' => $id,
@@ -116,7 +119,7 @@ class WorkerController extends Controller
                         ]);
                     }
                 }
-                
+
                 DB::commit(); // Commit transaction
 
                 $res = ['id' => $id, 'status' => 'success'];
@@ -149,9 +152,12 @@ class WorkerController extends Controller
                 ->select('id', 'username')
                 ->get();
 
+            $shifts = DB::table('shifts')->where('status', 'active')->get();
+
             return view('monitor.edit-worker', [
                 'worker' => $worker,
                 'frequency' => $frequency,
+                'shifts' => $shifts,
                 'isViewMode' => 'n',
                 'assignedMonitors' => $assignedMonitors,
                 'unassignedMonitors' => $unassignedMonitors
@@ -237,6 +243,7 @@ class WorkerController extends Controller
                     'nok_name' => $req->nok_name,
                     'nok_relation' => $req->nok_relation,
                     'nok_address' => $req->nok_address,
+                    'shift_id' => $req->shift_id,
                     'nok_contact' => $req->nok_contact,
                     'check_in_visibility' => $req->check_in_visibility
                 ]);
@@ -358,6 +365,7 @@ class WorkerController extends Controller
 
         // Fetching check-in frequencies
         $frequency = DB::table('check_in_frequency')->get();
+        $shifts = DB::table('shifts')->where('status', 'active')->get();
 
         // Joining worker_documents with workers to fetch all documents related to the worker
         $documents = DB::table('worker_documents')
@@ -369,6 +377,7 @@ class WorkerController extends Controller
         return view('monitor.edit-worker', [
             'worker' => $worker,
             'frequency' => $frequency,
+            'shifts' => $shifts,
             'isViewMode' => $isViewMode,
             'documents' => $documents,  // Pass the documents to the view
             'fileTypeImages' => $fileTypeImages,

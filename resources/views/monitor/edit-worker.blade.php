@@ -363,16 +363,37 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
+                                            <div class="mb-10">
+                                                <!--begin::Label-->
+                                                <label class="form-label">Shift</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option"
+                                                    name="shift_id" {{ $isViewMode==='y' ? 'disabled' : ''}}>
+                                                    <option>Select Shift</option>
+                                                    @foreach ($shifts as $key => $shift)
+                                                        <option value="{{$shift->id}}" {{ $shift->id == $worker->shift_id ? 'selected' : '' }}>
+                                                            {{ $shift->name . ' (' . $shift->start_time . ' - ' . $shift->end_time . ')' }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <!--end::Input-->
+                                                @if($isViewMode === 'n')
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set shift.</div>
+                                                <!--end::Description-->
+                                                @endif
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
                                             <div class="row mb-10">
                                                 <div class="col-lg-6">
                                                     <!--begin::Label-->
                                                     <label class="form-label">Check In Frequency</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <select class="form-select mb-2" data-control="select2"
-                                                        data-hide-search="true" data-placeholder="Select an option"
-                                                        name="check_in_frequency" {{ $isViewMode==='y' ? 'disabled' : ''
-                                                        }}>
+                                                    <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option" 
+                                                        name="check_in_frequency" {{ $isViewMode==='y' ? 'disabled' : '' }}>
                                                         <option value="">Select frequency</option>
                                                         @foreach ($frequency as $f)
                                                         <option value="{{ $f->id }}" {{ $f->id ==
