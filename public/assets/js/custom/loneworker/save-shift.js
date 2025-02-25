@@ -117,6 +117,7 @@ var KTAppSaveShift = function () {
     // Public methods
     return {
         init: function () {
+            $('.form-select').select2();
             handleSubmit(); // Ensure this is called after Select2 init
         }
     };

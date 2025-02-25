@@ -20,14 +20,15 @@ Route::post('/worker/auth', [WorkerController::class, 'authenticateWorker']);
 
 // Routes for workers
 Route::middleware('auth:worker')->group(function () {
-    Route::get('/worker/test', function (Request $request) {
-        $res = ['status' => 'successful testing with token'];
-        return response()->json($res, 200);
-    });
+    // Route::get('/worker/test', function (Request $request) {
+    //     $res = ['status' => 'successful testing with token'];
+    //     return response()->json($res, 200);
+    // });
     Route::post('/worker/signout', [WorkerController::class, 'signoutWorker']);
     Route::post('/worker/change-password', [WorkerController::class, 'changePassword']);
     Route::post('/worker/attendance', [AttendanceController::class, 'attendance']);
     Route::post('/worker/checkin', [WorkerCheckInsController::class, 'checkin']);
     Route::get('/worker/checkin-history', [WorkerCheckInsController::class, 'historyByWorkerId']);
     Route::post('/worker/checkout', [AttendanceController::class, 'checkout']);
+    Route::get('/worker/shift-details', [WorkerController::class, 'getDetailedWorkerShifts']);
 });

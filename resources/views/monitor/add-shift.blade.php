@@ -119,7 +119,26 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Days</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <select name="days[]" class="form-select mb-2" multiple="multiple" data-control="select2" data-placeholder="Select days" id="days">
+                                            <option value="">Select days</option>
+                                            <option value="monday">Monday</option> 
+                                            <option value="tuesday">Tuesday</option> 
+                                            <option value="wednesday">Wednesday</option> 
+                                            <option value="thursday">Thursday</option> 
+                                            <option value="friday">Friday</option> 
+                                            <option value="saturday">Saturday</option> 
+                                            <option value="sunday">Sunday</option> 
+                                        </select>
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    {{-- <div class="mb-10">
                                         <!--begin::Label-->
                                         <label class="form-label">Alert Frequency</label>
                                         <!--end::Label-->
@@ -137,7 +156,7 @@
                                         <!--begin::Description-->
                                         <div class="text-muted fs-7">After how many minutes the worker will be sent alert.</div>
                                         <!--end::Description-->
-                                    </div>
+                                    </div> --}}
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="mb-10">

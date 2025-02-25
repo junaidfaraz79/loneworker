@@ -381,9 +381,251 @@ var KTAppEcommerceSaveCategory = function () {
         });
     }
 
+    const initFormRepeater = () => {
+        $('#shifts_site_repeater').repeater({
+            initEmpty: false,
+            defaultValues: {
+                'text-input': 'foo'
+            },
+            show: function () {
+                $(this).slideDown();
+
+                const siteElement = $(this).find('.site-select');
+                const shiftElement = $(this).find('.shift-select');
+                const startTimeEl = $(this).find('.custom-start-time');
+                const endTimeEl = $(this).find('.custom-end-time');
+                populateSites(siteElement);
+                populateTimings(startTimeEl);
+                populateTimings(endTimeEl);
+
+                // Initialize Select2 for the new select element
+                initializeSelect2(siteElement);
+                initializeSelect2(shiftElement);
+                initializeSelect2(startTimeEl);
+                initializeSelect2(endTimeEl);
+
+                // Attach event listeners for the new repeater item
+                const repeaterItem = $(this);
+                repeaterItem.find('.site-select').on('change', function () {
+                    populateShifts(repeaterItem);
+                });
+            },
+            hide: function (deleteElement) {
+                $(this).slideUp(deleteElement);
+            }
+        });
+
+        const workerId = document.getElementById('workerId').value;
+        if (workerId) {
+            const url = `/monitor/worker/shifts/${workerId}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Worker data fetched:', data);
+                    populateRepeater(data.shifts); // Call a function to populate the repeater
+                })
+                .catch(error => {
+                    console.error('Error fetching worker data:', error);
+                });
+        }
+    };
+
+    const populateRepeater = async (shifts) => {
+        // Clear existing repeater items (if any)
+        $('#shifts_site_repeater').find('[data-repeater-item]').remove();
+    
+        // Loop through the shifts and add repeater items
+        for (const shift of shifts) {
+            // Add a new repeater item
+            $('[data-repeater-create]').click();
+    
+            // Get the newly added repeater item
+            const newRepeaterItem = $('#shifts_site_repeater').find('[data-repeater-item]').last();
+    
+            // Populate the fields in the new repeater item
+            await populateRepeaterItem(newRepeaterItem, shift);
+        }
+    };
+
+    const populateRepeaterItem = async (repeaterItem, shift) => {
+        // Populate site select
+        const siteElement = repeaterItem.find('.site-select');
+        siteElement.val(shift.site_id).trigger('change');
+    
+        // Wait for the shifts dropdown to be populated
+        await populateShifts(repeaterItem);
+    
+        // Populate shift select
+        const shiftElement = repeaterItem.find('.shift-select');
+        shiftElement.val(shift.shift_id).trigger('change');
+    
+        // Populate start time
+        const startTimeEl = repeaterItem.find('.custom-start-time');
+        startTimeEl.val(shift.custom_start_time).trigger('change');
+    
+        // Populate end time
+        const endTimeEl = repeaterItem.find('.custom-end-time');
+        endTimeEl.val(shift.custom_end_time).trigger('change');
+    
+        // Initialize Select2 for the new repeater item
+        initializeSelect2(siteElement);
+        initializeSelect2(shiftElement);
+        initializeSelect2(startTimeEl);
+        initializeSelect2(endTimeEl);
+    };
+
+    const populateShifts = (repeaterItem) => {
+        return new Promise((resolve, reject) => {
+            const selectedSite = repeaterItem.find('.site-select option:selected').val();
+            const shiftElement = repeaterItem.find('.shift-select');
+    
+            if (selectedSite) {
+                // Construct the URL with the site ID
+                const url = `/monitor/shifts/site/${selectedSite}`;
+    
+                // Fetch API call
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.shifts && data.shifts.length > 0) {
+                            // Clear existing options
+                            $(shiftElement).empty();
+    
+                            // Add default option
+                            $(shiftElement).append($('<option>', {
+                                value: '',
+                                text: 'Select Shift',
+                                selected: true
+                            }));
+    
+                            // Add shift options
+                            data.shifts.forEach(shift => {
+                                $(shiftElement).append($('<option>', {
+                                    value: shift.id,
+                                    text: `${shift.name} (${shift.default_start_time} - ${shift.default_end_time})`
+                                }));
+                            });
+    
+                            // Initialize Select2
+                            $(shiftElement).select2();
+                            resolve(); // Resolve the promise after shifts are populated
+                        } else {
+                            console.log('No shifts found for the given site.');
+                            resolve(); // Resolve even if no shifts are found
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        reject(error); // Reject the promise on error
+                    });
+            } else {
+                // Clear existing options
+                $(shiftElement).empty();
+                $(shiftElement).append($('<option>', {
+                    value: '',
+                    text: 'Select Shift',
+                    selected: true
+                }));
+                resolve(); // Resolve the promise if no site is selected
+            }
+        });
+    };
+
+    // Function to populate product options in a select element
+    const populateSites = (selectElement) => {
+        // Clear existing options
+        $(selectElement).empty();
+
+        $(selectElement).append($('<option>', {
+            value: '',
+            text: 'Select Site',
+            selected: true
+        }));
+
+        // Loop through the sites data
+        Object.entries(sites).forEach(([customerId, customerSites]) => {
+            // Create an optgroup element
+            var optgroup = $('<optgroup>', {
+                label: customerSites[0].customer_name // Set the optgroup label
+            });
+
+            // Loop through the sites under this customer
+            customerSites.forEach(site => {
+                // Create an option element
+                var option = $('<option>', {
+                    value: site.id, // Set the option value
+                    text: site.site_name // Set the option text
+                });
+
+                // Append the option to the optgroup
+                optgroup.append(option);
+            });
+
+            // Append the optgroup to the select element
+            $(selectElement).append(optgroup);
+        });
+    };
+
+    // Function to populate product options in a select element
+    const populateTimings = (selectElement) => {
+        // Clear existing options
+        $(selectElement).empty();
+
+        // Add default option
+        $(selectElement).append($('<option>', {
+            value: '',
+            text: 'Select timing'
+        }));
+
+        // Add product options
+        timings.forEach(timing => {
+            $(selectElement).append($('<option>', {
+                value: timing.time,
+                text: timing.time,
+            }));
+        });
+    };
+
+    var initializeSelect2 = (selectElement) => {
+        if (!$(selectElement).hasClass("select2-hidden-accessible")) {
+            $(selectElement).select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        }
+    };
+
     // Public methods
     return {
         init: function () {
+            initFormRepeater();
+            // Manually initialize select 2 for first additional order repeater item 
+            const firstRepeaterItem = $('#shifts_site_repeater').find('[data-repeater-item]').first();
+            if (firstRepeaterItem.length) {
+                const shiftElement = $(firstRepeaterItem).find('.shift-select');
+                const siteElement = $(firstRepeaterItem).find('.site-select');
+                const startTimeEl = $(firstRepeaterItem).find('.custom-start-time');
+                const endTimeEl = $(firstRepeaterItem).find('.custom-end-time');
+                siteElement.on('change', function () {
+                    // const repeaterItem = $(this).closest('[data-repeater-item]');
+                    populateShifts(firstRepeaterItem);
+                });
+                initializeSelect2(shiftElement);
+                initializeSelect2(siteElement);
+                initializeSelect2(startTimeEl);
+                initializeSelect2(endTimeEl);
+            }
+
+            $(document).on('change', '[data-repeater-item] .site-select', function () {
+                const repeaterItem = $(this).closest('[data-repeater-item]');
+                populateShifts(repeaterItem);
+            });
+
             if (!isViewMode) {
                 startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
                 initConditionsSelect2();

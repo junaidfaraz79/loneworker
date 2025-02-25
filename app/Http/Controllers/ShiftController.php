@@ -18,6 +18,31 @@ class ShiftController extends Controller
         return view('monitor.shifts', ['shifts' => $shifts, 'sites' => $sites]);
     }
 
+    public function shiftsBySite(Request $req, $site_id)
+    {
+        try {
+            $shifts = DB::table('shifts')->where('site_id', intval($site_id))->get();
+
+            if ($shifts) {
+                $res = ['shifts' => $shifts, 'status' => 'success'];
+                return response()->json($res, 200);  // Return a 200 OK with the response
+            } else {
+                // If insertion failed
+                $res = ['shifts' => null, 'status' => 'not found'];
+                return response()->json($res, 404);  // Return a 500 Internal Server Error
+            }
+        }
+        catch (\Exception $e) {
+            // Log the exception
+            Log::error('Error saving shift: ' . $e->getMessage());
+
+            // Return an error response
+            $res = ['id' => null, 'status' => 'error', 'message' => 'Server error occurred: ' . $e];
+            return response()->json($res, 500);  // Return a 500 Internal Server Error
+        }
+        
+    }
+
     public function add()
     {
         // $plans = DB::table('plans')->get();
@@ -35,11 +60,12 @@ class ShiftController extends Controller
             // Insert data into the database
             $id = DB::table('shifts')->insertGetId([
                 'name' => $req->input('name'),  // Assuming 'name' is passed in the request
-                'start_time' => $req->input('start_time'),  // Assuming 'start_time' is passed in the request
-                'end_time' => $req->input('end_time'),  // Assuming 'end_time' is passed in the request
+                'default_start_time' => $req->input('start_time'),  // Assuming 'start_time' is passed in the request
+                'default_end_time' => $req->input('end_time'),  // Assuming 'end_time' is passed in the request
                 'status' => $req->input('status'),  // Assuming 'status' is passed in the request
                 'site_id' => $req->input('site_id'),
-                'alert_frequency' => $req->input('alert_frequency'),
+                'days' => json_encode($req->days),
+                // 'alert_frequency' => $req->input('alert_frequency'),
                 'monitor_id' => Auth::guard('monitor')->user()->id,                
                 'added_on' => now(),
                 'updated_on' => now(),
@@ -93,7 +119,8 @@ class ShiftController extends Controller
         if ($shift) {
             $timings = DB::table('timings')->get();
             $frequency = DB::table('check_in_frequency')->get();
-            return view('monitor.edit-shift', ['shift' => $shift, 'timings' => $timings, 'frequency' => $frequency, 'isViewMode' => $isViewMode]);
+            $sites = DB::table('sites')->get();
+            return view('monitor.edit-shift', ['shift' => $shift, 'timings' => $timings, 'frequency' => $frequency, 'sites' => $sites, 'isViewMode' => $isViewMode]);
         } else
             return redirect(route('shifts'));
     }
@@ -107,12 +134,12 @@ class ShiftController extends Controller
             $updated = DB::table('shifts')->where('id', $req->shift_id)
                 ->update([
                     'name' => $req->input('name'),
-                    'start_time' => $req->input('start_time'),
-                    'end_time' => $req->input('end_time'),
-                    'end_time' => $req->input('end_time'),
+                    'default_start_time' => $req->input('start_time'),
+                    'default_end_time' => $req->input('end_time'),
                     'status' => $req->input('status'),
+                    'days' => json_encode($req->days),
                     'site_id' => $req->input('site_id'),
-                    'alert_frequency' => $req->input('alert_frequency'),
+                    // 'alert_frequency' => $req->input('alert_frequency'),
                     'monitor_id' => Auth::guard('monitor')->user()->id,
                     'updated_on' => now()
                 ]);

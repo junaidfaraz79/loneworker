@@ -101,6 +101,7 @@ Route::prefix('monitor')->group(function () {
         Route::get('/shift/edit/{parameter}', [ShiftController::class, 'edit'])->name('shift.edit');
         Route::get('/shift/view/{parameter}', [ShiftController::class, 'view'])->name('shift.view');
         Route::post('/shift/update', [ShiftController::class, 'update'])->name('shift.update');
+        Route::get('/shifts/site/{site_id}', [ShiftController::class, 'shiftsBySite'])->name('shifts.site');
 
         // Worker Routes
         Route::get('/workers', [WorkerController::class, 'list'])->name('workers');
@@ -110,13 +111,14 @@ Route::prefix('monitor')->group(function () {
         Route::post('/worker/update', [WorkerController::class, 'update'])->name('worker.update');
         Route::get('/worker/view/{parameter}', [WorkerController::class, 'view'])->name('worker.view');
         Route::get('/worker/download-document/{parameter}', [WorkerController::class, 'downloadDocument'])->name('downloadDocument');
+        Route::get('/worker/shifts/{parameter}', [WorkerController::class, 'getWorkerShifts'])->name('worker.shifts');
 
         // Site Routes
         Route::get('/sites', [SiteController::class, 'list'])->name('sites');
         Route::get('/site/add', [SiteController::class, 'add'])->name('site.add');
         Route::post('/site/save', [SiteController::class, 'save'])->name('site.save');
         Route::get('/site/edit/{parameter}', [SiteController::class, 'edit'])->name('site.edit');
-        Route::post('/site/update', [SiteController::class, 'update'])->name('site.update');;
+        Route::post('/site/update', [SiteController::class, 'update'])->name('site.update');
 
         // Customer Routes
         Route::get('/customers', [CustomerController::class, 'list'])->name('customers');

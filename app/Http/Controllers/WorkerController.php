@@ -37,9 +37,20 @@ class WorkerController extends Controller
 
         $frequency = DB::table('check_in_frequency')->get();
 
+        $sites = DB::table('sites')
+            ->join('customers', 'sites.customer_id', '=', 'customers.id')
+            ->where('sites.subscriber_id', $monitor->subscriber_id)
+            ->select('sites.*', 'customers.customer_name')
+            ->get()
+            ->groupBy('customer_id');
+
+        $timings = DB::table('timings')->get();
+
         return view('monitor.add-worker', [
             'frequency' => $frequency,
             'shifts' => $shifts,
+            'sites' => $sites,
+            'timings' => $timings,
             'assignedMonitors' => $assignedMonitors,
             'unassignedMonitors' => $unassignedMonitors
         ]);
@@ -60,6 +71,8 @@ class WorkerController extends Controller
         if (Auth::guard('monitor')->user()->user_type === 'monitor' && Auth::guard('monitor')->check()) {
 
             $assignedMonitors = json_decode($req->input('assignedMonitors'), true);
+
+            $items = $req->input('shifts_site_repeater');
 
             if ($req->file('worker_image')) {
                 if ($req->file('worker_image')->isValid())
@@ -95,6 +108,18 @@ class WorkerController extends Controller
                     'monitor_id' => Auth::guard('monitor')->user()->id,
                     'check_in_visibility' => $req->check_in_visibility ?? '7days',
                 ]);
+
+                foreach ($items as $item) {
+                    $itemsToInsert[] = [
+                        'worker_id' => $id,
+                        'shift_id' => $item['shift_id'],
+                        'site_id' => $item['site_id'],
+                        'custom_start_time' => $item['custom_start_time'],
+                        'custom_end_time' => $item['custom_end_time'],
+                    ];
+                }
+
+                DB::table('worker_shift_site')->insert($itemsToInsert);
 
                 if ($req->hasFile('worker_documents')) {
                     foreach ($req->file('worker_documents') as $file) {
@@ -154,11 +179,23 @@ class WorkerController extends Controller
 
             $shifts = DB::table('shifts')->where('status', 'active')->get();
 
+
+            $sites = DB::table('sites')
+                ->join('customers', 'sites.customer_id', '=', 'customers.id')
+                ->where('sites.subscriber_id', $worker->subscriber_id)
+                ->select('sites.*', 'customers.customer_name')
+                ->get()
+                ->groupBy('customer_id');
+
+            $timings = DB::table('timings')->get();
+
             return view('monitor.edit-worker', [
                 'worker' => $worker,
                 'frequency' => $frequency,
                 'shifts' => $shifts,
                 'isViewMode' => 'n',
+                'sites' => $sites,
+                'timings' => $timings,
                 'assignedMonitors' => $assignedMonitors,
                 'unassignedMonitors' => $unassignedMonitors
             ]);
@@ -167,6 +204,31 @@ class WorkerController extends Controller
         }
     }
 
+    public function getWorkerShifts(Request $req, string $id)
+    {
+        try {
+            $shifts = DB::table('worker_shift_site')
+                ->select('shift_id', 'site_id', 'custom_start_time', 'custom_end_time')
+                ->where('worker_id', $id)
+                ->get();
+
+            if ($shifts) {
+                $res = ['shifts' => $shifts, 'status' => 'success'];
+                return response()->json($res, 200);  // Return a 200 OK with the response
+            } else {
+                // If insertion failed
+                $res = ['shifts' => null, 'status' => 'not found'];
+                return response()->json($res, 404);  // Return a 500 Internal Server Error
+            }
+        } catch (\Exception $e) {
+            // Log the exception
+            Log::error('Error fetching shifts: ' . $e->getMessage());
+
+            // Return an error response
+            $res = ['shifts' => null, 'status' => 'error', 'message' => 'Server error occurred: ' . $e];
+            return response()->json($res, 500);  // Return a 500 Internal Server Error
+        }
+    }
 
     public function update(Request $req)
     {
@@ -278,22 +340,6 @@ class WorkerController extends Controller
 
     }
 
-    // public function view(Request $req, $id)
-    // {
-    //     $fileTypeImages = [
-    //         'pdf' => 'assets/media/svg/files/pdf.svg',
-    //         'doc' => 'assets/media/svg/files/doc.svg',
-    //         'docx' => 'assets/media/svg/files/doc.svg',
-    //     ];
-
-    //     $isViewMode = 'y';
-    //     $worker = DB::table('workers')->where('id', $id)->get();
-    //     if (count($worker)) {
-    //         $frequency = DB::table('check_in_frequency')->get();
-    //         return view('edit-worker', ['worker' => $worker[0], 'frequency' => $frequency, 'isViewMode' => $isViewMode]);
-    //     } else
-    //         return redirect(route('workers'));
-    // }
     public function view(Request $req, $id)
     {
         // Fetching the worker details
@@ -367,6 +413,14 @@ class WorkerController extends Controller
         $frequency = DB::table('check_in_frequency')->get();
         $shifts = DB::table('shifts')->where('status', 'active')->get();
 
+        $sites = DB::table('sites')
+            ->join('customers', 'sites.customer_id', '=', 'customers.id')
+            ->where('sites.subscriber_id', $worker->subscriber_id)
+            ->select('sites.*', 'customers.customer_name')
+            ->get()
+            ->groupBy('customer_id');
+
+        $timings = DB::table('timings')->get();
         // Joining worker_documents with workers to fetch all documents related to the worker
         $documents = DB::table('worker_documents')
             ->join('workers', 'worker_documents.worker_id', '=', 'workers.id')
@@ -378,6 +432,8 @@ class WorkerController extends Controller
             'worker' => $worker,
             'frequency' => $frequency,
             'shifts' => $shifts,
+            'sites' => $sites,
+            'timings' => $timings,
             'isViewMode' => $isViewMode,
             'documents' => $documents,  // Pass the documents to the view
             'fileTypeImages' => $fileTypeImages,
@@ -425,6 +481,7 @@ class WorkerController extends Controller
         return json_encode($res);
     }
 
+    // API FUNCTIONS
     public function authenticateWorker(Request $request)
     {
         $request->validate([
@@ -557,6 +614,43 @@ class WorkerController extends Controller
                 'message' => 'An error occurred while changing the password.',
                 'error' => $e->getMessage()
             ], 500); // Internal Server Error
+        }
+    }
+
+    public function getDetailedWorkerShifts(Request $req)
+    {
+        $worker = Auth::guard('worker')->user();
+
+        try {
+            $shiftDetails = DB::table('worker_shift_site')
+                ->join('sites', 'worker_shift_site.site_id', '=', 'sites.id')
+                ->join('shifts', 'worker_shift_site.shift_id', '=', 'shifts.id')
+                ->join('customers', 'sites.customer_id', '=', 'customers.id')
+                ->select(
+                    DB::raw('COALESCE(worker_shift_site.custom_start_time, shifts.default_start_time) as start_time'),
+                    DB::raw('COALESCE(worker_shift_site.custom_end_time, shifts.default_end_time) as end_time'),
+                    'sites.site_name as site_name',
+                    'customers.customer_name as customer_name',
+                    'shifts.days as days'
+                )
+                ->where('worker_shift_site.worker_id', $worker->id)
+                ->get();
+
+            if ($shiftDetails->isNotEmpty()) {
+                $res = ['details' => $shiftDetails, 'status' => 'success'];
+                return response()->json($res, 200);  // Return a 200 OK with the response
+            } else {
+                // No data found
+                $res = ['details' => null, 'status' => 'not found'];
+                return response()->json($res, 404);  // Return a 404 Not Found
+            }
+        } catch (\Exception $e) {
+            // Log the exception
+            Log::error('Error fetching detailed shifts: ' . $e->getMessage());
+
+            // Return an error response
+            $res = ['details' => null, 'status' => 'error', 'message' => 'Server error occurred: ' . $e];
+            return response()->json($res, 500);  // Return a 500 Internal Server Error
         }
     }
 }

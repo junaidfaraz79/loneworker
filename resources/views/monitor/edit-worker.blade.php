@@ -69,164 +69,9 @@
             <div id="kt_app_content_container" class="app-container container-fluid">
                 <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row"
                     data-kt-redirect="{{ route('workers') }}" action="{{ route('worker.update') }}">
-                    <input type="hidden" name="id" value="{{ $worker->id }}" />
+                    <input type="hidden" name="id" id="workerId" value="{{ $worker->id }}" />
                     <input type="hidden" name="isViewMode" id="isViewMode" value="{{ $isViewMode }}" />
                     @csrf
-                    <!--begin::Aside column-->
-                    <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
-                        <!--begin::Thumbnail settings-->
-                        <div class="card card-flush py-4">
-                            <!--begin::Card header-->
-                            <div class="card-header">
-                                <!--begin::Card title-->
-                                <div class="card-title">
-                                    <h2>Thumbnail</h2>
-                                </div>
-                                <!--end::Card title-->
-                            </div>
-                            <!--end::Card header-->
-                            <!--begin::Card body-->
-                            <div class="card-body text-center pt-0">
-                                <!--begin::Image input-->
-                                <!--begin::Image input placeholder-->
-
-                                @php
-                                if (empty($worker->worker_image)) {
-                                $image = asset('assets/media/svg/files/blank-image.svg');
-                                $dark_image = asset('assets/media/svg/files/blank-image-dark.svg');
-                                } else {
-                                $image = asset('storage/' . $worker->worker_image);
-                                $dark_image = ''; // Assuming no dark mode image for user uploaded images
-                                echo '<input type="hidden" name="current_image" id="current_image"
-                                    value="'.$worker->worker_image.'">';
-                                }
-                                @endphp
-
-
-                                <style>
-                                    .image-input-placeholder {
-                                        background-image: url("{{ $image }}");
-                                    }
-
-                                    [data-bs-theme="dark"] .image-input-placeholder {
-                                        background-image: url("{{ $dark_image }}");
-                                    }
-                                </style>
-                                <!--end::Image input placeholder-->
-                                <!--begin::Image input-->
-                                <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
-                                    data-kt-image-input="true">
-                                    <!--begin::Preview existing avatar-->
-                                    <div class="image-input-wrapper w-150px h-150px"
-                                        style="background-image: url('{{ $image }}')"></div>
-                                    <!--end::Preview existing avatar-->
-                                    <!--begin::Label-->
-                                    @if($isViewMode === 'n')
-                                    <label
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
-                                        title="Change avatar">
-                                        <!--begin::Icon-->
-                                        <i class="ki-duotone ki-pencil fs-7">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                        <!--end::Icon-->
-                                        <!--begin::Inputs-->
-                                        <input type="file" name="worker_image" accept=".png, .jpg, .jpeg" />
-                                        <!--end::Inputs-->
-                                    </label>
-                                    @endif
-                                    <!--end::Label-->
-                                    <!--begin::Cancel-->
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                        title="Cancel avatar">
-                                        <i class="ki-duotone ki-cross fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                    <!--end::Cancel-->
-                                    <!--begin::Remove-->
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                        title="Remove avatar">
-                                        <i class="ki-duotone ki-cross fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                    <!--end::Remove-->
-                                </div>
-                                <!--end::Image input-->
-                                <!--begin::Description-->
-                                @if($isViewMode === 'n')
-                                <div class="text-muted fs-7">Set the thumbnail image. Only *.png, *.jpg and *.jpeg image
-                                    files are accepted</div>
-                                @endif
-                                <!--end::Description-->
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Thumbnail settings-->
-                        <!--begin::Status-->
-                        <div class="card card-flush py-4">
-                            <!--begin::Card header-->
-                            <div class="card-header">
-                                <!--begin::Card title-->
-                                <div class="card-title">
-                                    <h2>Status</h2>
-                                </div>
-                                <!--end::Card title-->
-                                @php
-                                $active_class = '';
-                                $inactive_class = '';
-                                $status_class = '';
-
-                                if ($worker->worker_status=='active')
-                                {
-                                $active_class = "selected='selected'";
-                                $status_class = "bg-success";
-                                }
-                                if ($worker->worker_status=='inactive')
-                                {
-                                $inactive_class = "selected='selected'";
-                                $status_class = "bg-danger";
-                                }
-                                @endphp
-                                <!--begin::Card toolbar-->
-                                <div class="card-toolbar">
-                                    <div class="rounded-circle {{ $status_class }} w-15px h-15px"
-                                        id="kt_ecommerce_add_category_status"></div>
-                                </div>
-                                <!--begin::Card toolbar-->
-                            </div>
-                            <!--end::Card header-->
-                            <!--begin::Card body-->
-                            <div class="card-body pt-0">
-                                <!--begin::Select2-->
-                                <select name="worker_status" class="form-select mb-2" {{ $isViewMode==='y' ? 'disabled'
-                                    : '' }} data-control="select2" data-hide-search="true"
-                                    data-placeholder="Select an option" id="kt_ecommerce_add_category_status_select">
-                                    <option></option>
-                                    <option value="active" {{ $active_class }}>Active</option>
-                                    <option value="inactive" {{ $inactive_class }}>Inactive</option>
-                                </select>
-                                <!--end::Select2-->
-                                <!--begin::Description-->
-                                @if($isViewMode === 'n')
-                                <div class="text-muted fs-7">Set worker status.</div>
-                                @endif
-                                <!--end::Description-->
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Status-->
-                    </div>
-                    <!--end::Aside column-->
                     <!--begin::Main column-->
                     <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                         <!--begin:::Tabs-->
@@ -248,6 +93,12 @@
                             <li class="nav-item">
                                 <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
                                     href="#monitors_tab">Monitors</a>
+                            </li>
+                            <!--end:::Tab item-->
+                            <!--begin:::Tab item-->
+                            <li class="nav-item">
+                                <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                    href="#sites_shifts_tab">Sites and Shifts</a>
                             </li>
                             <!--end:::Tab item-->
                             @if($isViewMode === 'y')
@@ -277,6 +128,131 @@
                                         <!--end::Card header-->
                                         <!--begin::Card body-->
                                         <div class="card-body pt-0">
+                                            <!--begin::Input group-->
+                                            <div class="mb-10">
+                                                <!--begin::Image input-->
+                                                <!--begin::Image input placeholder-->
+                                                @php
+                                                if (empty($worker->worker_image)) {
+                                                $image = asset('assets/media/svg/files/blank-image.svg');
+                                                $dark_image = asset('assets/media/svg/files/blank-image-dark.svg');
+                                                } else {
+                                                $image = asset('storage/' . $worker->worker_image);
+                                                $dark_image = ''; // Assuming no dark mode image for user uploaded images
+                                                echo '<input type="hidden" name="current_image" id="current_image"
+                                                    value="'.$worker->worker_image.'">';
+                                                }
+                                                @endphp
+
+
+                                                <style>
+                                                    .image-input-placeholder {
+                                                        background-image: url("{{ $image }}");
+                                                    }
+
+                                                    [data-bs-theme="dark"] .image-input-placeholder {
+                                                        background-image: url("{{ $dark_image }}");
+                                                    }
+                                                </style>
+                                                <!--end::Image input placeholder-->
+                                                <!--begin::Image input-->
+                                                <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+                                                    data-kt-image-input="true">
+                                                    <!--begin::Preview existing avatar-->
+                                                    <div class="image-input-wrapper w-150px h-150px"
+                                                        style="background-image: url('{{ $image }}')"></div>
+                                                    <!--end::Preview existing avatar-->
+                                                    <!--begin::Label-->
+                                                    @if($isViewMode === 'n')
+                                                    <label
+                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                                        title="Change avatar">
+                                                        <!--begin::Icon-->
+                                                        <i class="ki-duotone ki-pencil fs-7">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        <!--end::Icon-->
+                                                        <!--begin::Inputs-->
+                                                        <input type="file" name="worker_image" accept=".png, .jpg, .jpeg" />
+                                                        <!--end::Inputs-->
+                                                    </label>
+                                                    @endif
+                                                    <!--end::Label-->
+                                                    <!--begin::Cancel-->
+                                                    <span
+                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                                        title="Cancel avatar">
+                                                        <i class="ki-duotone ki-cross fs-2">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                    </span>
+                                                    <!--end::Cancel-->
+                                                    <!--begin::Remove-->
+                                                    <span
+                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                                        title="Remove avatar">
+                                                        <i class="ki-duotone ki-cross fs-2">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                    </span>
+                                                    <!--end::Remove-->
+                                                </div>
+                                                <!--end::Image input-->
+                                                <!--begin::Description-->
+                                                @if($isViewMode === 'n')
+                                                <div class="text-muted fs-7">Set the thumbnail image. Only *.png, *.jpg and *.jpeg image
+                                                    files are accepted</div>
+                                                @endif
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                @php
+                                                $active_class = '';
+                                                $inactive_class = '';
+                                                $status_class = '';
+                
+                                                if ($worker->worker_status=='active')
+                                                {
+                                                $active_class = "selected='selected'";
+                                                $status_class = "bg-success";
+                                                }
+                                                if ($worker->worker_status=='inactive')
+                                                {
+                                                $inactive_class = "selected='selected'";
+                                                $status_class = "bg-danger";
+                                                }
+                                                @endphp
+                                                <div class="d-flex">
+                                                    <div class="rounded-circle {{ $status_class }} w-15px h-15px"
+                                                        id="kt_ecommerce_add_category_status"></div>
+                                                    <!--begin::Label-->
+                                                    <div><label class="form-label ms-2">Status</label></div>
+                                                    <!--end::Label-->
+                                                </div>
+                                                <!--begin::Select2-->
+                                                <select name="worker_status" class="form-select mb-2" {{ $isViewMode==='y' ? 'disabled'
+                                                    : '' }} data-control="select2" data-hide-search="true"
+                                                    data-placeholder="Select an option" id="kt_ecommerce_add_category_status_select">
+                                                    <option></option>
+                                                    <option value="active" {{ $active_class }}>Active</option>
+                                                    <option value="inactive" {{ $inactive_class }}>Inactive</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                                <!--begin::Description-->
+                                                @if($isViewMode === 'n')
+                                                <div class="text-muted fs-7">Set worker status.</div>
+                                                @endif
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
@@ -373,7 +349,7 @@
                                                     <option>Select Shift</option>
                                                     @foreach ($shifts as $key => $shift)
                                                         <option value="{{$shift->id}}" {{ $shift->id == $worker->shift_id ? 'selected' : '' }}>
-                                                            {{ $shift->name . ' (' . $shift->start_time . ' - ' . $shift->end_time . ')' }}
+                                                            {{ $shift->name . ' (' . $shift->default_start_time . ' - ' . $shift->default_end_time . ')' }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -809,6 +785,124 @@
                                 </div>
                             </div>
                             <!--end::Tab pane-->
+                            <!--begin::Tab pane (Worker Sites and Shifts)-->
+                            <div class="tab-pane fade" id="sites_shifts_tab" role="tabpanel">
+                                <div class="d-flex flex-column gap-7 gap-lg-10">
+                                    <!--begin::General options-->
+                                    <!--begin::Worker details-->
+                                    <div class="card card-flush py-4">
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title col-lg-4">
+                                                <h2>Worker Monitors</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Site</label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Shift</label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Custom Start Time</label>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="form-label">Custom End Time</label>
+                                                </div>
+                                                <div class="col-md-1">
+                                                </div>
+                                            </div>
+                                            <!--begin::Repeater-->
+                                            <div id="shifts_site_repeater">
+                                                <!--begin::Form group-->
+                                                <div class="form-group">
+                                                    <div data-repeater-list="shifts_site_repeater">
+                                                        <div data-repeater-item>
+                                                            <div class="form-group row">
+                                                                <div class="col-md-3">
+                                                                    <select class="form-select mb-2 site-select"
+                                                                        data-placeholder="Select an option" {{ $isViewMode==='y' ? 'disabled' : '' }}
+                                                                        name="site_id" id="site_id">
+                                                                        <option value="">Select Site..</option>
+                                                                        @foreach ($sites as $customerId =>
+                                                                        $customerSites)
+                                                                        <optgroup
+                                                                            label="{{ $customerSites->first()->customer_name }}">
+                                                                            @foreach ($customerSites as $site)
+                                                                            <option value="{{ $site->id }}">{{
+                                                                                $site->site_name }}</option>
+                                                                            @endforeach
+                                                                        </optgroup>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <select class="form-select mb-2 shift-select"
+                                                                        data-placeholder="Select an option" {{ $isViewMode==='y' ? 'disabled' : '' }}
+                                                                        name="shift_id" id="shift_id"></select>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <!--begin::Input-->
+                                                                    <select name="custom_start_time" class="form-select mb-2 custom-start-time" data-placeholder="Select start time"
+                                                                        id="custom_start_time" {{ $isViewMode==='y' ? 'disabled' : '' }}>
+                                                                        <option></option>
+                                                                        @foreach ($timings as $key => $timing)
+                                                                        <option value="{{$timing->time}}">
+                                                                            {{$timing->time}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <!--end::Input-->
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <!--begin::Input-->
+                                                                    <select name="custom_end_time" class="form-select mb-2 custom-end-time" 
+                                                                        data-placeholder="Select end time" {{ $isViewMode==='y' ? 'disabled' : '' }}
+                                                                        id="custom_end_time">
+                                                                        <option></option>
+                                                                        @foreach ($timings as $key => $timing)
+                                                                        <option value="{{$timing->time}}">
+                                                                            {{$timing->time}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <!--end::Input-->
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                    <a href="javascript:;" data-repeater-delete
+                                                                        class="btn btn-sm btn-light-danger mt-1">
+                                                                        <i class="ki-duotone ki-trash fs-5"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span><span
+                                                                                class="path3"></span><span
+                                                                                class="path4"></span><span
+                                                                                class="path5"></span></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Form group-->
+                                                <!--begin::Form group-->
+                                                <div class="form-group mt-5">
+                                                    <a href="javascript:;" data-repeater-create
+                                                        class="btn btn-light-primary">
+                                                        <i class="ki-duotone ki-plus fs-3"></i>
+                                                        Add
+                                                    </a>
+                                                </div>
+                                                <!--end::Form group-->
+                                            </div>
+                                            <!--end::Repeater-->
+                                        </div>
+                                        <!--end::Card header-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Tab pane-->
                         </div>
                         <!--end::Tab content-->
                         @if($isViewMode === 'n')
@@ -853,9 +947,12 @@
 <script src="{{ asset('/assets/js/custom/loneworker/update-worker.js') }}"></script>
 <link href="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.css') }}" rel="stylesheet" type="text/css" />
 <script src="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.js') }}"></script>
+<script src="{{ asset('/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
 <script>
     var assignedMonitors = @json($assignedMonitors);
     var unassignedMonitors = @json($unassignedMonitors);
+    var sites = @json($sites);
+    var timings = @json($timings);
 </script>
 @if($isViewMode === 'y')
 <script>

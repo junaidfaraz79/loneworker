@@ -341,8 +341,8 @@
                                                 </div>
                                                 <!--begin::User details-->
                                             </td>
-                                            <td>{{ $shift->start_time }}</td>
-                                            <td>{{ $shift->end_time }}</td>
+                                            <td>{{ $shift->default_start_time }}</td>
+                                            <td>{{ $shift->default_end_time }}</td>
                                             <td>
                                                 @php 
                                                     $badge = 'secondary'; // Default

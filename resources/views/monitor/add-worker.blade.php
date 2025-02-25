@@ -41,7 +41,8 @@
                             </li>
                             <!--end::Item-->
                             <!--begin::Item-->
-                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="{{ route('workers') }}">Workers</a></li>
+                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a
+                                    href="{{ route('workers') }}">Workers</a></li>
                             <!--end::Item-->
                             <!--begin::Item-->
                             <li class="breadcrumb-item">
@@ -65,132 +66,14 @@
         <div id="kt_app_content" class="app-content px-lg-3">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-fluid">
-                <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="{{ route('workers') }}"
-                    action="save">
+                <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row"
+                    data-kt-redirect="{{ route('workers') }}" action="save">
                     @csrf
-                    <!--begin::Aside column-->
-                    <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
-                        <!--begin::Thumbnail settings-->
-                        <div class="card card-flush py-4">
-                            <!--begin::Card header-->
-                            <div class="card-header">
-                                <!--begin::Card title-->
-                                <div class="card-title">
-                                    <h2>Thumbnail</h2>
-                                </div>
-                                <!--end::Card title-->
-                            </div>
-                            <!--end::Card header-->
-                            <!--begin::Card body-->
-                            <div class="card-body text-center pt-0">
-                                <!--begin::Image input-->
-                                <!--begin::Image input placeholder-->
-                                <style>
-                                    .image-input-placeholder {
-                                        background-image: url('assets/media/svg/files/blank-image.svg');
-                                    }
-
-                                    [data-bs-theme="dark"] .image-input-placeholder {
-                                        background-image: url('assets/media/svg/files/blank-image-dark.svg');
-                                    }
-                                </style>
-                                <!--end::Image input placeholder-->
-                                <!--begin::Image input-->
-                                <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
-                                    data-kt-image-input="true">
-                                    <!--begin::Preview existing avatar-->
-                                    <div class="image-input-wrapper w-150px h-150px"></div>
-                                    <!--end::Preview existing avatar-->
-                                    <!--begin::Label-->
-                                    <label
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
-                                        title="Change avatar">
-                                        <!--begin::Icon-->
-                                        <i class="ki-duotone ki-pencil fs-7">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                        <!--end::Icon-->
-                                        <!--begin::Inputs-->
-                                        <input type="file" name="worker_image" accept=".png, .jpg, .jpeg" />
-                                        <input type="hidden" name="current_image" />
-                                        <!--end::Inputs-->
-                                    </label>
-                                    <!--end::Label-->
-                                    <!--begin::Cancel-->
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                        title="Cancel avatar">
-                                        <i class="ki-duotone ki-cross fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                    <!--end::Cancel-->
-                                    <!--begin::Remove-->
-                                    <span
-                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                        title="Remove avatar">
-                                        <i class="ki-duotone ki-cross fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span>
-                                    <!--end::Remove-->
-                                </div>
-                                <!--end::Image input-->
-                                <!--begin::Description-->
-                                <div class="text-muted fs-7">Set the thumbnail image. Only *.png, *.jpg and *.jpeg image
-                                    files are accepted</div>
-                                <!--end::Description-->
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Thumbnail settings-->
-                        <!--begin::Status-->
-                        <div class="card card-flush py-4">
-                            <!--begin::Card header-->
-                            <div class="card-header">
-                                <!--begin::Card title-->
-                                <div class="card-title">
-                                    <h2>Status</h2>
-                                </div>
-                                <!--end::Card title-->
-                                <!--begin::Card toolbar-->
-                                <div class="card-toolbar">
-                                    <div class="rounded-circle bg-success w-15px h-15px"
-                                        id="kt_ecommerce_add_category_status"></div>
-                                </div>
-                                <!--begin::Card toolbar-->
-                            </div>
-                            <!--end::Card header-->
-                            <!--begin::Card body-->
-                            <div class="card-body pt-0">
-                                <!--begin::Select2-->
-                                <select name="worker_status" class="form-select mb-2" data-control="select2"
-                                    data-hide-search="true" data-placeholder="Select an option"
-                                    id="kt_ecommerce_add_category_status_select">
-                                    <option></option>
-                                    <option value="active" selected="selected">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                </select>
-                                <!--end::Select2-->
-                                <!--begin::Description-->
-                                <div class="text-muted fs-7">Set worker status.</div>
-                                <!--end::Description-->
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Status-->
-                    </div>
-                    <!--end::Aside column-->
                     <!--begin::Main column-->
                     <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                         <!--begin:::Tabs-->
-                        <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
+                        <ul
+                            class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
                             <!--begin:::Tab item-->
                             <li class="nav-item">
                                 <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
@@ -207,6 +90,12 @@
                             <li class="nav-item">
                                 <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
                                     href="#monitors_tab">Monitors</a>
+                            </li>
+                            <!--end:::Tab item-->
+                            <!--begin:::Tab item-->
+                            <li class="nav-item">
+                                <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                    href="#sites_shifts_tab">Sites and Shifts</a>
                             </li>
                             <!--end:::Tab item-->
                         </ul>
@@ -227,6 +116,100 @@
                                         <!--end::Card header-->
                                         <!--begin::Card body-->
                                         <div class="card-body pt-0">
+                                            <!--begin::Image input-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10">
+                                                <!--begin::Image input placeholder-->
+                                                <style>
+                                                    .image-input-placeholder {
+                                                        background-image: url('assets/media/svg/files/blank-image.svg');
+                                                    }
+
+                                                    [data-bs-theme="dark"] .image-input-placeholder {
+                                                        background-image: url('assets/media/svg/files/blank-image-dark.svg');
+                                                    }
+                                                </style>
+                                                <!--end::Image input placeholder-->
+                                                <!--begin::Image input-->
+                                                <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+                                                    data-kt-image-input="true">
+                                                    <!--begin::Preview existing avatar-->
+                                                    <div class="image-input-wrapper w-150px h-150px"></div>
+                                                    <!--end::Preview existing avatar-->
+                                                    <!--begin::Label-->
+                                                    <label
+                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                                        title="Change avatar">
+                                                        <!--begin::Icon-->
+                                                        <i class="ki-duotone ki-pencil fs-7">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        <!--end::Icon-->
+                                                        <!--begin::Inputs-->
+                                                        <input type="file" name="worker_image"
+                                                            accept=".png, .jpg, .jpeg" />
+                                                        <input type="hidden" name="current_image" />
+                                                        <!--end::Inputs-->
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Cancel-->
+                                                    <span
+                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                                        title="Cancel avatar">
+                                                        <i class="ki-duotone ki-cross fs-2">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                    </span>
+                                                    <!--end::Cancel-->
+                                                    <!--begin::Remove-->
+                                                    <span
+                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                                        title="Remove avatar">
+                                                        <i class="ki-duotone ki-cross fs-2">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                    </span>
+                                                    <!--end::Remove-->
+                                                </div>
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set the thumbnail image. Only *.png, *.jpg
+                                                    and
+                                                    *.jpeg image
+                                                    files are accepted</div>
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Image input-->
+                                            <!--begin::Input group-->
+                                            <div class="mb-10 row">
+                                                <div class="d-flex">
+                                                    <div class="rounded-circle bg-success w-15px h-15px"
+                                                        id="kt_ecommerce_add_category_status"></div>
+                                                    <!--begin::Label-->
+                                                    {{-- <div style="width:100%"><label class="form-label">Status</label></div> --}}
+                                                    <label class="form-label ms-2">Status</label>
+                                                    <!--end::Label-->
+                                                </div>
+                                                <!--begin::Select2-->
+                                                <select name="worker_status" class="form-select mb-2"
+                                                    data-control="select2" data-hide-search="true"
+                                                    data-placeholder="Select an option"
+                                                    id="kt_ecommerce_add_category_status_select">
+                                                    <option></option>
+                                                    <option value="active" selected="selected">Active</option>
+                                                    <option value="inactive">Inactive</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set worker status.</div>
+                                                <!--end::Description-->
+                                            </div>
+                                            <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
@@ -303,13 +286,14 @@
                                                 <label class="form-label">Shift</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option"
-                                                    name="shift_id">
+                                                <select class="form-select mb-2" data-control="select2"
+                                                    data-placeholder="Select an option" name="shift_id">
                                                     <option>Select Shift</option>
                                                     @foreach ($shifts as $key => $shift)
-                                                        <option value="{{$shift->id}}">
-                                                            {{ $shift->name . ' (' . $shift->start_time . ' - ' . $shift->end_time . ')' }}
-                                                        </option>
+                                                    <option value="{{$shift->id}}">
+                                                        {{ $shift->name . ' (' . $shift->default_start_time . ' - ' .
+                                                        $shift->default_end_time . ')' }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                                 <!--end::Input-->
@@ -329,7 +313,7 @@
                                                         data-placeholder="Select an option" name="check_in_frequency">
                                                         <option>Select frequency</option>
                                                         @foreach ($frequency as $key => $f)
-                                                            <option value="{{$f->id}}">{{$f->time}}</option>
+                                                        <option value="{{$f->id}}">{{$f->time}}</option>
                                                         @endforeach
 
                                                     </select>
@@ -344,8 +328,7 @@
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <select class="form-select mb-2" data-control="select2"
-                                                        data-placeholder="Select an option"
-                                                        name="check_in_visibility">
+                                                        data-placeholder="Select an option" name="check_in_visibility">
                                                         <option>Select visibility</option>
                                                         <option value="today">Today</option>
                                                         <option value="7days">Last 7 Days</option>
@@ -386,8 +369,9 @@
                                                     <label class="form-label">SIA Licence Number</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="sia_license_number" class="form-control mb-2"
-                                                        placeholder="SIA Licence Number" value="" />
+                                                    <input type="text" name="sia_license_number"
+                                                        class="form-control mb-2" placeholder="SIA Licence Number"
+                                                        value="" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">16 digit SIA Licence Number.</div>
@@ -398,7 +382,9 @@
                                                     <label class="form-label">SIA Licence Expiry Date</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input class="form-control mb-2" name="sia_license_expiry_date" placeholder="Pick expiry date" id="kt_calendar_datepicker_start_date" />
+                                                    <input class="form-control mb-2" name="sia_license_expiry_date"
+                                                        placeholder="Pick expiry date"
+                                                        id="kt_calendar_datepicker_start_date" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set SIA licence expiry date.</div>
@@ -406,7 +392,7 @@
                                                 </div>
                                             </div>
                                             <!--end::Input group-->
-                                            
+
                                             <!--begin::Input group-->
                                             <div class="row">
                                                 <div class="col-lg-6">
@@ -414,23 +400,28 @@
                                                     <label class="required form-label">Primary Emergency Contact</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="emergency_contact_1" class="form-control mb-2"
-                                                        placeholder="Emergency phone number" value="" />
+                                                    <input type="text" name="emergency_contact_1"
+                                                        class="form-control mb-2" placeholder="Emergency phone number"
+                                                        value="" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set primary emergency phone number.</div>
+                                                    <div class="text-muted fs-7">Set primary emergency phone number.
+                                                    </div>
                                                     <!--end::Description-->
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <!--begin::Label-->
-                                                    <label class="required form-label">Secondary Emergency Contact</label>
+                                                    <label class="required form-label">Secondary Emergency
+                                                        Contact</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="emergency_contact_2" class="form-control mb-2"
-                                                        placeholder="Emergency phone number" value="" />
+                                                    <input type="text" name="emergency_contact_2"
+                                                        class="form-control mb-2" placeholder="Emergency phone number"
+                                                        value="" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set secondary emergency phone number.</div>
+                                                    <div class="text-muted fs-7">Set secondary emergency phone number.
+                                                    </div>
                                                     <!--end::Description-->
                                                 </div>
                                             </div>
@@ -551,7 +542,8 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Description-->
-                                            <div class="text-muted fs-7">Set the worker documents (License, ID Card, Training Certificates).</div>
+                                            <div class="text-muted fs-7">Set the worker documents (License, ID Card,
+                                                Training Certificates).</div>
                                             <!--end::Description-->
                                         </div>
                                         <!--end::Card header-->
@@ -576,6 +568,124 @@
                                         <!--begin::Card body-->
                                         <div class="card-body pt-0">
                                             <div id="kt_docs_jkanban_restricted"></div>
+                                        </div>
+                                        <!--end::Card header-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Tab pane-->
+                            <!--begin::Tab pane (Worker Sites and Shifts)-->
+                            <div class="tab-pane fade" id="sites_shifts_tab" role="tabpanel">
+                                <div class="d-flex flex-column gap-7 gap-lg-10">
+                                    <!--begin::General options-->
+                                    <!--begin::Worker details-->
+                                    <div class="card card-flush py-4">
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title col-lg-4">
+                                                <h2>Worker Monitors</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Site</label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Shift</label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Custom Start Time</label>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="form-label">Custom End Time</label>
+                                                </div>
+                                                <div class="col-md-1">
+                                                </div>
+                                            </div>
+                                            <!--begin::Repeater-->
+                                            <div id="shifts_site_repeater">
+                                                <!--begin::Form group-->
+                                                <div class="form-group">
+                                                    <div data-repeater-list="shifts_site_repeater">
+                                                        <div data-repeater-item>
+                                                            <div class="form-group row">
+                                                                <div class="col-md-3">
+                                                                    <select class="form-select mb-2 site-select"
+                                                                        data-placeholder="Select an option"
+                                                                        name="site_id" id="site_id">
+                                                                        <option value="">Select Site..</option>
+                                                                        @foreach ($sites as $customerId =>
+                                                                        $customerSites)
+                                                                        <optgroup
+                                                                            label="{{ $customerSites->first()->customer_name }}">
+                                                                            @foreach ($customerSites as $site)
+                                                                            <option value="{{ $site->id }}">{{
+                                                                                $site->site_name }}</option>
+                                                                            @endforeach
+                                                                        </optgroup>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <select class="form-select mb-2 shift-select"
+                                                                        data-placeholder="Select an option"
+                                                                        name="shift_id" id="shift_id"></select>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <!--begin::Input-->
+                                                                    <select name="custom_start_time" class="form-select mb-2 custom-start-time" data-placeholder="Select start time"
+                                                                        id="custom_start_time">
+                                                                        <option></option>
+                                                                        @foreach ($timings as $key => $timing)
+                                                                        <option value="{{$timing->time}}">
+                                                                            {{$timing->time}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <!--end::Input-->
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <!--begin::Input-->
+                                                                    <select name="custom_end_time" class="form-select mb-2 custom-end-time" 
+                                                                        data-placeholder="Select end time"
+                                                                        id="custom_end_time">
+                                                                        <option></option>
+                                                                        @foreach ($timings as $key => $timing)
+                                                                        <option value="{{$timing->time}}">
+                                                                            {{$timing->time}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <!--end::Input-->
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                    <a href="javascript:;" data-repeater-delete
+                                                                        class="btn btn-sm btn-light-danger mt-1">
+                                                                        <i class="ki-duotone ki-trash fs-5"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span><span
+                                                                                class="path3"></span><span
+                                                                                class="path4"></span><span
+                                                                                class="path5"></span></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Form group-->
+                                                <!--begin::Form group-->
+                                                <div class="form-group mt-5">
+                                                    <a href="javascript:;" data-repeater-create
+                                                        class="btn btn-light-primary">
+                                                        <i class="ki-duotone ki-plus fs-3"></i>
+                                                        Add
+                                                    </a>
+                                                </div>
+                                                <!--end::Form group-->
+                                            </div>
+                                            <!--end::Repeater-->
                                         </div>
                                         <!--end::Card header-->
                                     </div>
@@ -615,20 +725,20 @@
 @endsection
 
 @push('scripts')
-
-<script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
-
 <script src="/assets/js/custom/loneworker/save-worker.js"></script>
 <script src="/assets/js/widgets.bundle.js"></script>
 <script src="/assets/js/custom/widgets.js"></script>
 <script src="/assets/js/custom/apps/chat/chat.js"></script>
 <script src="/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 <script src="/assets/js/custom/utilities/modals/create-app.js"></script>
-<script src="/assets/js/custom/utilities/modals/users-search.js"></script>
+{{-- <script src="/assets/js/custom/utilities/modals/users-search.js"></script> --}}
 <link href="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.css') }}" rel="stylesheet" type="text/css" />
 <script src="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.js') }}"></script>
+<script src="{{ asset('/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
 <script>
     var assignedMonitors = @json($assignedMonitors);
     var unassignedMonitors = @json($unassignedMonitors);
+    var sites = @json($sites);
+    var timings = @json($timings);
 </script>
 @endpush
