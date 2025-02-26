@@ -637,6 +637,11 @@ var KTAppEcommerceSaveCategory = function () {
             if (isViewMode) {
                 initCheckinsTable();
                 initDateRangePicker();
+                $('a[data-repeater-delete]').addClass('disabled').attr('href', 'javascript:void(0);');
+                // Optionally prevent the click event
+                $('a[data-repeater-delete]').click(function(e) {
+                    e.preventDefault();
+                });
             }
             kanbanEl = document.querySelector('#kt_docs_jkanban_restricted');
             initKanban();

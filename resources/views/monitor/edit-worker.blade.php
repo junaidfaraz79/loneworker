@@ -870,17 +870,19 @@
                                                                     </select>
                                                                     <!--end::Input-->
                                                                 </div>
-                                                                <div class="col-md-1">
-                                                                    <a href="javascript:;" data-repeater-delete
-                                                                        class="btn btn-sm btn-light-danger mt-1">
-                                                                        <i class="ki-duotone ki-trash fs-5"><span
-                                                                                class="path1"></span><span
-                                                                                class="path2"></span><span
-                                                                                class="path3"></span><span
-                                                                                class="path4"></span><span
-                                                                                class="path5"></span></i>
-                                                                    </a>
-                                                                </div>
+                                                                @if($isViewMode === 'n')
+                                                                    <div class="col-md-1">
+                                                                        <a href="javascript:;" data-repeater-delete
+                                                                            class="btn btn-sm btn-light-danger mt-1">
+                                                                            <i class="ki-duotone ki-trash fs-5"><span
+                                                                                    class="path1"></span><span
+                                                                                    class="path2"></span><span
+                                                                                    class="path3"></span><span
+                                                                                    class="path4"></span><span
+                                                                                    class="path5"></span></i>
+                                                                        </a>
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -889,7 +891,7 @@
                                                 <!--begin::Form group-->
                                                 <div class="form-group mt-5">
                                                     <a href="javascript:;" data-repeater-create
-                                                        class="btn btn-light-primary">
+                                                        class="btn btn-light-primary" style="{{ $isViewMode === 'y' ? 'display:none;' : '' }}">
                                                         <i class="ki-duotone ki-plus fs-3"></i>
                                                         Add
                                                     </a>

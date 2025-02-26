@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Notifications\WorkerResetPasswordNotification;
+use App\Services\ExpoPushNotificationService;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Support\Facades\Log;
 
 class Worker extends Authenticatable
 {
@@ -36,7 +38,8 @@ class Worker extends Authenticatable
         'nok_name',               
         'nok_relation',          
         'nok_address',    
-        'nok_contact'
+        'nok_contact',
+        'push_token'
     ];
 
     protected $hidden = [
@@ -63,9 +66,33 @@ class Worker extends Authenticatable
         return $this->hasMany(WorkerCheckIns::class, 'worker_id', 'id');
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(WorkerNotification::class, 'worker_id', 'id');
+    }
+
     public function monitors()
     {
         return $this->belongsToMany(Monitor::class, 'worker_monitor', 'worker_id', 'monitor_id');
+    }
+
+    /**
+     * Send a push notification to the worker.
+     *
+     * @param string $title
+     * @param string $body
+     * @param array $data
+     * @return mixed
+     */
+    public function sendPushNotification($title, $body, $data = [])
+    {
+        if (!$this->push_token) {
+            Log::warning('Worker does not have a push token: ' . $this->id);
+            return null;
+        }
+
+        $expoPushService = new ExpoPushNotificationService();
+        return $expoPushService->sendNotification($this->push_token, $title, $body, $data, $this->id);
     }
 }
 

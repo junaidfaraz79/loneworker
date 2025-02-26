@@ -84,7 +84,7 @@ class WorkerController extends Controller
                 // Start transaction
                 DB::beginTransaction();
 
-                $id = DB::table('workers')->insertGetId([
+                $worker = Worker::create([
                     'worker_name' => $req->worker_name,
                     'phone_no' => $req->phone_no,
                     'email' => $req->email,
@@ -111,13 +111,15 @@ class WorkerController extends Controller
 
                 foreach ($items as $item) {
                     $itemsToInsert[] = [
-                        'worker_id' => $id,
+                        'worker_id' => $worker->id,
                         'shift_id' => $item['shift_id'],
                         'site_id' => $item['site_id'],
                         'custom_start_time' => $item['custom_start_time'],
                         'custom_end_time' => $item['custom_end_time'],
                     ];
                 }
+
+
 
                 DB::table('worker_shift_site')->insert($itemsToInsert);
 
@@ -127,7 +129,7 @@ class WorkerController extends Controller
                         $filePath = $file->storeAs('worker_documents', $filename); // Store file in public/worker_documents
 
                         $files[] = [
-                            'worker_id' => $id,
+                            'worker_id' => $worker->id,
                             'file_path' => $filePath,
                             'file_name' => $filename,
                         ];
@@ -139,7 +141,7 @@ class WorkerController extends Controller
                 if (!empty($assignedMonitors)) {
                     foreach ($assignedMonitors as $monitorId) {
                         WorkerMonitor::create([
-                            'worker_id' => $id,
+                            'worker_id' => $worker->id,
                             'monitor_id' => $monitorId
                         ]);
                     }
@@ -147,7 +149,10 @@ class WorkerController extends Controller
 
                 DB::commit(); // Commit transaction
 
-                $res = ['id' => $id, 'status' => 'success'];
+                // Send notification to worker for their new shift details
+                $worker->sendPushNotification('Shift Details!', 'Your shift details have been updated. Click here to view.', ['screen' => 'Shift Details']);
+
+                $res = ['id' => $worker->id, 'status' => 'success'];
                 return json_encode($res);
             } catch (\Exception $e) {
                 DB::rollback(); // Rollback transaction on error
@@ -269,6 +274,9 @@ class WorkerController extends Controller
         $monitorsToAdd = array_diff($assignedMonitors, $currentMonitorIds);
         $monitorsToRemove = array_diff($currentMonitorIds, $assignedMonitors);
 
+        $items = $req->input('shifts_site_repeater');
+        $isUpdated = false; // Flag to track if any updates or inserts were made to worker shift site table
+
         try {
             DB::beginTransaction();
 
@@ -287,28 +295,68 @@ class WorkerController extends Controller
                     ->delete();
             }
 
-            DB::table('workers')->where('id', $req->id)
-                ->update([
-                    'worker_name' => $req->worker_name,
-                    'phone_no' => $req->phone_no,
-                    'email' => $req->email,
-                    'phone_type' => $req->phone_type,
-                    'role' => $req->role,
-                    'department' => $req->department,
-                    'check_in_frequency' => $req->check_in_frequency,
-                    'worker_image' => $worker_image,
-                    'worker_status' => $req->worker_status,
-                    'sia_license_number' => $req->sia_license_number,
-                    'sia_license_expiry_date' => $req->sia_license_expiry_date,
-                    'emergency_contact_1' => $req->emergency_contact_1,
-                    'emergency_contact_2' => $req->emergency_contact_2,
-                    'nok_name' => $req->nok_name,
-                    'nok_relation' => $req->nok_relation,
-                    'nok_address' => $req->nok_address,
-                    'shift_id' => $req->shift_id,
-                    'nok_contact' => $req->nok_contact,
-                    'check_in_visibility' => $req->check_in_visibility
-                ]);
+            $worker = Worker::findOrFail($req->id);
+
+            $worker->update([
+                'worker_name' => $req->worker_name,
+                'phone_no' => $req->phone_no,
+                'email' => $req->email,
+                'phone_type' => $req->phone_type,
+                'role' => $req->role,
+                'department' => $req->department,
+                'check_in_frequency' => $req->check_in_frequency,
+                'worker_image' => $worker_image,
+                'worker_status' => $req->worker_status,
+                'sia_license_number' => $req->sia_license_number,
+                'sia_license_expiry_date' => $req->sia_license_expiry_date,
+                'emergency_contact_1' => $req->emergency_contact_1,
+                'emergency_contact_2' => $req->emergency_contact_2,
+                'nok_name' => $req->nok_name,
+                'nok_relation' => $req->nok_relation,
+                'nok_address' => $req->nok_address,
+                'shift_id' => $req->shift_id,
+                'nok_contact' => $req->nok_contact,
+                'check_in_visibility' => $req->check_in_visibility
+            ]);
+
+            // Loop through new shift-site data to update existing records or insert new ones
+            foreach ($items as $item) {
+                $existingShiftSite = DB::table('worker_shift_site')
+                    ->where('worker_id', $worker->id)
+                    ->where('shift_id', $item['shift_id'])
+                    ->where('site_id', $item['site_id'])
+                    ->first();
+
+                if ($existingShiftSite) {
+                    if (
+                        (is_null($existingShiftSite->custom_start_time) && !is_null($item['custom_start_time'])) ||
+                        (!is_null($existingShiftSite->custom_start_time) && $existingShiftSite->custom_start_time !== $item['custom_start_time']) ||
+                        (is_null($existingShiftSite->custom_end_time) && !is_null($item['custom_end_time'])) ||
+                        (!is_null($existingShiftSite->custom_end_time) && $existingShiftSite->custom_end_time !== $item['custom_end_time'])
+                    ) {
+                        DB::table('worker_shift_site')
+                            ->where('worker_id', $worker->id)
+                            ->where('shift_id', $item['shift_id'])
+                            ->where('site_id', $item['site_id'])
+                            ->update([
+                                'custom_start_time' => $item['custom_start_time'],
+                                'custom_end_time' => $item['custom_end_time'],
+                            ]);
+                        $isUpdated = true; // Mark as updated only if there's an actual change
+                    }
+                }  else {
+                    // If the record does not exist, insert it
+                    DB::table('worker_shift_site')->insert([
+                        'worker_id' => $worker->id,
+                        'shift_id' => $item['shift_id'],
+                        'site_id' => $item['site_id'],
+                        'custom_start_time' => $item['custom_start_time'],
+                        'custom_end_time' => $item['custom_end_time'],
+                    ]);
+
+                    $isUpdated = true; // Mark as updated for insertions
+                }
+            }
 
             if ($req->hasFile('worker_documents')) {
                 foreach ($req->file('worker_documents') as $file) {
@@ -326,6 +374,11 @@ class WorkerController extends Controller
 
             DB::commit(); // Commit transaction
 
+            // Send notification to worker for their new shift details
+            if ($isUpdated) {
+                $worker->sendPushNotification('Shift Details!', 'Your shift details have been updated. Click here to view.', ['screen' => 'Shift Details']);
+            }
+
             $res = ['id' => $req->id, 'status' => 'success'];
             return json_encode($res);
         } catch (\Exception $e) {
@@ -334,10 +387,6 @@ class WorkerController extends Controller
             return json_encode($res);
             // return response()->json(['error' => 'Failed to process the order: ' . $e->getMessage()], 500);
         }
-
-
-        // }
-
     }
 
     public function view(Request $req, $id)
@@ -487,6 +536,7 @@ class WorkerController extends Controller
         $request->validate([
             'pin' => 'required',
             'password' => 'required',
+            'push_token' => 'required',
         ]);
 
         // Start a transaction to ensure data integrity
@@ -505,6 +555,10 @@ class WorkerController extends Controller
                     'message' => 'The provided credentials are incorrect.'
                 ], 422); // HTTP 422 Unprocessable Entity
             }
+
+            $worker->update([
+                'push_token' => $request->push_token
+            ]);
 
             // If authentication is successful, commit the transaction
             DB::commit();
