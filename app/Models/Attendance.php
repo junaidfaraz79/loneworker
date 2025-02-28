@@ -17,7 +17,7 @@ class Attendance extends Model
 
     // Attributes that are mass assignable
     protected $fillable = [
-        'worker_id', 'start_time', 'end_time', 'status'
+        'worker_id', 'start_time', 'end_time', 'status', 'worker_shift_site_id'
     ];
 
     // Attributes that should be cast to native types

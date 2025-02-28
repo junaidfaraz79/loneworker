@@ -3,6 +3,8 @@
 // Class definition
 var KTAppEcommerceSaveCategory = function () {
     var startDatepicker;
+    var shiftStartDatepicker, shiftStartFlatpickr;
+    var shiftEndDatepicker, shiftEndFlatpickr;
     var startFlatpickr;
     var kanbanEl;
     var kanban;
@@ -56,8 +58,8 @@ var KTAppEcommerceSaveCategory = function () {
         });
     }
 
-    const initDatepickers = () => {
-        startFlatpickr = flatpickr(startDatepicker, {
+    const initDatepickers = (datePickerElement) => {
+        flatpickr(datePickerElement, {
             enableTime: false,
             dateFormat: "Y-m-d",
         });
@@ -120,6 +122,8 @@ var KTAppEcommerceSaveCategory = function () {
                 const shiftElement = $(this).find('.shift-select');
                 const startTimeEl = $(this).find('.custom-start-time');
                 const endTimeEl = $(this).find('.custom-end-time');
+                const shiftStartDatepicker = $(this).find('.shift-start');
+                const shiftEndDatepicker = $(this).find('.shift-end');
                 populateSites(siteElement);
                 populateTimings(startTimeEl);
                 populateTimings(endTimeEl);
@@ -129,6 +133,8 @@ var KTAppEcommerceSaveCategory = function () {
                 initializeSelect2(shiftElement);
                 initializeSelect2(startTimeEl);
                 initializeSelect2(endTimeEl);
+                initDatepickers(shiftStartDatepicker);
+                initDatepickers(shiftEndDatepicker);
 
                 // Attach event listeners for the new repeater item
                 const repeaterItem = $(this);
@@ -511,6 +517,25 @@ var KTAppEcommerceSaveCategory = function () {
                                     }, 2000);
                                 }
                             })
+                            .fail((xhr, status, error) => {
+                                console.log("Error: ", error);
+                                console.log("Status: ", status);
+                                console.log("Response: ", xhr.responseText);
+                            
+                                Swal.fire({
+                                    text: "Sorry, looks like there are some errors detected, please try again.",
+                                    icon: "error",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                });
+                            })
+                            .finally(()=>{
+                                submitButton.setAttribute('data-kt-indicator', 'off');
+                                submitButton.disabled = false;
+                            });
 
                     } else {
                         Swal.fire({
@@ -522,6 +547,9 @@ var KTAppEcommerceSaveCategory = function () {
                                 confirmButton: "btn btn-primary"
                             }
                         });
+
+                        submitButton.setAttribute('data-kt-indicator', 'off');
+                        submitButton.disabled = false;
                     }
                 });
             }
@@ -579,6 +607,8 @@ var KTAppEcommerceSaveCategory = function () {
     return {
         init: function () {
             startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
+            // shiftStartDatepicker = document.querySelector('#kt_calendar_datepicker_shift_start_date');
+            // shiftEndDatepicker = document.querySelector('#kt_calendar_datepicker_shift_end_date');
 
             // Attach event listeners to existing repeater items
             // $(document).on('change', '[data-repeater-item] .site-select', function () {
@@ -591,7 +621,7 @@ var KTAppEcommerceSaveCategory = function () {
             initFormRepeater();
             initConditionsSelect2();
             initDropzone();
-            initDatepickers();
+            initDatepickers(startDatepicker);
             kanbanEl = document.querySelector('#kt_docs_jkanban_restricted');
             initKanban();
 
@@ -602,6 +632,8 @@ var KTAppEcommerceSaveCategory = function () {
                 const siteElement = $(firstRepeaterItem).find('.site-select');
                 const startTimeEl = $(firstRepeaterItem).find('.custom-start-time');
                 const endTimeEl = $(firstRepeaterItem).find('.custom-end-time');
+                const shiftStartDatepicker = $(firstRepeaterItem).find('.shift-start');
+                const shiftEndDatepicker = $(firstRepeaterItem).find('.shift-end');
                 siteElement.on('change', function () {
                     // const repeaterItem = $(this).closest('[data-repeater-item]');
                     populateShifts(firstRepeaterItem);
@@ -610,6 +642,8 @@ var KTAppEcommerceSaveCategory = function () {
                 initializeSelect2(siteElement);
                 initializeSelect2(startTimeEl);
                 initializeSelect2(endTimeEl);
+                initDatepickers(shiftStartDatepicker);
+                initDatepickers(shiftEndDatepicker);
             }
             // Handle forms
             handleStatus();

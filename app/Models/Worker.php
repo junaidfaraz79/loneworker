@@ -18,7 +18,9 @@ class Worker extends Authenticatable
     protected $table = 'workers'; // Specify the table associated with the model
 
     protected $primaryKey = 'id';
-    
+
+    public $timestamps = true;
+
     protected $fillable = [
         'worker_name',
         'phone_no',
@@ -39,7 +41,10 @@ class Worker extends Authenticatable
         'nok_relation',          
         'nok_address',    
         'nok_contact',
-        'push_token'
+        'push_token',
+        'monitor_id',
+        'check_in_visibility',
+        'subscriber_id'
     ];
 
     protected $hidden = [
@@ -47,8 +52,8 @@ class Worker extends Authenticatable
     ];
 
     protected $casts = [
-        'added_on' => 'datetime',
-        'updated_on' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function sendPasswordResetNotification($token)

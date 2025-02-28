@@ -110,6 +110,7 @@ Route::prefix('monitor')->group(function () {
         Route::get('/worker/edit/{parameter}', [WorkerController::class, 'edit'])->name('worker.edit');
         Route::post('/worker/update', [WorkerController::class, 'update'])->name('worker.update');
         Route::get('/worker/view/{parameter}', [WorkerController::class, 'view'])->name('worker.view');
+        Route::get('/worker/escalation/{parameter}', [WorkerController::class, 'workerEscalation'])->name('worker.escalation');
         Route::get('/worker/download-document/{parameter}', [WorkerController::class, 'downloadDocument'])->name('downloadDocument');
         Route::get('/worker/shifts/{parameter}', [WorkerController::class, 'getWorkerShifts'])->name('worker.shifts');
 

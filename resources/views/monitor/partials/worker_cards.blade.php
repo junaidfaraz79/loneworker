@@ -3,6 +3,7 @@
         // Safely fetch the latest attendance and check-in
         $latestAttendance = $worker->attendance->first() ?? null;
         $latestCheckin = $latestAttendance?->workerCheckIns->first() ?? null;
+        $isAlertRequired = false; // To handle the alert for the grace period check
 
         // Calculate the remaining time for the check-in
         $isCheckinDue = false;
@@ -10,6 +11,8 @@
         if ($latestCheckin?->scheduled_time) {
             $scheduledTime = \Carbon\Carbon::parse($latestCheckin->scheduled_time);
             $remainingSeconds = now()->diffInSeconds($scheduledTime, false); // false ensures negative values if overdue
+            $gracePeriodEnd = \Carbon\Carbon::parse($latestCheckin->grace_period_end);
+
             // Check if overdue
             if ($remainingSeconds < 0) {
                 $isCheckinDue = true;
@@ -18,6 +21,11 @@
                     'parts' => 2, // Show only 2 parts (e.g., "5 minutes 10 seconds")
                     'short' => false, // Use full words (e.g., "minutes" instead of "min")
                 ]);
+            }
+
+            // Check for alert requirement based on grace period and status
+            if (now()->greaterThan($gracePeriodEnd) && $latestCheckin->status === 'pending') {
+                $isAlertRequired = true;
             }
         }
     @endphp
@@ -48,10 +56,10 @@
                 <!--begin::Card body-->
                 <div class="card-body d-flex justify-content-between flex-column pb-1 px-0">
                     <!--begin::Info-->
-                    <div class="col-xl-8">
+                    <div class="col-xl-8 px-3">
                         @if($latestAttendance && $latestAttendance->status === 'active')
                             <!--begin::Alert-->
-                            <div class="alert {{ $isCheckinDue ? 'alert-danger' : 'alert-success' }} d-flex align-items-center ms-3">
+                            <div class="alert {{ $isCheckinDue ? 'alert-danger' : 'alert-success' }} d-flex align-items-center">
                                 <!--begin::Wrapper-->
                                 <div class="d-flex flex-column">
                                     <!--begin::Content-->
@@ -73,9 +81,16 @@
                             </div>
                             <!--end::Alert-->
                         @endif
+                        <!-- If the alert condition is true, show an alert button -->
+                        @if($isAlertRequired)
+                            <a class="btn btn-danger mb-2" style="width: 100%;" href="{{ route('worker.escalation', ['parameter' => $worker->id]) }}">
+                                Alert!
+                            </a>
+                        @endif
+                        <!--end::Actions-->
 
                         <!--begin::Worker Information-->
-                        <div class="ms-3">
+                        <div>
                             <table class="table table-bordered table-striped text-center">
                                 <tbody>
                                     <tr>

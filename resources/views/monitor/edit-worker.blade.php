@@ -348,7 +348,7 @@
                                                     name="shift_id" {{ $isViewMode==='y' ? 'disabled' : ''}}>
                                                     <option>Select Shift</option>
                                                     @foreach ($shifts as $key => $shift)
-                                                        <option value="{{$shift->id}}" {{ $shift->id == $worker->shift_id ? 'selected' : '' }}>
+                                                        <option value="{{$shift->id}}">
                                                             {{ $shift->name . ' (' . $shift->default_start_time . ' - ' . $shift->default_end_time . ')' }}
                                                         </option>
                                                     @endforeach
@@ -801,17 +801,23 @@
                                         <!--begin::Card body-->
                                         <div class="card-body pt-0">
                                             <div class="form-group row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label class="form-label">Site</label>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label class="form-label">Shift</label>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <label class="form-label">Custom Start Time</label>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label class="form-label">Custom End Time</label>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <label class="form-label">Start Date</label>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <label class="form-label">End Date</label>
                                                 </div>
                                                 <div class="col-md-1">
                                                 </div>
@@ -823,7 +829,7 @@
                                                     <div data-repeater-list="shifts_site_repeater">
                                                         <div data-repeater-item>
                                                             <div class="form-group row">
-                                                                <div class="col-md-3">
+                                                                <div class="col-md-2">
                                                                     <select class="form-select mb-2 site-select"
                                                                         data-placeholder="Select an option" {{ $isViewMode==='y' ? 'disabled' : '' }}
                                                                         name="site_id" id="site_id">
@@ -845,7 +851,7 @@
                                                                         data-placeholder="Select an option" {{ $isViewMode==='y' ? 'disabled' : '' }}
                                                                         name="shift_id" id="shift_id"></select>
                                                                 </div>
-                                                                <div class="col-md-3">
+                                                                <div class="col-md-2">
                                                                     <!--begin::Input-->
                                                                     <select name="custom_start_time" class="form-select mb-2 custom-start-time" data-placeholder="Select start time"
                                                                         id="custom_start_time" {{ $isViewMode==='y' ? 'disabled' : '' }}>
@@ -868,6 +874,20 @@
                                                                             {{$timing->time}}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <!--end::Input-->
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                    <!--begin::Input-->
+                                                                    <input class="form-control mb-2 shift-start" name="start_date"
+                                                                        placeholder="Pick start date"
+                                                                        id="kt_calendar_datepicker_shift_start_date" />
+                                                                    <!--end::Input-->
+                                                                </div>
+                                                                <div class="col-md-1">
+                                                                    <!--begin::Input-->
+                                                                    <input class="form-control mb-2 shift-end" name="end_date"
+                                                                        placeholder="Pick end date"
+                                                                        id="kt_calendar_datepicker_shift_end_date" />
                                                                     <!--end::Input-->
                                                                 </div>
                                                                 @if($isViewMode === 'n')

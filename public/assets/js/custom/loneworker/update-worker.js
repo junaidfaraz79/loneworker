@@ -13,8 +13,8 @@ var KTAppEcommerceSaveCategory = function () {
     }
     // Private functions
 
-    const initDatepickers = () => {
-        startFlatpickr = flatpickr(startDatepicker, {
+    const initDatepickers = (datePickerElement) => {
+        flatpickr(datePickerElement, {
             enableTime: false,
             dateFormat: "Y-m-d",
         });
@@ -394,6 +394,8 @@ var KTAppEcommerceSaveCategory = function () {
                 const shiftElement = $(this).find('.shift-select');
                 const startTimeEl = $(this).find('.custom-start-time');
                 const endTimeEl = $(this).find('.custom-end-time');
+                const shiftStartDatepicker = $(this).find('.shift-start');
+                const shiftEndDatepicker = $(this).find('.shift-end');
                 populateSites(siteElement);
                 populateTimings(startTimeEl);
                 populateTimings(endTimeEl);
@@ -403,6 +405,8 @@ var KTAppEcommerceSaveCategory = function () {
                 initializeSelect2(shiftElement);
                 initializeSelect2(startTimeEl);
                 initializeSelect2(endTimeEl);
+                initDatepickers(shiftStartDatepicker);
+                initDatepickers(shiftEndDatepicker);
 
                 // Attach event listeners for the new repeater item
                 const repeaterItem = $(this);
@@ -433,15 +437,15 @@ var KTAppEcommerceSaveCategory = function () {
     const populateRepeater = async (shifts) => {
         // Clear existing repeater items (if any)
         $('#shifts_site_repeater').find('[data-repeater-item]').remove();
-    
+
         // Loop through the shifts and add repeater items
         for (const shift of shifts) {
             // Add a new repeater item
             $('[data-repeater-create]').click();
-    
+
             // Get the newly added repeater item
             const newRepeaterItem = $('#shifts_site_repeater').find('[data-repeater-item]').last();
-    
+
             // Populate the fields in the new repeater item
             await populateRepeaterItem(newRepeaterItem, shift);
         }
@@ -451,38 +455,48 @@ var KTAppEcommerceSaveCategory = function () {
         // Populate site select
         const siteElement = repeaterItem.find('.site-select');
         siteElement.val(shift.site_id).trigger('change');
-    
+
         // Wait for the shifts dropdown to be populated
         await populateShifts(repeaterItem);
-    
+
         // Populate shift select
         const shiftElement = repeaterItem.find('.shift-select');
         shiftElement.val(shift.shift_id).trigger('change');
-    
+
         // Populate start time
         const startTimeEl = repeaterItem.find('.custom-start-time');
         startTimeEl.val(shift.custom_start_time).trigger('change');
-    
+
         // Populate end time
         const endTimeEl = repeaterItem.find('.custom-end-time');
         endTimeEl.val(shift.custom_end_time).trigger('change');
-    
+
+        const shiftStartDatepicker = repeaterItem.find('.shift-start');
+
+        const shiftEndDatepicker = repeaterItem.find('.shift-end');
+
+        console.log(shiftStartDatepicker, shiftEndDatepicker)
+        initDatepickers(shiftStartDatepicker);
+        initDatepickers(shiftEndDatepicker);
+        shiftEndDatepicker.val(shift.end_date).trigger('change');
+        shiftStartDatepicker.val(shift.start_date).trigger('change');
         // Initialize Select2 for the new repeater item
         initializeSelect2(siteElement);
         initializeSelect2(shiftElement);
         initializeSelect2(startTimeEl);
         initializeSelect2(endTimeEl);
+        
     };
 
     const populateShifts = (repeaterItem) => {
         return new Promise((resolve, reject) => {
             const selectedSite = repeaterItem.find('.site-select option:selected').val();
             const shiftElement = repeaterItem.find('.shift-select');
-    
+
             if (selectedSite) {
                 // Construct the URL with the site ID
                 const url = `/monitor/shifts/site/${selectedSite}`;
-    
+
                 // Fetch API call
                 fetch(url)
                     .then(response => {
@@ -495,14 +509,14 @@ var KTAppEcommerceSaveCategory = function () {
                         if (data.shifts && data.shifts.length > 0) {
                             // Clear existing options
                             $(shiftElement).empty();
-    
+
                             // Add default option
                             $(shiftElement).append($('<option>', {
                                 value: '',
                                 text: 'Select Shift',
                                 selected: true
                             }));
-    
+
                             // Add shift options
                             data.shifts.forEach(shift => {
                                 $(shiftElement).append($('<option>', {
@@ -510,7 +524,7 @@ var KTAppEcommerceSaveCategory = function () {
                                     text: `${shift.name} (${shift.default_start_time} - ${shift.default_end_time})`
                                 }));
                             });
-    
+
                             // Initialize Select2
                             $(shiftElement).select2();
                             resolve(); // Resolve the promise after shifts are populated
@@ -611,6 +625,8 @@ var KTAppEcommerceSaveCategory = function () {
                 const siteElement = $(firstRepeaterItem).find('.site-select');
                 const startTimeEl = $(firstRepeaterItem).find('.custom-start-time');
                 const endTimeEl = $(firstRepeaterItem).find('.custom-end-time');
+                const shiftStartDatepicker = $(firstRepeaterItem).find('.shift-start');
+                const shiftEndDatepicker = $(firstRepeaterItem).find('.shift-end');
                 siteElement.on('change', function () {
                     // const repeaterItem = $(this).closest('[data-repeater-item]');
                     populateShifts(firstRepeaterItem);
@@ -619,6 +635,8 @@ var KTAppEcommerceSaveCategory = function () {
                 initializeSelect2(siteElement);
                 initializeSelect2(startTimeEl);
                 initializeSelect2(endTimeEl);
+                initDatepickers(shiftStartDatepicker);
+                initDatepickers(shiftEndDatepicker);
             }
 
             $(document).on('change', '[data-repeater-item] .site-select', function () {
@@ -629,7 +647,7 @@ var KTAppEcommerceSaveCategory = function () {
             if (!isViewMode) {
                 startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
                 initConditionsSelect2();
-                initDatepickers();
+                initDatepickers(startDatepicker);
                 handleStatus();
                 handleConditions();
                 handleSubmit();
@@ -639,7 +657,7 @@ var KTAppEcommerceSaveCategory = function () {
                 initDateRangePicker();
                 $('a[data-repeater-delete]').addClass('disabled').attr('href', 'javascript:void(0);');
                 // Optionally prevent the click event
-                $('a[data-repeater-delete]').click(function(e) {
+                $('a[data-repeater-delete]').click(function (e) {
                     e.preventDefault();
                 });
             }

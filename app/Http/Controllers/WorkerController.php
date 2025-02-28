@@ -7,6 +7,7 @@ use App\Models\Monitor;
 use App\Models\Worker;
 use App\Models\WorkerCheckIns;
 use App\Models\WorkerMonitor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,92 @@ class WorkerController extends Controller
         $workers = DB::table('workers')->get();
         return view('monitor.workers', ['workers' => $workers]);
     }
+
+    public function workerEscalation(Request $req, string $workerId)
+    {
+        DB::beginTransaction();  // Begin DB transaction
+
+        try {
+            // Fetch the worker along with the latest attendance (by start_time) and related details
+            $worker = Worker::with([
+                'attendance' => function ($query) {
+                    $query->orderBy('start_time', 'desc')->limit(1); // Fetch only the latest attendance
+                },
+                'monitors' // Eager load monitors (if any)
+            ])
+                ->leftJoin('check_in_frequency', 'workers.check_in_frequency', '=', 'check_in_frequency.id')
+                ->where('workers.id', $workerId)
+                ->select('workers.*', 'check_in_frequency.time as check_in_frequency_time')
+                ->first();
+
+            // If worker is null, throw an exception to be caught by the catch block
+            if (!$worker) {
+                throw new \Exception('Worker not found.');
+            }
+
+            // Access the latest attendance record
+            $latestAttendance = $worker->attendance->first(); // We now directly access the first (and only) attendance record
+
+            if ($latestAttendance) {
+                // Load the workerCheckIns relation efficiently
+                $latestAttendance->load(['workerCheckIns' => function ($query) {
+                    $query->where('status', 'complete')->orderBy('scheduled_time', 'desc');
+                }]);
+            }
+
+            // Fetch the worker's shift site details using a query builder
+            $workerShiftSiteDetails = DB::table('worker_shift_site')
+                ->join('sites', 'worker_shift_site.site_id', '=', 'sites.id')
+                ->join('customers', 'customers.id', '=', 'sites.customer_id')
+                ->join('shifts', 'worker_shift_site.shift_id', '=', 'shifts.id')
+                ->where('worker_shift_site.id', $latestAttendance->worker_shift_site_id ?? null) // Using workerShiftSiteId directly
+                ->select(
+                    'sites.site_name',
+                    'sites.site_address_1',
+                    'sites.site_address_2',
+                    'sites.country as site_country',
+                    'sites.suburb_town_city',
+                    'sites.postal_code',
+                    'shifts.default_start_time',
+                    'shifts.default_end_time',
+                    'customers.customer_name',
+                    'customers.role as customer_role',
+                    'customers.email as customer_email',
+                    'customers.phone_no as customer_phone_no'
+                )
+                ->first();
+
+            // Prepare data for view
+            $shiftStart = $latestAttendance->start_time ? Carbon::parse($latestAttendance->start_time)->format('F j, Y g:i A') : 'N/A'; // Use null coalescing to avoid optional()
+            $lastCheckInCompleted = $latestAttendance->workerCheckIns->first() ? Carbon::parse($latestAttendance->workerCheckIns->first()->actual_time)->format('F j, Y g:i A') : 'N/A'; // Using direct access without optional()
+
+            // Get the monitors, ensuring we handle empty or null monitor usernames
+            $monitors = $worker->monitors->pluck('username')->filter()->implode(', ') ?? 'N/A';
+
+            // Commit the transaction after all queries are successfully executed
+            DB::commit();
+
+            // Return the view with the required data
+            return view('monitor.escalation-procedure', compact(
+                'worker',
+                'workerShiftSiteDetails',
+                'shiftStart',
+                'lastCheckInCompleted',
+                'monitors'
+            ));
+        } catch (\Exception $e) {
+            DB::rollBack();  // Rollback transaction in case of an error
+
+            // Log the error for debugging
+            Log::error('Worker escalation failed: ' . $e->getMessage(), ['worker_id' => $workerId]);
+
+            dd('Worker escalation failed: ' . $e->getMessage());
+
+            // Return error response
+            return redirect()->back()->withErrors(['error' => 'An error occurred while processing the request. Please try again.']);
+        }
+    }
+
 
     public function add()
     {
@@ -70,6 +157,13 @@ class WorkerController extends Controller
 
         if (Auth::guard('monitor')->user()->user_type === 'monitor' && Auth::guard('monitor')->check()) {
 
+            $worker = Worker::where('email', $req->email)->first();
+
+            if ($worker) {
+                $res = ['id' => $worker->id, 'status' => 'duplicate'];
+                return json_encode($res);
+            }
+
             $assignedMonitors = json_decode($req->input('assignedMonitors'), true);
 
             $items = $req->input('shifts_site_repeater');
@@ -103,7 +197,6 @@ class WorkerController extends Controller
                     'nok_relation' => $req->nok_relation,
                     'nok_address' => $req->nok_address,
                     'nok_contact' => $req->nok_contact,
-                    'shift_id' => $req->shift_id,
                     'subscriber_id' => Auth::guard('monitor')->user()->subscriber_id,
                     'monitor_id' => Auth::guard('monitor')->user()->id,
                     'check_in_visibility' => $req->check_in_visibility ?? '7days',
@@ -116,10 +209,10 @@ class WorkerController extends Controller
                         'site_id' => $item['site_id'],
                         'custom_start_time' => $item['custom_start_time'],
                         'custom_end_time' => $item['custom_end_time'],
+                        'start_date' => $item['start_date'],
+                        'end_date' => $item['end_date'],
                     ];
                 }
-
-
 
                 DB::table('worker_shift_site')->insert($itemsToInsert);
 
@@ -213,7 +306,7 @@ class WorkerController extends Controller
     {
         try {
             $shifts = DB::table('worker_shift_site')
-                ->select('shift_id', 'site_id', 'custom_start_time', 'custom_end_time')
+                ->select('shift_id', 'site_id', 'custom_start_time', 'custom_end_time', 'start_date', 'end_date')
                 ->where('worker_id', $id)
                 ->get();
 
@@ -275,7 +368,7 @@ class WorkerController extends Controller
         $monitorsToRemove = array_diff($currentMonitorIds, $assignedMonitors);
 
         $items = $req->input('shifts_site_repeater');
-        $isUpdated = false; // Flag to track if any updates or inserts were made to worker shift site table
+        $shiftsUpdated = false; // Flag to track if any updates or inserts were made to worker shift site table
 
         try {
             DB::beginTransaction();
@@ -314,7 +407,7 @@ class WorkerController extends Controller
                 'nok_name' => $req->nok_name,
                 'nok_relation' => $req->nok_relation,
                 'nok_address' => $req->nok_address,
-                'shift_id' => $req->shift_id,
+                // 'shift_id' => $req->shift_id,
                 'nok_contact' => $req->nok_contact,
                 'check_in_visibility' => $req->check_in_visibility
             ]);
@@ -327,24 +420,28 @@ class WorkerController extends Controller
                     ->where('site_id', $item['site_id'])
                     ->first();
 
+                Log::info('item: ', $item);
+
+                Log::info('existingShiftSite: ', ['data' => json_encode($existingShiftSite)]);
+
+
                 if ($existingShiftSite) {
-                    if (
-                        (is_null($existingShiftSite->custom_start_time) && !is_null($item['custom_start_time'])) ||
-                        (!is_null($existingShiftSite->custom_start_time) && $existingShiftSite->custom_start_time !== $item['custom_start_time']) ||
-                        (is_null($existingShiftSite->custom_end_time) && !is_null($item['custom_end_time'])) ||
-                        (!is_null($existingShiftSite->custom_end_time) && $existingShiftSite->custom_end_time !== $item['custom_end_time'])
-                    ) {
-                        DB::table('worker_shift_site')
-                            ->where('worker_id', $worker->id)
-                            ->where('shift_id', $item['shift_id'])
-                            ->where('site_id', $item['site_id'])
-                            ->update([
-                                'custom_start_time' => $item['custom_start_time'],
-                                'custom_end_time' => $item['custom_end_time'],
-                            ]);
-                        $isUpdated = true; // Mark as updated only if there's an actual change
+                    Log::info('updating item');
+                    $rowsUpdated = DB::table('worker_shift_site')
+                        ->where('worker_id', $worker->id)
+                        ->where('shift_id', $item['shift_id'])
+                        ->where('site_id', $item['site_id'])
+                        ->update([
+                            'custom_start_time' => $item['custom_start_time'],
+                            'custom_end_time' => $item['custom_end_time'],
+                            'start_date' => $item['start_date'],
+                            'end_date' => $item['end_date'],
+                        ]);
+
+                    if ($rowsUpdated > 0) {
+                        $shiftsUpdated = true; // Mark as updated only if there's an actual change
                     }
-                }  else {
+                } else {
                     // If the record does not exist, insert it
                     DB::table('worker_shift_site')->insert([
                         'worker_id' => $worker->id,
@@ -352,9 +449,11 @@ class WorkerController extends Controller
                         'site_id' => $item['site_id'],
                         'custom_start_time' => $item['custom_start_time'],
                         'custom_end_time' => $item['custom_end_time'],
+                        'start_date' => $item['start_date'],
+                        'end_date' => $item['end_date'],
                     ]);
 
-                    $isUpdated = true; // Mark as updated for insertions
+                    $shiftsUpdated = true; // Mark as updated for insertions
                 }
             }
 
@@ -374,8 +473,8 @@ class WorkerController extends Controller
 
             DB::commit(); // Commit transaction
 
-            // Send notification to worker for their new shift details
-            if ($isUpdated) {
+            // Send notification to worker for only if their shift details are changed
+            if ($shiftsUpdated) {
                 $worker->sendPushNotification('Shift Details!', 'Your shift details have been updated. Click here to view.', ['screen' => 'Shift Details']);
             }
 
