@@ -212,13 +212,13 @@
                                 <!--begin::Card body-->
                                 <div class="card-body pt-0">
                                     <div>
-                                        <textarea class="form-control"></textarea>
+                                        <textarea class="form-control" rows="5"></textarea>
                                     </div>                                
                                 </div>
                                 <!--end::Card header-->
                             </div>
                             <!--end::Incident details-->
-                            {{-- <div class="d-flex justify-content-end">
+                            <div class="d-flex justify-content-end">
                                 <!--begin::Button-->
                                 <a href="{{ route('customers') }}" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                 <!--end::Button-->
@@ -229,7 +229,7 @@
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                 </button>
                                 <!--end::Button-->
-                            </div> --}}
+                            </div>
                         </div>
                         <!--end::Main column-->
                     </form>

@@ -143,6 +143,19 @@ class WorkerController extends Controller
         ]);
     }
 
+    function generateUniquePin()
+    {
+        do {
+            // Generate a random 6-digit number
+            $pin = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+            // Check if the PIN already exists in the database
+            $exists = Worker::where('pin', $pin)->exists();
+        } while ($exists); // Repeat until a unique PIN is found
+
+        return $pin;
+    }
+
     public function save(Request $req)
     {
 
@@ -178,11 +191,15 @@ class WorkerController extends Controller
                 // Start transaction
                 DB::beginTransaction();
 
+                // Generate a unique 6-digit PIN
+                $pin = $this->generateUniquePin();
+
                 $worker = Worker::create([
                     'worker_name' => $req->worker_name,
                     'phone_no' => $req->phone_no,
                     'email' => $req->email,
-                    'pin' => '',
+                    'pin' => $pin,
+                    'password' => $req->email,
                     'phone_type' => $req->phone_type,
                     'role' => $req->role,
                     'department' => $req->department,
