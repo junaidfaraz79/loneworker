@@ -53,4 +53,9 @@ class WorkerCheckIns extends Model
     {
         return $this->belongsTo(Attendance::class, 'attendance_id', 'id');
     }
+
+    public function alerts()
+    {
+        return $this->hasMany(Alert::class, 'check_in_id', 'id');
+    }
 }

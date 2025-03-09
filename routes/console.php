@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::command('check:missed-checkins')->everyMinute();
+Schedule::command('notify:shift-start')->dailyAt('00:00');

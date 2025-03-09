@@ -254,7 +254,10 @@ class MonitorController extends Controller
         $workers = Worker::with(['attendance' => function ($query) {
             $query->latest() // Fetch the latest attendance record, if any
                 ->with(['workerCheckIns' => function ($query) {
-                    $query->latest(); // Fetch the latest WorkerCheckIns record, if any
+                    $query->latest() // Fetch the latest WorkerCheckIns record, if any
+                        ->with(['alerts' => function ($query) {
+                            $query->latest(); // Fetch the latest WorkerCheckIns record, if any
+                        }]);
                 }]);
         }])
             ->join('worker_monitor', 'workers.id', '=', 'worker_monitor.worker_id') // Join with worker_monitor

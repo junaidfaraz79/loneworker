@@ -44,8 +44,8 @@ class AttendanceController extends Controller
 
             foreach ($shifts as $shift) {
                 // Use custom times if available, otherwise use default times
-                $startTime = $shift->custom_start_time ? Carbon::createFromFormat('h:i A', $shift->custom_start_time) : Carbon::createFromFormat('h:i A', $shift->default_start_time);
-                $endTime = $shift->custom_end_time ? Carbon::createFromFormat('h:i A', $shift->custom_end_time) : Carbon::createFromFormat('h:i A', $shift->default_end_time);
+                $startTime = Carbon::createFromFormat('h:i A', $shift->custom_start_time ?? $shift->default_start_time);
+                $endTime = Carbon::createFromFormat('h:i A', $shift->custom_end_time ?? $shift->default_end_time);
 
                 // Compare checkin_time with the shift's start and end times
                 if ($checkinTime->between($startTime, $endTime)) {

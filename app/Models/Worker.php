@@ -81,6 +81,10 @@ class Worker extends Authenticatable
         return $this->belongsToMany(Monitor::class, 'worker_monitor', 'worker_id', 'monitor_id');
     }
 
+    public function alerts()
+    {
+        return $this->hasMany(Alert::class, 'worker_id', 'id');
+    }
     /**
      * Send a push notification to the worker.
      *
