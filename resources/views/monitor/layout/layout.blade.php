@@ -984,7 +984,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--begin::Action-->
 						<div class="app-navbar-item ms-1 ms-md-2 me-n3">
 							<!--begin::Link-->
-							<a href="/signout"
+							<a href="{{ route('monitor.logout') }}"
 								class="btn btn-icon btn-custom btn-color-gray-600 btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px">
 								<i class="ki-duotone ki-exit-right fs-2x">
 									<span class="path1"></span>

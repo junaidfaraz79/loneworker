@@ -92,7 +92,7 @@ Route::prefix('monitor')->group(function () {
     // Group for authenticated and role-specific routes
     Route::middleware([MonitorAuth::class])->group(function () {
         Route::get('/dashboard', [MonitorController::class, 'dashboard'])->name('monitor.dashboard');
-        Route::post('/signout', [MonitorController::class, 'logout'])->name('monitor.logout');
+        Route::get('/signout', [MonitorController::class, 'logout'])->name('monitor.logout');
 
         // Shifts Routes
         Route::get('/shifts', [ShiftController::class, 'list'])->name('shifts');

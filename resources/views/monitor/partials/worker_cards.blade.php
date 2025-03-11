@@ -28,6 +28,8 @@
                 $isAlertRequired = true;
             }
         }
+        // Fetch the latest alert for the worker
+        $latestAlert = $worker->alerts->first() ?? null;
     @endphp
 
     <!--begin::Row-->
@@ -82,13 +84,12 @@
                             <!--end::Alert-->
                         @endif
                         <!-- If the alert condition is true, show an alert button -->
-                        @if($isAlertRequired)
+                        @if($isAlertRequired && $latestAlert)
                             <a class="btn btn-danger mb-2" style="width: 100%;" href="{{ route('worker.escalation', ['parameter' => $worker->id]) }}">
                                 Alert!
                             </a>
                         @endif
                         <!--end::Actions-->
-
                         <!--begin::Worker Information-->
                         <div>
                             <table class="table table-bordered table-striped text-center">

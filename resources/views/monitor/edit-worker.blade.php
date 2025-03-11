@@ -213,6 +213,17 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
+                                            <div class="mb-10 fv-row">
+                                                <!--begin::Label-->
+                                                <label class="required form-label">Worker Pin</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" name="pin" class="form-control mb-2"
+                                                    placeholder="Worker pin" value="{{ $worker->pin }}" readonly />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
                                             <div class="mb-10 row">
                                                 @php
                                                 $active_class = '';
@@ -336,29 +347,6 @@
                                                 <div class="text-muted fs-7">Set role.</div>
                                                 @endif
                                                 <!--end::Description-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="mb-10">
-                                                <!--begin::Label-->
-                                                <label class="form-label">Shift</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option"
-                                                    name="shift_id" {{ $isViewMode==='y' ? 'disabled' : ''}}>
-                                                    <option>Select Shift</option>
-                                                    @foreach ($shifts as $key => $shift)
-                                                        <option value="{{$shift->id}}">
-                                                            {{ $shift->name . ' (' . $shift->default_start_time . ' - ' . $shift->default_end_time . ')' }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <!--end::Input-->
-                                                @if($isViewMode === 'n')
-                                                <!--begin::Description-->
-                                                <div class="text-muted fs-7">Set shift.</div>
-                                                <!--end::Description-->
-                                                @endif
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
@@ -592,16 +580,16 @@
                                             <!--begin::Input group-->
                                             <div class="mb-10 row">
                                                 <!--begin::Label-->
-                                                <label class="form-label">Number</label>
+                                                <label class="form-label">Contact</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" name="nok_contact" class="form-control mb-2"
-                                                    placeholder="Number" value="{{ $worker->nok_contact }}" {{
+                                                    placeholder="Contact" value="{{ $worker->nok_contact }}" {{
                                                     $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->
                                                 @if($isViewMode === 'n')
                                                 <!--begin::Description-->
-                                                <div class="text-muted fs-7">Set Number.</div>
+                                                <div class="text-muted fs-7">Set Contact.</div>
                                                 <!--end::Description-->
                                                 @endif
                                             </div>

@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class WorkerCheckInsController extends Controller
 {
@@ -37,10 +38,17 @@ class WorkerCheckInsController extends Controller
                 'status' => 'completed',
             ]);
 
-            $carbonCheckInTime  = Carbon::parse($request->checkin_time); // Get the current time
-            $scheduledTime = $carbonCheckInTime->addSeconds(120); // Add the frequency to the current time to get the scheduled time
-            // $scheduledTime = $carbonCheckInTime ->addSeconds($frequency->value); // Add the frequency to the current time to get the scheduled time
-            $gracePeriodEnd = $scheduledTime->copy()->addMinutes(15);
+            $carbonCheckInTime = Carbon::parse($request->checkin_time); // Original time
+
+            // Create a clone for scheduledTime
+            $scheduledTime = (clone $carbonCheckInTime)->addSeconds(120); // Add 120 seconds to the original time
+
+            // Create another clone for gracePeriodEnd
+            $gracePeriodEnd = (clone $carbonCheckInTime)->addMinutes(17); // Add 17 minutes to the original time
+
+            Log::info('Original Check-in Time: ' . $carbonCheckInTime);
+Log::info('Scheduled Time: ' . $scheduledTime);
+Log::info('Grace Period End: ' . $gracePeriodEnd);
 
             $checkin = WorkerCheckIns::create([
                 'attendance_id' => $workerCheckIn->attendance_id,
@@ -94,15 +102,15 @@ class WorkerCheckInsController extends Controller
                 break;
             case 'this_month':
                 $query->whereMonth('created_at', '=', now()->month)
-                      ->whereYear('created_at', '=', now()->year);
+                    ->whereYear('created_at', '=', now()->year);
                 break;
             case 'last_month':
                 $lastMonth = now()->subMonth();
                 $query->whereMonth('created_at', '=', $lastMonth->month)
-                      ->whereYear('created_at', '=', $lastMonth->year);
+                    ->whereYear('created_at', '=', $lastMonth->year);
                 break;
         }
-        
+
         $perPage = 10;
         $page = $request->query('page', 1);
 

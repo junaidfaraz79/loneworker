@@ -12,7 +12,10 @@ class SiteController extends Controller
 {
     public function list()
     {
-        $sites = DB::table('sites')->get();
+        $sites = DB::table('sites')
+            ->leftJoin('customers as c', 'c.id', '=', 'sites.customer_id')
+            ->select('sites.*', 'c.customer_name')
+            ->get();
         return view('monitor.sites', ['sites' => $sites]);
     }
 

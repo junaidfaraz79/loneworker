@@ -359,7 +359,7 @@
                                                 @endphp
                                                 <span class="badge badge-light-{{$badge}} fw-bold fs-7 px-2 py-1 ms-2">{{ ucfirst($site->site_status) }}</span>
                                             </td>
-                                            <td> - </td>
+                                            <td>{{ $site->customer_name ?? 'N/A' }}</td>
                                             <td class="text-end">
                                                 <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
                                                 <i class="ki-duotone ki-down fs-5 ms-1"></i></a>

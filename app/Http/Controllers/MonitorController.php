@@ -141,6 +141,8 @@ class MonitorController extends Controller
 
     public function logout(Request $request)
     {
+        Log::info('Logging out user: ' . Auth::guard('monitor')->user()->email);
+
         // Using the 'monitor' guard to log out the user
         Auth::guard('monitor')->logout();
 

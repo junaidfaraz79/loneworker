@@ -28,6 +28,7 @@ class WorkerCheckIns extends Model
         'attendance_id',
         'scheduled_time',
         'actual_time',
+        'grace_period_end',
         'status',
     ];
 

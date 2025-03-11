@@ -357,8 +357,8 @@
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->phone_no }}</td>
                                             <td>
-                                                @php $user->created_at = date_create($user->created_at) @endphp
-                                                {{ date_format($user->created_at, 'd-M-Y h:ia') }}
+                                                @php $user->added_on = date_create($user->added_on) @endphp
+                                                {{ date_format($user->added_on, 'd-M-Y h:ia') }}
                                             </td>
                                             <td class="text-end">
                                                 <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
