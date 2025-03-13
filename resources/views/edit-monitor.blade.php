@@ -14,7 +14,7 @@
                         <!--begin::Page title-->
                         <div class="page-title d-flex align-items-center gap-1 me-3">
                             <!--begin::Title-->
-                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Add Monitor</h1>
+                            <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 lh-1 fw-bolder fs-2x my-0 me-5">Edit Monitor</h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
                             <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
@@ -47,7 +47,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700">Add Monitor</li>
+                                <li class="breadcrumb-item text-gray-700">Edit Monitor</li>
                                 <!--end::Item-->
                             </ul>
                             <!--end::Breadcrumb-->

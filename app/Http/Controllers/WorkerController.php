@@ -179,7 +179,13 @@ class WorkerController extends Controller
 
             $assignedMonitors = json_decode($req->input('assignedMonitors'), true);
 
-            $items = $req->input('shifts_site_repeater');
+            // Handle shifts_site_repeater
+            $items = $req->input('shifts_site_repeater', []);
+
+            // Filter out empty items from shifts_site_repeater
+            $items = array_filter($items, function ($item) {
+                return !empty(array_filter($item)); // Remove items where all values are empty
+            });
 
             if ($req->file('worker_image')) {
                 if ($req->file('worker_image')->isValid())
@@ -219,19 +225,20 @@ class WorkerController extends Controller
                     'check_in_visibility' => $req->check_in_visibility ?? '7days',
                 ]);
 
-                foreach ($items as $item) {
-                    $itemsToInsert[] = [
-                        'worker_id' => $worker->id,
-                        'shift_id' => $item['shift_id'],
-                        'site_id' => $item['site_id'],
-                        'custom_start_time' => $item['custom_start_time'],
-                        'custom_end_time' => $item['custom_end_time'],
-                        'start_date' => $item['start_date'],
-                        'end_date' => $item['end_date'],
-                    ];
+                if (!empty($items)) {
+                    foreach ($items as $item) {
+                        $itemsToInsert[] = [
+                            'worker_id' => $worker->id,
+                            'shift_id' => $item['shift_id'],
+                            'site_id' => $item['site_id'],
+                            'custom_start_time' => $item['custom_start_time'],
+                            'custom_end_time' => $item['custom_end_time'],
+                            'start_date' => $item['start_date'],
+                            'end_date' => $item['end_date'],
+                        ];
+                    }
+                    DB::table('worker_shift_site')->insert($itemsToInsert);
                 }
-
-                DB::table('worker_shift_site')->insert($itemsToInsert);
 
                 if ($req->hasFile('worker_documents')) {
                     foreach ($req->file('worker_documents') as $file) {
@@ -384,7 +391,13 @@ class WorkerController extends Controller
         $monitorsToAdd = array_diff($assignedMonitors, $currentMonitorIds);
         $monitorsToRemove = array_diff($currentMonitorIds, $assignedMonitors);
 
-        $items = $req->input('shifts_site_repeater');
+        // Handle shifts_site_repeater
+        $items = $req->input('shifts_site_repeater', []);
+
+        // Filter out empty items from shifts_site_repeater
+        $items = array_filter($items, function ($item) {
+            return !empty(array_filter($item)); // Remove items where all values are empty
+        });
         $shiftsUpdated = false; // Flag to track if any updates or inserts were made to worker shift site table
 
         try {
@@ -437,13 +450,7 @@ class WorkerController extends Controller
                     ->where('site_id', $item['site_id'])
                     ->first();
 
-                Log::info('item: ', $item);
-
-                Log::info('existingShiftSite: ', ['data' => json_encode($existingShiftSite)]);
-
-
                 if ($existingShiftSite) {
-                    Log::info('updating item');
                     $rowsUpdated = DB::table('worker_shift_site')
                         ->where('worker_id', $worker->id)
                         ->where('shift_id', $item['shift_id'])
@@ -459,18 +466,20 @@ class WorkerController extends Controller
                         $shiftsUpdated = true; // Mark as updated only if there's an actual change
                     }
                 } else {
-                    // If the record does not exist, insert it
-                    DB::table('worker_shift_site')->insert([
-                        'worker_id' => $worker->id,
-                        'shift_id' => $item['shift_id'],
-                        'site_id' => $item['site_id'],
-                        'custom_start_time' => $item['custom_start_time'],
-                        'custom_end_time' => $item['custom_end_time'],
-                        'start_date' => $item['start_date'],
-                        'end_date' => $item['end_date'],
-                    ]);
+                    if (!empty($items)) {
+                        // If the record does not exist, insert it
+                        DB::table('worker_shift_site')->insert([
+                            'worker_id' => $worker->id,
+                            'shift_id' => $item['shift_id'],
+                            'site_id' => $item['site_id'],
+                            'custom_start_time' => $item['custom_start_time'],
+                            'custom_end_time' => $item['custom_end_time'],
+                            'start_date' => $item['start_date'],
+                            'end_date' => $item['end_date'],
+                        ]);
 
-                    $shiftsUpdated = true; // Mark as updated for insertions
+                        $shiftsUpdated = true; // Mark as updated for insertions
+                    }
                 }
             }
 
