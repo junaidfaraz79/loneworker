@@ -94,7 +94,7 @@
                                         <label class="required form-label">Cell Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="cell_no" class="form-control mb-2" placeholder="Cell number" />
+                                        <input type="tel" name="cell_no" class="form-control mb-2" placeholder="Cell number" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->                                    
@@ -104,7 +104,8 @@
                                         <label class="required form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="phone_no" class="form-control mb-2" placeholder="Phone number" />
+                                        <input type="tel" name="phone_no" id="phone_no" class="form-control mb-2" placeholder="Phone number" />
+                                        <input type="hidden" name="full_phone_no" id="full_phone_no" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
@@ -182,7 +183,10 @@
 @endsection
 
 @push('scripts')
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>

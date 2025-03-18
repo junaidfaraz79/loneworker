@@ -4,7 +4,7 @@
 var KTAppEcommerceSaveCategory = function () {
 
     // Private functions
-
+    var iti;
     // Init quill editor
     const initQuill = () => {
         // Define all elements for quill editor
@@ -223,6 +223,9 @@ var KTAppEcommerceSaveCategory = function () {
                     if (status == 'Valid') {
                         submitButton.setAttribute('data-kt-indicator', 'on');
 
+                        const fullPhoneNumber = iti.getNumber();
+                        console.log("Full Phone Number:", fullPhoneNumber);
+                        document.querySelector("#phone_no").value = fullPhoneNumber;
                         // Disable submit button whilst loading
                         submitButton.disabled = true;
 
@@ -309,6 +312,30 @@ var KTAppEcommerceSaveCategory = function () {
             initTagify();
             initFormRepeater();
             initConditionsSelect2();
+
+            const input = document.querySelector("#phone_no");
+            iti = intlTelInput(input, {
+                initialCountry: "auto",
+                geoIpLookup: function(callback) {
+                    fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
+                        .then(function(res) {
+                            return res.json();
+                        })
+                        .then(function(data) {
+                            console.log(data.countryCode);
+                            callback(data.countryCode);
+                        })
+                        .catch(function() {
+                            callback("us");
+                        });
+                },
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+            });
+            
+            const itiElement = document.querySelector(".iti");
+            if (itiElement) {
+                itiElement.style.display = "block"; // Change to desired value
+            }
 
             // Handle forms
             handleStatus();
