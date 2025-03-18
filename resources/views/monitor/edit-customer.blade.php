@@ -239,7 +239,7 @@
                                         <label class="form-label">Email address</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $customer->email }}" />
+                                        <input type="email" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $customer->email }}" />
                                         <!--end::Input-->
                                         <!--begin::Description-->
                                         <div class="text-muted fs-7">Set email address.</div>

@@ -304,7 +304,7 @@
                                                 <label class="form-label">Email address</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" name="email" class="form-control mb-2"
+                                                <input type="email" name="email" class="form-control mb-2"
                                                     placeholder="Email address" value="{{ $worker->email }}" {{
                                                     $isViewMode==='y' ? 'readonly' : '' }} />
                                                 <!--end::Input-->

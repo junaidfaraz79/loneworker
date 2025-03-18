@@ -161,7 +161,7 @@
                                         <label class="form-label">Email address</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $profile->email }}" />
+                                        <input type="email" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $profile->email }}" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->                                    

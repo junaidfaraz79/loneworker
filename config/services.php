@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'companies_house' => [
+        'api_key' => env('COMPANIES_HOUSE_API_KEY'),
+    ],
 ];

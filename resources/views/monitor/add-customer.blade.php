@@ -181,8 +181,9 @@
                                         <label class="required form-label">Customer Name</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="customer_name" class="form-control mb-2" placeholder="Customer name" value="" />
+                                        <input type="text" name="customer_name" id="customer_name" class="form-control mb-2" placeholder="Customer name" value="" />
                                         <!--end::Input-->
+                                        <ul id="company-list" class="list-group"></ul>
                                         <!--begin::Description-->
                                         <div class="text-muted fs-7">A customer name is required.</div>
                                         <!--end::Description-->
@@ -194,7 +195,7 @@
                                         <label class="required form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="" />
+                                        <input type="text" name="phone_no" id="phone_no" class="form-control mb-2" placeholder="Phone number" value="" />
                                         <!--end::Input-->
                                         <!--begin::Description-->
                                         <div class="text-muted fs-7">Set phone number.</div>
@@ -204,10 +205,23 @@
                                     <!--begin::Input group-->
                                     <div class="mb-10 fv-row">
                                         <!--begin::Label-->
+                                        <label class="required form-label">Address</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="company_address" id="company_address" class="form-control mb-2" placeholder="Address" value="" />
+                                        <!--end::Input-->
+                                        <!--begin::Description-->
+                                        <div class="text-muted fs-7">Set Address.</div>
+                                        <!--end::Description-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
                                         <label class="required form-label">Email address</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="email" class="form-control mb-2" placeholder="Email address" value="" />
+                                        <input type="email" name="email" class="form-control mb-2" placeholder="Email address" value="" />
                                         <!--end::Input-->
                                         <!--begin::Description-->
                                         <div class="text-muted fs-7">Set email address.</div>
@@ -239,7 +253,7 @@
                                         <div class="text-muted fs-7">Set role.</div>
                                         <!--end::Description-->
                                     </div>
-                                    <!--end::Input group-->                                    
+                                    <!--end::Input group-->   
                                 </div>
                                 <!--end::Card header-->
                             </div>
@@ -274,15 +288,15 @@
 @endsection
 
 @push('scripts')
-
     <script src="{{ asset('assets/js/custom/loneworker/save-customer.js') }}"></script>
 
     <script src="{{ asset('/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
-    <script src="{{ asset('/assets/js/widgets.bundle.js') }}"></script>
+    {{-- <script src="{{ asset('/assets/js/widgets.bundle.js') }}"></script>
     <script src="{{ asset('/assets/js/custom/apps/chat/chat.js') }}"></script>
     <script src="{{ asset('/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
     <script src="{{ asset('/assets/js/custom/utilities/modals/create-app.js') }}"></script>
     <script src="{{ asset('/assets/js/custom/utilities/modals/users-search.js') }}"></script>
-
-
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> --}}
+    
 @endpush

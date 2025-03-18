@@ -115,7 +115,7 @@
                                         <label class="required form-label">Email address</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $monitor->email }}" />
+                                        <input type="email" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $monitor->email }}" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->

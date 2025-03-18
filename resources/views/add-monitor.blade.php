@@ -114,7 +114,7 @@
                                         <label class="required form-label">Email address</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="email" class="form-control mb-2" placeholder="Email address" />
+                                        <input type="email" name="email" class="form-control mb-2" placeholder="Email address" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->

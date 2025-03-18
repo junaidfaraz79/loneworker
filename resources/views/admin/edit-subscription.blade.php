@@ -145,7 +145,7 @@
                                         <label class="form-label">Email address</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $subscription->email }}" disabled />
+                                        <input type="email" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $subscription->email }}" disabled />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->

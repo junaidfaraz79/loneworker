@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SigninController;
 use App\Http\Controllers\DashboardController;
@@ -93,6 +94,8 @@ Route::prefix('monitor')->group(function () {
     Route::middleware([MonitorAuth::class])->group(function () {
         Route::get('/dashboard', [MonitorController::class, 'dashboard'])->name('monitor.dashboard');
         Route::get('/signout', [MonitorController::class, 'logout'])->name('monitor.logout');
+
+        Route::get('/companies', [CompanyController::class, 'fetchCompanies'])->name('fetch.companies');
 
         // Shifts Routes
         Route::get('/shifts', [ShiftController::class, 'list'])->name('shifts');

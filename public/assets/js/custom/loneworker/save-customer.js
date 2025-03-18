@@ -337,6 +337,42 @@ var KTAppEcommerceSaveCategory = function () {
             // initQuill();
             // initTagify();
             // initFormRepeater();
+            $('#customer_name').on('keyup', function() {
+                console.log('hereee');
+                let query = $(this).val();
+                if (query.length < 3) return; // Start searching after 3 characters
+        
+                $.ajax({
+                    url: "/monitor/companies",
+                    type: "GET",
+                    data: { customer_name: query },
+                    success: function(response) {
+                        $('#company-list').empty();
+                        if (response.items && response.items.length > 0) {
+                            response.items.forEach(company => {
+                                $('#company-list').append(
+                                    `<li class="list-group-item company-item" data-number="${company.company_number}" data-address="${company.registered_office_address?.address_line_1 || ''}">
+                                        ${company.company_name}
+                                    </li>`
+                                );
+                            });
+                        } else {
+                            $('#company-list').append(`<li class="list-group-item">No results found</li>`);
+                        }
+                    }
+                });
+            });
+        
+            $(document).on('click', '.company-item', function() {
+                let companyName = $(this).text();
+                let companyNumber = $(this).data('number');
+                let companyAddress = $(this).data('address');
+        
+                $('#customer_name').val(companyName);
+                $('#phone_no').val(companyNumber);
+                $('#company_address').val(companyAddress);
+                $('#company-list').empty(); // Clear suggestions
+            });
             initConditionsSelect2();
 
             // Handle forms
