@@ -254,6 +254,14 @@ class SiteController extends Controller
             'monitor_id' => Auth::guard('monitor')->user()->id,
             'site_image' => $site_image,
             'site_status' => $req->site_status,
+            'longitude' => $req->longitude,
+            'latitude' => $req->latitude,
+            'site_manager_name' => $req->site_manager_name,
+            'site_manager_contact' => $req->site_manager_contact,
+            'national_emergency_number' => $req->national_emergency_number,
+            'local_police_contact' => $req->local_police_contact,
+            'local_firebrigade_contact' => $req->local_firebrigade_contact,
+            'local_hospital_contact' => $req->local_hospital_contact,
             'country' => $req->country
         ]);
 
@@ -518,6 +526,14 @@ class SiteController extends Controller
             'customer_id' => $req->customer_id,
             'site_image' => $site_image,
             'site_status' => $req->site_status,
+            'longitude' => $req->longitude,
+            'latitude' => $req->latitude,
+            'site_manager_name' => $req->site_manager_name,
+            'site_manager_contact' => $req->site_manager_contact,
+            'national_emergency_number' => $req->national_emergency_number,
+            'local_police_contact' => $req->local_police_contact,
+            'local_firebrigade_contact' => $req->local_firebrigade_contact,
+            'local_hospital_contact' => $req->local_hospital_contact,
             'country' => $req->country
         ]);
 

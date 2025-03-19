@@ -221,6 +221,25 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Country</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <select name="country" class="form-select mb-2" data-control="select2"
+                                            data-placeholder="Select country" id="country">
+                                            <option></option>
+                                            @foreach ($countries as $key => $country)
+                                                <option value="{{ $country }}" {{ $site->country === $country ? 'selected' : '' }}>
+                                                    {{ $country }}
+                                                </option>
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
                                     <div class="mb-10">
                                         <!--begin::Label-->
                                         <label class="form-label">Address Line 1</label>
@@ -257,6 +276,28 @@
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="text" name="postal_code" class="form-control mb-2" placeholder="Enter postal/zip code" value="{{ $site->postal_code }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label required">Longitude</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="longitude" class="form-control mb-2"
+                                            placeholder="e.g., -180.00000000 to +180.00000000"  value="{{ $site->longitude }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label required">Latitude</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="latitude" class="form-control mb-2"
+                                            placeholder="e.g., -90.00000000 to +90.00000000"  value="{{ $site->latitude }}" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
@@ -298,6 +339,87 @@
                                 <!--end::Card header-->
                             </div>
                             <!--end::General options-->
+                            <!--begin::Site contact options-->
+                            <div class="card card-flush py-4">
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h2>Site Contacts</h2>
+                                    </div>
+                                </div>
+                                <!--end::Card header-->
+                                <!--begin::Card body-->
+                                <div class="card-body pt-0">
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label required">Site Manager Name</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="site_manager_name" class="form-control mb-2"
+                                            placeholder="Enter site manager name" value="{{ $site->site_manager_name }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label required">Site Manager Contact</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="site_manager_contact" class="form-control mb-2"
+                                            placeholder="Enter site manager contact" value="{{ $site->site_manager_contact }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label required">National Emergency Number</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="national_emergency_number" class="form-control mb-2"
+                                            placeholder="Enter national emergency number" value="{{ $site->national_emergency_number }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label required">Local Police Contact</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="local_police_contact" class="form-control mb-2"
+                                            placeholder="Enter local police contact" value="{{ $site->local_police_contact }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label required">Local Fire Brigade Contact</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="local_firebrigade_contact" class="form-control mb-2"
+                                            placeholder="Enter local fire brigade contact" value="{{ $site->local_firebrigade_contact }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="form-label required">Local Hospital/Medical Contact</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="local_hospital_contact" class="form-control mb-2"
+                                            placeholder="Enter local hospital/medical contact" value="{{ $site->local_hospital_contact }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+                                <!--end::Card body-->
+                            </div>
+                            <!--end::Site contact options-->
                             <div class="d-flex justify-content-end">
                                 <!--begin::Button-->
                                 <a href="{{ route('sites') }}" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>

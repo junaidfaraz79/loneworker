@@ -42,6 +42,11 @@ class MonitorController extends Controller
                 'company_name' => $req->company_name,
                 'official_address' => $req->official_address,
                 'designation' => $req->designation,
+                'country_code' => $req->country_code,
+                'home_address' => $req->home_address,
+                'gender' => $req->gender,
+                'emergency_contact_1' => $req->emergency_contact_1,
+                'emergency_contact_2' => $req->emergency_contact_2,
                 'user_type' => 'monitor',
                 'subscriber_id' => Auth::guard('subscriber')->user()->id
             ]);
@@ -70,8 +75,13 @@ class MonitorController extends Controller
                 'password' => 'monitor', // This will be hashed if you've set the mutator
                 'cell_no' => $req->cell_no,
                 'phone_no' => $req->phone_no,
+                'country_code' => $req->country_code,
                 'company_name' => $req->company_name,
                 'official_address' => $req->official_address,
+                'home_address' => $req->home_address,
+                'gender' => $req->gender,
+                'emergency_contact_1' => $req->emergency_contact_1,
+                'emergency_contact_2' => $req->emergency_contact_2,
                 'designation' => $req->designation,
             ]);
 

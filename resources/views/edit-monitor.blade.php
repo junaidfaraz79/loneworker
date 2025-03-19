@@ -105,7 +105,8 @@
                                         <label class="required form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="{{ $monitor->phone_no }}" />
+                                        <input type="tel" name="phone_no"  id="phone_no" class="form-control mb-2" placeholder="Phone number" value="{{ $monitor->phone_no }}" />
+                                        <input type="hidden" name="country_code" id="country_code" value="{{ $monitor->country_code }}" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
@@ -149,6 +150,56 @@
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Home Address</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="home_address" class="form-control mb-2" placeholder="Home address" value="{{ $monitor->home_address }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Gender</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <select id="gender" name="gender" class="form-select" data-control="select2" >
+                                            <option value="">Select Gender</option>
+                                            <option value="male" {{ $monitor->gender && $monitor->gender === 'male' ? 'selected' : '' }}>Male</option>
+                                            <option value="female" {{ $monitor->gender && $monitor->gender === 'female' ? 'selected' : '' }}>Female</option>
+                                            <option value="other" {{ $monitor->gender && $monitor->gender === 'other' ? 'selected' : '' }}>Other</option>
+                                        </select>
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="row mb-10">
+                                        <div class="col-lg-6">
+                                            <!--begin::Label-->
+                                            <label class="required form-label">Primary Emergency Contact</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="text" name="emergency_contact_1"
+                                                class="form-control mb-2" placeholder="Emergency phone number"
+                                                value="{{ $monitor->emergency_contact_1 ?? '' }}"/>
+                                            <!--end::Input-->
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <!--begin::Label-->
+                                            <label class="required form-label">Secondary Emergency Contact</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="text" name="emergency_contact_2"
+                                                class="form-control mb-2" placeholder="Emergency phone number"
+                                                value="{{ $monitor->emergency_contact_2 ?? '' }}" />
+                                            <!--end::Input-->
+                                        </div>
+                                    </div>
+                                    <!--end::Input group-->
                                     <div class="d-flex justify-content-end">
                                         <!--begin::Button-->
                                         <a href="{{ route('monitors') }}" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
@@ -183,7 +234,10 @@
 @endsection
 
 @push('scripts')
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 
     <script src="/assets/js/custom/loneworker/save-user.js"></script>

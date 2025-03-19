@@ -223,6 +223,9 @@ var KTAppEcommerceSaveCategory = function () {
                     if (status == 'Valid') {
                         submitButton.setAttribute('data-kt-indicator', 'on');
 
+                        const countryCode = iti.getSelectedCountryData().iso2;
+                        document.querySelector("#country_code").value = countryCode;
+
                         const fullPhoneNumber = iti.getNumber();
                         console.log("Full Phone Number:", fullPhoneNumber);
                         document.querySelector("#phone_no").value = fullPhoneNumber;
@@ -314,8 +317,9 @@ var KTAppEcommerceSaveCategory = function () {
             initConditionsSelect2();
 
             const input = document.querySelector("#phone_no");
+            const countryCode = document.querySelector("#country_code");
             iti = intlTelInput(input, {
-                initialCountry: "auto",
+                initialCountry: countryCode.value ?? "auto",
                 geoIpLookup: function(callback) {
                     fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
                         .then(function(res) {
@@ -331,7 +335,10 @@ var KTAppEcommerceSaveCategory = function () {
                 },
                 utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
             });
-            
+            console.log(input.value);
+            if (input.value) {
+                iti.setNumber(input.value); // Set the existing phone number
+            }
             const itiElement = document.querySelector(".iti");
             if (itiElement) {
                 itiElement.style.display = "block"; // Change to desired value

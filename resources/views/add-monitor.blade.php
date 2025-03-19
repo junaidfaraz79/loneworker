@@ -105,7 +105,7 @@
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="tel" name="phone_no" id="phone_no" class="form-control mb-2" placeholder="Phone number" />
-                                        <input type="hidden" name="full_phone_no" id="full_phone_no" />
+                                        <input type="hidden" name="country_code" id="country_code" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
@@ -147,6 +147,55 @@
                                         <!--begin::Input-->
                                         <input type="text" name="official_address" class="form-control mb-2" placeholder="Official address" />
                                         <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Home Address</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="home_address" class="form-control mb-2" placeholder="Home address" value="" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Gender</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <select id="gender" name="gender" class="form-select" data-control="select2" >
+                                            <option value="">Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="row mb-10">
+                                        <div class="col-lg-6">
+                                            <!--begin::Label-->
+                                            <label class="required form-label">Primary Emergency Contact</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="text" name="emergency_contact_1"
+                                                class="form-control mb-2" placeholder="Emergency phone number"
+                                                value=""/>
+                                            <!--end::Input-->
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <!--begin::Label-->
+                                            <label class="required form-label">Secondary Emergency Contact</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="text" name="emergency_contact_2"
+                                                class="form-control mb-2" placeholder="Emergency phone number"
+                                                value="" />
+                                            <!--end::Input-->
+                                        </div>
                                     </div>
                                     <!--end::Input group-->
                                     <div class="d-flex justify-content-end">
