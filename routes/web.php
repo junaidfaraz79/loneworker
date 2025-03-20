@@ -95,8 +95,6 @@ Route::prefix('monitor')->group(function () {
         Route::get('/dashboard', [MonitorController::class, 'dashboard'])->name('monitor.dashboard');
         Route::get('/signout', [MonitorController::class, 'logout'])->name('monitor.logout');
 
-        Route::get('/companies', [CompanyController::class, 'fetchCompanies'])->name('fetch.companies');
-
         // Shifts Routes
         Route::get('/shifts', [ShiftController::class, 'list'])->name('shifts');
         Route::get('/shift/add', [ShiftController::class, 'add'])->name('shift.add');
