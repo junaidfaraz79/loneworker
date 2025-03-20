@@ -192,13 +192,27 @@ var KTAppEcommerceSaveCategory = function () {
             form,
             {
                 fields: {
-                    'username': {
+                    'username': { validators: { notEmpty: { message: 'Username is required' } } },
+                    'cell_no': { validators: { notEmpty: { message: 'Cell number is required' } } },
+                    'phone_no': { validators: { notEmpty: { message: 'Phone Number is required' } } },
+                    'email': {
                         validators: {
+                            regexp: {
+                                regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: 'The value is not a valid email address',
+                            },
                             notEmpty: {
-                                message: 'Username name is required'
+                                message: 'Email address is required'
                             }
                         }
-                    }
+                    },
+                    'designation': { validators: { notEmpty: { message: 'Designation is required' } } },
+                    'company_name': { validators: { notEmpty: { message: 'Company Name is required' } } },
+                    'official_address': { validators: { notEmpty: { message: 'Official Address is required' } } },
+                    'home_address': { validators: { notEmpty: { message: 'Home Address is required' } } },
+                    'gender': { validators: { notEmpty: { message: 'Gender is required' } } },
+                    'emergency_contact_1': { validators: { notEmpty: { message: 'Primary Emergency Contact is required' } } },
+                    'emergency_contact_2': { validators: { notEmpty: { message: 'Secondary Emergency Contact is required' } } },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),

@@ -90,7 +90,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Cell Number</label>
                                         <!--end::Label-->
@@ -100,7 +100,7 @@
                                     </div>
                                     <!--end::Input group-->                                    
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Phone Number</label>
                                         <!--end::Label-->
@@ -111,7 +111,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Email address</label>
                                         <!--end::Label-->
@@ -121,7 +121,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Designation</label>
                                         <!--end::Label-->
@@ -131,7 +131,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Company Name</label>
                                         <!--end::Label-->
@@ -141,7 +141,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Official Address</label>
                                         <!--end::Label-->
@@ -151,7 +151,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Home Address</label>
                                         <!--end::Label-->
@@ -162,7 +162,7 @@
                                     <!--end::Input group-->
                                     
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Gender</label>
                                         <!--end::Label-->
@@ -178,7 +178,7 @@
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="row mb-10">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6 fv-row">
                                             <!--begin::Label-->
                                             <label class="required form-label">Primary Emergency Contact</label>
                                             <!--end::Label-->
@@ -188,7 +188,7 @@
                                                 value="{{ $monitor->emergency_contact_1 ?? '' }}"/>
                                             <!--end::Input-->
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-6 fv-row">
                                             <!--begin::Label-->
                                             <label class="required form-label">Secondary Emergency Contact</label>
                                             <!--end::Label-->
