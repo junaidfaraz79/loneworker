@@ -213,7 +213,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10 fv-row">
+                                            <div class="mb-10">
                                                 <!--begin::Label-->
                                                 <label class="required form-label">Worker Pin</label>
                                                 <!--end::Label-->
@@ -224,7 +224,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 @php
                                                 $active_class = '';
                                                 $inactive_class = '';
@@ -282,7 +282,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Phone Number</label>
                                                 <!--end::Label-->
@@ -299,7 +299,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Email address</label>
                                                 <!--end::Label-->
@@ -316,7 +316,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Department</label>
                                                 <!--end::Label-->
@@ -333,7 +333,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Role</label>
                                                 <!--end::Label-->
@@ -351,7 +351,7 @@
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="row mb-10">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="form-label">Check In Frequency</label>
                                                     <!--end::Label-->
@@ -374,7 +374,7 @@
                                                     @endif
                                                     <!--end::Description-->
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="form-label">Check In History Visibility</label>
                                                     <!--end::Label-->
@@ -404,7 +404,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Phone Type</label>
                                                 <!--end::Label-->
@@ -421,7 +421,7 @@
                                                     elseif ($worker->phone_type=='smart')
                                                     $smart_class = 'selected="selected"';
                                                     @endphp
-                                                    <option>Select type</option>
+                                                    <option value="">Select type</option>
                                                     <option {{ $old_class }} value="old">Old Phone</option>
                                                     <option {{ $smart_class }} value="smart">Smart Phone</option>
                                                 </select>
@@ -436,7 +436,7 @@
 
                                             <!--begin::Input group-->
                                             <div class="row mb-10">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="form-label">SIA Licence Number</label>
                                                     <!--end::Label-->
@@ -452,7 +452,7 @@
                                                     <!--end::Description-->
                                                     @endif
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="form-label">SIA Licence Expiry Date</label>
                                                     <!--end::Label-->
@@ -474,7 +474,7 @@
 
                                             <!--begin::Input group-->
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="required form-label">Primary Emergency Contact</label>
                                                     <!--end::Label-->
@@ -491,7 +491,7 @@
                                                     <!--end::Description-->
                                                     @endif
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="required form-label">Secondary Emergency
                                                         Contact</label>
@@ -527,7 +527,7 @@
                                         <!--begin::Card body-->
                                         <div class="card-body pt-0">
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Name</label>
                                                 <!--end::Label-->
@@ -544,7 +544,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Relation</label>
                                                 <!--end::Label-->
@@ -561,7 +561,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Address</label>
                                                 <!--end::Label-->
@@ -578,7 +578,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Contact</label>
                                                 <!--end::Label-->

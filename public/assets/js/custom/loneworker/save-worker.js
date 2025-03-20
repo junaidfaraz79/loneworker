@@ -400,18 +400,43 @@ var KTAppEcommerceSaveCategory = function () {
         const form = document.getElementById('kt_ecommerce_add_form');
         const submitButton = document.getElementById('kt_ecommerce_add_submit');
 
+        console.log('validatingggg')
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validator = FormValidation.formValidation(
             form,
             {
                 fields: {
-                    'worker_name': {
+                    'worker_name': { validators: { notEmpty: { message: 'Worker name is required' } } },
+                    'worker_status': { validators: { notEmpty: { message: 'Worker status is required' } } },
+                    'phone_no': { validators: { notEmpty: { message: 'Phone Number is required' } } },
+                    'email': {
                         validators: {
+                            regexp: {
+                                regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: 'The value is not a valid email address',
+                            },
                             notEmpty: {
-                                message: 'Worker name is required'
+                                message: 'Email address is required'
                             }
                         }
-                    }
+                    },
+                    'department': { validators: { notEmpty: { message: 'Department is required' } } },
+                    'role': { validators: { notEmpty: { message: 'Role is required' } } },
+                    'check_in_frequency': { validators: { notEmpty: { message: 'Check In Frequency is required' } } },
+                    'check_in_visibility': { validators: { notEmpty: { message: 'Check In History Visibility is required' } } },
+                    'phone_type': { validators: { notEmpty: { message: 'Phone Type is required' } } },
+                    'sia_license_number': { validators: { notEmpty: { message: 'SIA Licence Number is required' } } },
+                    'sia_license_expiry_date': { validators: { notEmpty: { message: 'SIA Licence Expiry Date is required' } } },
+                    'emergency_contact_1': { validators: { notEmpty: { message: 'Primary Emergency Contact is required' } } },
+                    'emergency_contact_2': { validators: { notEmpty: { message: 'Secondary Emergency Contact is required' } } },
+                    'nok_name': { validators: { notEmpty: { message: 'Name is required' } } },
+                    'nok_relation': { validators: { notEmpty: { message: 'Relation is required' } } },
+                    'nok_address': { validators: { notEmpty: { message: 'Address is required' } } },
+                    'nok_contact': { validators: { notEmpty: { message: 'Contact is required' } } },
+                    'site_id': { validators: { notEmpty: { message: 'Site is required' } } },
+                    'shift_id': { validators: { notEmpty: { message: 'Shift is required' } } },
+                    'start_date': { validators: { notEmpty: { message: 'Start Date is required' } } },
+                    'end_date': { validators: { notEmpty: { message: 'End Date is required' } } },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -428,6 +453,7 @@ var KTAppEcommerceSaveCategory = function () {
         submitButton.addEventListener('click', e => {
             e.preventDefault();
 
+            console.log('submittingg')
             // Validate form before submit
             if (validator) {
                 validator.validate().then(function (status) {
@@ -468,7 +494,7 @@ var KTAppEcommerceSaveCategory = function () {
 
                         $.ajax({
                             type: 'POST',
-                            url: form.getAttribute("action"),
+                            url: '/monitor/worker/save',
                             data: formData,
                             contentType: false,
                             processData: false,

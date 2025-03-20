@@ -67,7 +67,7 @@
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-fluid">
                 <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row"
-                    data-kt-redirect="{{ route('workers') }}" action="save">
+                    data-kt-redirect="{{ route('workers') }}">
                     @csrf
                     <!--begin::Main column-->
                     <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
@@ -186,7 +186,7 @@
                                             </div>
                                             <!--end::Image input-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 <div class="d-flex">
                                                     <div class="rounded-circle bg-success w-15px h-15px"
                                                         id="kt_ecommerce_add_category_status"></div>
@@ -225,7 +225,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Phone Number</label>
                                                 <!--end::Label-->
@@ -239,7 +239,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Email address</label>
                                                 <!--end::Label-->
@@ -253,7 +253,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Department</label>
                                                 <!--end::Label-->
@@ -267,7 +267,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Role</label>
                                                 <!--end::Label-->
@@ -282,14 +282,14 @@
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="row mb-10">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="form-label">Check In Frequency</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <select class="form-select mb-2" data-control="select2"
                                                         data-placeholder="Select an option" name="check_in_frequency">
-                                                        <option>Select frequency</option>
+                                                        <option value="">Select frequency</option>
                                                         @foreach ($frequency as $key => $f)
                                                         <option value="{{$f->id}}">{{$f->time}}</option>
                                                         @endforeach
@@ -300,14 +300,14 @@
                                                     <div class="text-muted fs-7">Set Check In Frequency.</div>
                                                     <!--end::Description-->
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="form-label">Check In History Visibility</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <select class="form-select mb-2" data-control="select2"
                                                         data-placeholder="Select an option" name="check_in_visibility">
-                                                        <option>Select visibility</option>
+                                                        <option value="">Select visibility</option>
                                                         <option value="today">Today</option>
                                                         <option value="7days">Last 7 Days</option>
                                                         <option value="30days">Last 30 Days</option>
@@ -322,7 +322,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Phone Type</label>
                                                 <!--end::Label-->
@@ -330,7 +330,7 @@
                                                 <select class="form-select mb-2" data-control="select2"
                                                     data-hide-search="true" data-placeholder="Select an option"
                                                     name="phone_type">
-                                                    <option>Select type</option>
+                                                    <option value="">Select type</option>
                                                     <option value="old">Old Phone</option>
                                                     <option value="smart">Smart Phone</option>
                                                 </select>
@@ -342,7 +342,7 @@
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
                                             <div class="row mb-10">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="form-label">SIA Licence Number</label>
                                                     <!--end::Label-->
@@ -355,7 +355,7 @@
                                                     <div class="text-muted fs-7">16 digit SIA Licence Number.</div>
                                                     <!--end::Description-->
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="form-label">SIA Licence Expiry Date</label>
                                                     <!--end::Label-->
@@ -373,7 +373,7 @@
 
                                             <!--begin::Input group-->
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="required form-label">Primary Emergency Contact</label>
                                                     <!--end::Label-->
@@ -387,7 +387,7 @@
                                                     </div>
                                                     <!--end::Description-->
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 fv-row">
                                                     <!--begin::Label-->
                                                     <label class="required form-label">Secondary Emergency
                                                         Contact</label>
@@ -418,7 +418,7 @@
                                         <!--begin::Card body-->
                                         <div class="card-body pt-0">
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Name</label>
                                                 <!--end::Label-->
@@ -432,7 +432,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Relation</label>
                                                 <!--end::Label-->
@@ -446,7 +446,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Address</label>
                                                 <!--end::Label-->
@@ -460,7 +460,7 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="mb-10 row">
+                                            <div class="mb-10 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Contact</label>
                                                 <!--end::Label-->
@@ -596,7 +596,7 @@
                                                     <div data-repeater-list="shifts_site_repeater">
                                                         <div data-repeater-item>
                                                             <div class="form-group row">
-                                                                <div class="col-md-2">
+                                                                <div class="col-md-2 fv-row">
                                                                     <select class="form-select mb-2 site-select"
                                                                         data-placeholder="Select an option"
                                                                         name="site_id" id="site_id">
@@ -613,7 +613,7 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-                                                                <div class="col-md-3">
+                                                                <div class="col-md-3 fv-row">
                                                                     <select class="form-select mb-2 shift-select"
                                                                         data-placeholder="Select an option"
                                                                         name="shift_id" id="shift_id"></select>
@@ -643,14 +643,14 @@
                                                                     </select>
                                                                     <!--end::Input-->
                                                                 </div>
-                                                                <div class="col-md-1">
+                                                                <div class="col-md-1 fv-row">
                                                                     <!--begin::Input-->
                                                                     <input class="form-control mb-2 shift-start" name="start_date"
                                                                         placeholder="Pick start date"
                                                                         id="kt_calendar_datepicker_shift_start_date" />
                                                                     <!--end::Input-->
                                                                 </div>
-                                                                <div class="col-md-1">
+                                                                <div class="col-md-1 fv-row">
                                                                     <!--begin::Input-->
                                                                     <input class="form-control mb-2 shift-end" name="end_date"
                                                                         placeholder="Pick start date"
@@ -723,12 +723,12 @@
 @endsection
 
 @push('scripts')
-<script src="/assets/js/custom/loneworker/save-worker.js"></script>
-<script src="/assets/js/widgets.bundle.js"></script>
+<script src="{{ asset('/assets/js/custom/loneworker/save-worker.js') }}"></script>
+{{-- <script src="/assets/js/widgets.bundle.js"></script>
 <script src="/assets/js/custom/widgets.js"></script>
 <script src="/assets/js/custom/apps/chat/chat.js"></script>
 <script src="/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-<script src="/assets/js/custom/utilities/modals/create-app.js"></script>
+<script src="/assets/js/custom/utilities/modals/create-app.js"></script> --}}
 {{-- <script src="/assets/js/custom/utilities/modals/users-search.js"></script> --}}
 <link href="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.css') }}" rel="stylesheet" type="text/css" />
 <script src="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.js') }}"></script>
