@@ -192,13 +192,22 @@ var KTAppEcommerceSaveCategory = function () {
             form,
             {
                 fields: {
-                    'site_name': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Site name is required'
-                            }
-                        }
-                    }
+                    'site_name': { validators: { notEmpty: { message: 'Site name is required' } } },
+                    'country': { validators: { notEmpty: { message: 'Country is required' } } },
+                    'site_address_1': { validators: { notEmpty: { message: 'Address Line 1 is required' } } },
+                    'site_address_2': { validators: { notEmpty: { message: 'Address Line 2 is required' } } },
+                    'suburb_town_city': { validators: { notEmpty: { message: 'Suburb/ Town/ City is required' } } },
+                    'postal_code': { validators: { notEmpty: { message: 'Postal Code/ ZIP Code is required' } } },
+                    'longitude': { validators: { notEmpty: { message: 'Longitude is required' } } },
+                    'latitude': { validators: { notEmpty: { message: 'Latitude is required' } } },
+                    'week_start': { validators: { notEmpty: { message: 'Week Start is required' } } },
+                    'customer_id': { validators: { notEmpty: { message: 'Customer is required' } } },
+                    'site_manager_name': { validators: { notEmpty: { message: 'Site Manager Name is required' } } },
+                    'site_manager_contact': { validators: { notEmpty: { message: 'Site Manager Contact is required' } } },
+                    'national_emergency_number': { validators: { notEmpty: { message: 'National Emergency Number is required' } } },
+                    'local_police_contact': { validators: { notEmpty: { message: 'Local Police Contact is required' } } },
+                    'local_firebrigade_contact': { validators: { notEmpty: { message: 'Local Fire Brigade Contact is required' } } },
+                    'local_hospital_contact': { validators: { notEmpty: { message: 'Local Hospital/Medical Contact is required' } } },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),

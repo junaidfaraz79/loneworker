@@ -192,13 +192,7 @@ var KTAppEcommerceSaveCategory = function () {
             form,
             {
                 fields: {
-                    'customer_name': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Customer name is required.'
-                            }
-                        }
-                    },
+                    'customer_name': { validators: { notEmpty: { message: 'Customer name is required.' } } },
                     'phone_no': {
                         validators: {
                             notEmpty: {
@@ -208,15 +202,26 @@ var KTAppEcommerceSaveCategory = function () {
                     },
                     'email': {
                         validators: {
+                            regexp: {
+                                regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: 'The value is not a valid email address',
+                            },
                             notEmpty: {
-                                message: 'Email is required.'
+                                message: 'Email address is required'
                             }
-                        }                       
+                        }
                     },
                     'department': {
                         validators: {
                             notEmpty: {
                                 message: 'Department is required.'
+                            }
+                        }                       
+                    },
+                    'company_address': {
+                        validators: {
+                            notEmpty: {
+                                message: 'Address is required.'
                             }
                         }                       
                     },

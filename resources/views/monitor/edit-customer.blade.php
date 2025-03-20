@@ -221,7 +221,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="form-label">Phone Number</label>
                                         <!--end::Label-->
@@ -234,7 +234,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="form-label">Email address</label>
                                         <!--end::Label-->
@@ -247,7 +247,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="form-label">Department</label>
                                         <!--end::Label-->
@@ -260,7 +260,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="form-label">Role</label>
                                         <!--end::Label-->

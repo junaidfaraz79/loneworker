@@ -231,7 +231,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Address Line 1</label>
                                     <!--end::Label-->
@@ -242,7 +242,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Address Line 2</label>
                                     <!--end::Label-->
@@ -253,7 +253,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Suburb/ Town/ City</label>
                                     <!--end::Label-->
@@ -264,7 +264,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Postal Code/ ZIP Code</label>
                                     <!--end::Label-->
@@ -275,7 +275,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Longitude</label>
                                     <!--end::Label-->
@@ -286,7 +286,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Latitude</label>
                                     <!--end::Label-->
@@ -348,7 +348,7 @@
                             <!--begin::Card body-->
                             <div class="card-body pt-0">
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Site Manager Name</label>
                                     <!--end::Label-->
@@ -359,7 +359,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Site Manager Contact</label>
                                     <!--end::Label-->
@@ -370,7 +370,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">National Emergency Number</label>
                                     <!--end::Label-->
@@ -381,7 +381,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Local Police Contact</label>
                                     <!--end::Label-->
@@ -392,7 +392,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Local Fire Brigade Contact</label>
                                     <!--end::Label-->
@@ -403,7 +403,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label required">Local Hospital/Medical Contact</label>
                                     <!--end::Label-->
