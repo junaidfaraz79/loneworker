@@ -17,13 +17,12 @@ var KTAppSaveShift = function () {
             form,
             {
                 fields: {
-                    'name': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Shift name is required'
-                            }
-                        }
-                    }
+                    'name': { validators: { notEmpty: { message: 'Shift name is required' } } },
+                    'start_time': { validators: { notEmpty: { message: 'Start Time is required' } } },
+                    'end_time': { validators: { notEmpty: { message: 'End Time is required' } } },
+                    'days[]': { validators: { notEmpty: { message: 'Day(s) are required' } } },
+                    'site_id': { validators: { notEmpty: { message: 'Site is required' } } },
+                    'status': { validators: { notEmpty: { message: 'Status is required' } } },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),

@@ -89,13 +89,13 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Start Time</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <select name="start_time" class="form-select mb-2" data-control="select2" data-placeholder="Select start time" id="start_time">
-                                            <option></option>
+                                            <option value="">Select start time..</option>
                                             @foreach ($timings as $key => $timing)
                                                 <option value="{{ $timing->time }}">{{ $timing->time }}</option>                                                
                                             @endforeach
@@ -110,7 +110,7 @@
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <select name="end_time" class="form-select mb-2" data-control="select2" data-placeholder="Select end time" id="end_time">
-                                            <option></option>
+                                            <option value="">Select end time..</option>
                                             @foreach ($timings as $key => $timing)
                                                 <option value="{{$timing->time}}">{{$timing->time}}</option>                                                
                                             @endforeach
@@ -159,7 +159,7 @@
                                     </div> --}}
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="form-label">Site</label>
                                         <!--end::Label-->
@@ -167,7 +167,7 @@
                                         <select class="form-select mb-2" data-control="select2"
                                             data-hide-search="true" data-placeholder="Select an option"
                                             name="site_id">
-                                            <option>Select site</option>
+                                            <option value="">Select site</option>
                                             @foreach ($sites as $key => $site)
                                                 <option value="{{$site->id}}">{{$site->site_name}}</option>
                                             @endforeach
@@ -180,13 +180,13 @@
                                     </div>
                                     <!--end::Input group-->                                    
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="required form-label">Status</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <select name="status" class="form-select mb-2" data-control="select2" data-placeholder="Select status" id="status">
-                                            <option></option>
+                                            <option value="">Select status</option>
                                             <option value="active">Active</option> 
                                             <option value="inactive">Inactive</option> 
                                         </select>
@@ -227,7 +227,7 @@
 @endsection
 
 @push('scripts')
-    <script src="/assets/js/custom/loneworker/save-shift.js"></script>
+    <script src="/assets/js/custom/loneworker/save-shift-v1.js"></script>
     {{-- <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

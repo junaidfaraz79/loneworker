@@ -95,7 +95,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="required form-label">Start Time</label>
                                     <!--end::Label-->
@@ -103,7 +103,7 @@
                                     <select name="start_time" class="form-select mb-2" data-control="select2"
                                         data-placeholder="Select start time" id="start_time" {{ $isViewMode==='y'
                                         ? 'disabled' : '' }}>
-                                        <option></option>
+                                        <option value="">Select start time</option>
                                         @foreach ($timings as $key => $timing)
                                         <option value="{{ $timing->time }}" @if($shift->default_start_time ==
                                             $timing->time) selected @endif>
@@ -123,7 +123,7 @@
                                     <select name="end_time" class="form-select mb-2" data-control="select2"
                                         data-placeholder="Select end time" {{ $isViewMode==='y' ? 'disabled' : '' }}
                                         id="end_time">
-                                        <option></option>
+                                        <option value="">Select end time</option>
                                         @foreach ($timings as $key => $timing)
                                         <option value="{{ $timing->time }}" @if($shift->default_end_time ==
                                             $timing->time) selected @endif>
@@ -189,14 +189,14 @@
                                 </div> --}}
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="form-label">Site</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <select class="form-select mb-2" data-control="select2" data-hide-search="true"
                                         data-placeholder="Select an option" name="site_id" {{ $isViewMode==='y' ? 'disabled' : '' }}>
-                                        <option>Select site</option>
+                                        <option value="">Select site</option>
                                         @foreach ($sites as $key => $site)
                                         <option value="{{$site->id}}" @if($shift->site_id == $site->id) selected
                                             @endif>{{$site->site_name}}</option>
@@ -210,7 +210,7 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
-                                <div class="mb-10">
+                                <div class="mb-10 fv-row">
                                     <!--begin::Label-->
                                     <label class="required form-label">Status</label>
                                     <!--end::Label-->
@@ -218,7 +218,7 @@
                                     <select name="status" class="form-select mb-2" data-control="select2"
                                         data-placeholder="Select status" id="status" {{ $isViewMode==='y' ? 'disabled'
                                         : '' }}>
-                                        <option></option>
+                                        <option value="">Select status</option>
                                         <option value="active" @if($shift->status == 'active') selected @endif>Active
                                         </option>
                                         <option value="inactive" @if($shift->status == 'inactive') selected
@@ -265,5 +265,5 @@
 @endsection
 
 @push('scripts')
-<script src="/assets/js/custom/loneworker/save-shift.js"></script>
+<script src="/assets/js/custom/loneworker/save-shift-v1.js"></script>
 @endpush
