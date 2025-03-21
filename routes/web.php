@@ -13,11 +13,22 @@ use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ShiftController;
+
+use App\Http\Controllers\RegisterController;
+// use App\Http\Controllers\LoginController;
+use App\Http\Controllers\VerificationController;
+
 use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\MonitorAuth;
 use App\Http\Middleware\SubscriberAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [RegisterController::class, 'register']);
+
+Route::get('/verify-email', [VerificationController::class, 'show'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 
 Route::get('/', function () {
     return view('signin');
@@ -94,6 +105,8 @@ Route::prefix('monitor')->group(function () {
     Route::middleware([MonitorAuth::class])->group(function () {
         Route::get('/dashboard', [MonitorController::class, 'dashboard'])->name('monitor.dashboard');
         Route::get('/signout', [MonitorController::class, 'logout'])->name('monitor.logout');
+
+        Route::get('/companies', [CompanyController::class, 'fetchCompanies'])->name('fetch.companies');
 
         // Shifts Routes
         Route::get('/shifts', [ShiftController::class, 'list'])->name('shifts');
