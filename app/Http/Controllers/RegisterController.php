@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
     public function showRegistrationForm()
     {
-        return view('register');
+        $subscriptions = DB::table('subscriptions')->get();
+        return view('register', compact('subscriptions'));
     }
 
     public function register(Request $request)
@@ -39,6 +41,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
+            'subscription_id' => $request->subscription_id,
             'role' => 'subscriber',
             'cell_no' => '123-456-7890',
             'phone_no' => '333-305-4572',
@@ -47,15 +50,18 @@ class RegisterController extends Controller
             'designation' => 'Employee',
             'user_image' => 'default_image.jpg',
             'user_type' => 'subscriber',
-            'subscription_id' => 17
+            'company_number' => $request->company_number,
+            'address_line_1' => $request->address_line_1,
+            'address_line_2' => $request->address_line_2,
+            'country' => $request->country,
+            'locality' => $request->locality,
+            'region' => $request->region,
+            'postal_code' => $request->postal_code,
         ]);
 
-        
-
+    
         // Fire registered event
         event(new Registered($subscriber));
-
-        
 
         // Send verification email
         $subscriber->sendEmailVerificationNotification();

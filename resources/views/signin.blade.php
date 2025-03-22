@@ -90,7 +90,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Title-->
 									<!--begin::Link-->
 									<div class="text-gray-500 fw-semibold fs-4">New Here? 
-									<a href="#" class="link-primary fw-bold">Create an Account</a></div>
+									<a href="" class="link-primary fw-bold">Create an Account</a></div>
 									<!--end::Link-->
 								</div>
 								@if (session('message'))
@@ -103,7 +103,7 @@ License: For each use you must have a valid license purchased only from above li
 									<label class="form-label fs-6 fw-bold text-gray-900">Email</label>
 									<!--end::Label-->
 									<!--begin::Input-->
-									<input class="form-control form-control-lg form-control-solid" type="email" name="email" id="email"autocomplete="off" />
+									<input class="form-control form-control-lg form-control-solid" type="text" name="email" id="email"autocomplete="off" />
 									<!--end::Input-->
 								</div>
 								<!--end::Input group-->

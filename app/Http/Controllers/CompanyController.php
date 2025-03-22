@@ -13,6 +13,7 @@ class CompanyController extends Controller
     {
         $query = $request->query('customer_name');
 
+        Log::info('query: ' . $query);
         if (!$query) {
             return response()->json(['error' => 'Company name is required'], 400);
         }
@@ -22,7 +23,7 @@ class CompanyController extends Controller
         $url = "https://api.company-information.service.gov.uk/advanced-search/companies?company_name_includes=" . urlencode($query);
 
         try {
-            $response = Http::withBasicAuth($apiKey, '')
+            $response = Http::withBasicAuth('775bfdec-e2af-4aee-a158-690152c8b2ac', '')
             ->get($url);
     
             // Log the full response for debugging

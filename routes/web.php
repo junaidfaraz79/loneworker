@@ -97,6 +97,8 @@ Route::prefix('lwadmin')->group(function () {
     });
 });
 
+Route::get('/companies', [CompanyController::class, 'fetchCompanies'])->name('fetch.companies');
+
 Route::prefix('monitor')->group(function () {
     Route::get('/', [MonitorController::class, 'login'])->name('monitor.login'); // Accessible without authentication
     Route::post('/execute', [MonitorController::class, 'authenticateMonitor'])->name('monitor.executeLogin'); // Handles login attempts
@@ -106,7 +108,6 @@ Route::prefix('monitor')->group(function () {
         Route::get('/dashboard', [MonitorController::class, 'dashboard'])->name('monitor.dashboard');
         Route::get('/signout', [MonitorController::class, 'logout'])->name('monitor.logout');
 
-        Route::get('/companies', [CompanyController::class, 'fetchCompanies'])->name('fetch.companies');
 
         // Shifts Routes
         Route::get('/shifts', [ShiftController::class, 'list'])->name('shifts');

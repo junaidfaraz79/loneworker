@@ -16,7 +16,9 @@ class Subscriber extends Authenticatable
     protected $fillable = [
         'username', 'role', 'email', 'password', 'cell_no', 'phone_no', 
         'company_name', 'official_address', 'designation', 'user_image', 
-        'user_type', 'added_on', 'updated_on', 'subscription_id'
+        'user_type', 'added_on', 'updated_on', 'subscription_id',
+        'company_number', 'address_line_1', 'address_line_2', 'country',
+        'locality', 'region', 'postal_code'
     ];
 
     protected $casts = [
