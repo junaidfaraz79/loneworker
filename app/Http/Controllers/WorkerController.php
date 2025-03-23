@@ -311,6 +311,12 @@ class WorkerController extends Controller
 
             $timings = DB::table('timings')->get();
 
+            $documents = DB::table('worker_documents')
+            ->join('workers', 'worker_documents.worker_id', '=', 'workers.id')
+            ->where('worker_documents.worker_id', $id)
+            ->select('worker_documents.*')  // You can modify the select statement based on the columns you need
+            ->get();
+
             return view('monitor.edit-worker', [
                 'worker' => $worker,
                 'frequency' => $frequency,
@@ -318,6 +324,7 @@ class WorkerController extends Controller
                 'isViewMode' => 'n',
                 'sites' => $sites,
                 'timings' => $timings,
+                'documents' => $documents,
                 'assignedMonitors' => $assignedMonitors,
                 'unassignedMonitors' => $unassignedMonitors
             ]);

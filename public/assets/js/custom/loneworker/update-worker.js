@@ -14,6 +14,25 @@ var KTAppEcommerceSaveCategory = function () {
     }
     // Private functions
 
+    const initDropzone = () => {
+        var myDropzone = new Dropzone("#add_worker_documents", {
+            url: "/",
+            paramName: "file", // The name that will be used to transfer the file
+            maxFiles: 10,
+            maxFilesize: 10, // MB
+            addRemoveLinks: true,
+            autoProcessQueue: false,
+            acceptedFiles: 'image/*, .pdf, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        });
+        // const mockFile = {
+        //     name: "Filename 2",
+        //     size: 12345,
+        //     accepted:true //this is required to set maxFiles count automatically
+        // };
+        // myDropzone.files.push(mockFile);
+        // myDropzone.displayExistingFile(mockFile, "https://i.picsum.photos/id/959/600/600.jpg");
+    }
+
     // Initialize intlTelInput for a given input field
     const initIntlTelInput = (inputId) => {
         const input = document.querySelector(`#${inputId}`);
@@ -754,6 +773,7 @@ var KTAppEcommerceSaveCategory = function () {
 
             if (!isViewMode) {
                 startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
+                initDropzone();
                 initConditionsSelect2();
                 initDatepickers(startDatepicker);
                 handleStatus();

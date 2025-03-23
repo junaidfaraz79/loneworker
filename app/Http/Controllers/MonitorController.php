@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MonitorRegistrationMail;
 use App\Models\Monitor;
 use App\Models\Worker;
 use Illuminate\Http\Request;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class MonitorController extends Controller
 {
@@ -24,6 +27,21 @@ class MonitorController extends Controller
         return view('add-monitor');
     }
 
+    function generateRandomPassword($length = 12)
+    {
+        // Define the characters that can be used in the password
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_=+';
+
+        // Ensure the password is sufficiently complex
+        $password = Str::random(3) . // 3 random alphabets
+            Str::upper(Str::random(3)) . // 3 uppercase alphabets
+            rand(100, 999) . // 3 digits
+            substr(str_shuffle($characters), 0, 3); // 3 special characters or mixed
+
+        // Shuffle the password to mix the types
+        return substr(str_shuffle($password), 0, $length);
+    }
+
     public function save(Request $req)
     {
 
@@ -32,11 +50,13 @@ class MonitorController extends Controller
         if (count($duplicate)) {
             $res = ['id' => '', 'status' => 'duplicate'];
         } else {
+            $password = $this->generateRandomPassword();
             $monitor = Monitor::create([
                 'username' => $req->username,
                 'role' => 'monitor',
                 'email' => $req->email,
-                'password' => 'monitor', // This will be hashed if you've set the mutator
+                'password' => $password, // This will be hashed if you've set the mutator
+                // 'password' => bcrypt($password), // This will be hashed if you've set the mutator
                 'cell_no' => $req->cell_no,
                 'phone_no' => $req->phone_no,
                 'company_name' => $req->company_name,
@@ -51,6 +71,9 @@ class MonitorController extends Controller
             ]);
 
             $id = $monitor->id;
+
+            // Send the email
+            Mail::to($req->email)->send(new MonitorRegistrationMail($monitor, $password));
 
             $res = ['id' => $id, 'status' => 'success'];
         }

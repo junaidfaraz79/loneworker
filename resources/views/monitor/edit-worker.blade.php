@@ -618,85 +618,87 @@
                                         <div class="card-body pt-0">
                                             <!--begin::Input group-->
                                             @if($isViewMode === 'n')
-                                            <div class="fv-row mb-2">
-                                                <!--begin::Dropzone-->
-                                                <div class="dropzone" id="add_worker_documents">
-                                                    <!--begin::Message-->
-                                                    <div class="dz-message needsclick">
-                                                        <!--begin::Icon-->
-                                                        <i class="ki-duotone ki-file-up text-primary fs-3x">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                        </i>
-                                                        <!--end::Icon-->
-                                                        <!--begin::Info-->
-                                                        <div class="ms-4">
-                                                            <h3 class="fs-5 fw-bold text-gray-900 mb-1">Drop files here
-                                                                or click to upload.</h3>
-                                                            <span class="fs-7 fw-semibold text-gray-500">Upload up to 10
-                                                                files</span>
+                                                <div class="fv-row mb-2">
+                                                    <label class="form-label">Upload Documents:</label>
+                                                    <!--begin::Dropzone-->
+                                                    <div class="dropzone" id="add_worker_documents">
+                                                        <!--begin::Message-->
+                                                        <div class="dz-message needsclick">
+                                                            <!--begin::Icon-->
+                                                            <i class="ki-duotone ki-file-up text-primary fs-3x">
+                                                                <span class="path1"></span>
+                                                                <span class="path2"></span>
+                                                            </i>
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-4">
+                                                                <h3 class="fs-5 fw-bold text-gray-900 mb-1">Drop files here
+                                                                    or click to upload.</h3>
+                                                                <span class="fs-7 fw-semibold text-gray-500">Upload up to 10
+                                                                    files</span>
+                                                            </div>
+                                                            <!--end::Info-->
                                                         </div>
-                                                        <!--end::Info-->
                                                     </div>
+                                                    <!--end::Dropzone-->
                                                 </div>
-                                                <!--end::Dropzone-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Description-->
-                                            <div class="text-muted fs-7">Set the worker documents (License, ID Card,
-                                                Training Certificates).</div>
-                                            @else
-                                            <div class="row g-6 g-xl-9 mb-6 mb-xl-9">
-                                                @forelse ($documents as $document)
-                                                <!--begin::Col-->
-                                                <div class="col-md-6 col-lg-4 col-xl-3">
-                                                    <!--begin::Card-->
-                                                    <div class="card h-100">
-                                                        <!--begin::Card body-->
-                                                        <div
-                                                            class="card-body d-flex justify-content-center text-center flex-column p-8">
-                                                            @php
-                                                            $extension = strtolower(pathinfo($document->file_path,
-                                                            PATHINFO_EXTENSION));
-                                                            $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp',
-                                                            'avif'];
-                                                            $isImage = in_array($extension, $imageExtensions);
-                                                            $fileUrl = $isImage ? asset('storage/' .
-                                                            $document->file_path) : route('downloadDocument',
-                                                            $document->id);
-                                                            $target = $isImage ? '_blank' : '_self';
-                                                            $download = $isImage ? '' : 'download';
-                                                            $imagePath = $isImage ? asset('storage/' .
-                                                            $document->file_path) : asset($fileTypeImages[$extension] ??
-                                                            'assets/media/svg/files/upload.svg');
-                                                            @endphp
-                                                            <!--begin::Name-->
-                                                            <a href="{{ $fileUrl }}" target="{{ $target }}" {{ $download
-                                                                }}
-                                                                class="text-gray-800 text-hover-primary d-flex flex-column">
-                                                                <div class="symbol symbol-60px mb-5">
-                                                                    @if ($isImage)
-                                                                    <img src="{{ asset('storage/' . $document->file_path) }}"
-                                                                        alt="Document" />
-                                                                    @else
-                                                                    <img src="{{ $imagePath }}" alt="Document" />
-                                                                    @endif
-                                                                </div>
-                                                                <div class="fs-5 fw-bold mb-2">{{ $document->file_name
-                                                                    }}</div>
-                                                            </a>
-                                                            <!--end::Name-->
-                                                        </div>
-                                                        <!--end::Card body-->
-                                                    </div>
-                                                    <!--end::Card-->
-                                                </div>
-                                                <!--end::Col-->
-                                                @empty
-                                                <span>No documents found.</span>
-                                                @endforelse
-                                            </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7">Set the worker documents (License, ID Card,
+                                                    Training Certificates).</div>
                                             @endif
+                                            <div class="mt-7">
+                                                <div class="row g-6 g-xl-9 mb-6 mb-xl-9">
+                                                    @forelse ($documents as $document)
+                                                    <!--begin::Col-->
+                                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                                        <!--begin::Card-->
+                                                        <div class="card h-100">
+                                                            <!--begin::Card body-->
+                                                            <div
+                                                                class="card-body d-flex justify-content-center text-center flex-column p-8">
+                                                                @php
+                                                                $extension = strtolower(pathinfo($document->file_path,
+                                                                PATHINFO_EXTENSION));
+                                                                $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp',
+                                                                'avif'];
+                                                                $isImage = in_array($extension, $imageExtensions);
+                                                                $fileUrl = $isImage ? asset('storage/' .
+                                                                $document->file_path) : route('downloadDocument',
+                                                                $document->id);
+                                                                $target = $isImage ? '_blank' : '_self';
+                                                                $download = $isImage ? '' : 'download';
+                                                                $imagePath = $isImage ? asset('storage/' .
+                                                                $document->file_path) : asset($fileTypeImages[$extension] ??
+                                                                'assets/media/svg/files/upload.svg');
+                                                                @endphp
+                                                                <!--begin::Name-->
+                                                                <a href="{{ $fileUrl }}" target="{{ $target }}" {{ $download
+                                                                    }}
+                                                                    class="text-gray-800 text-hover-primary d-flex flex-column">
+                                                                    <div class="symbol symbol-60px mb-5">
+                                                                        @if ($isImage)
+                                                                        <img src="{{ asset('storage/' . $document->file_path) }}"
+                                                                            alt="Document" />
+                                                                        @else
+                                                                        <img src="{{ $imagePath }}" alt="Document" />
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="fs-5 fw-bold mb-2">{{ $document->file_name
+                                                                        }}</div>
+                                                                </a>
+                                                                <!--end::Name-->
+                                                            </div>
+                                                            <!--end::Card body-->
+                                                        </div>
+                                                        <!--end::Card-->
+                                                    </div>
+                                                    <!--end::Col-->
+                                                    @empty
+                                                    <span>No documents found.</span>
+                                                    @endforelse
+                                                </div>
+                                            </div>
                                             <!--end::Description-->
                                         </div>
                                         <!--end::Card header-->

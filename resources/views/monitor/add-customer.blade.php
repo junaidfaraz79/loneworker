@@ -260,7 +260,7 @@
                                 <!--begin::Input group-->
                                 <div class="mb-10 fv-row">
                                     <!--begin::Label-->
-                                    <label class="required form-label">Department</label>
+                                    <label class="required form-label">POC Department</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <input type="text" name="department" class="form-control mb-2"
@@ -274,7 +274,7 @@
                                 <!--begin::Input group-->
                                 <div class="mb-10 fv-row">
                                     <!--begin::Label-->
-                                    <label class="required form-label">Role</label>
+                                    <label class="required form-label">POC Role</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <input type="text" name="role" class="form-control mb-2" placeholder="Role"
