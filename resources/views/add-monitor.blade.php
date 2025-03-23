@@ -22,7 +22,7 @@
                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
                             <!--begin::Item-->
                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                <a href="/dashboard" class="text-gray-500 text-hover-primary">
+                                <a href="{{ route('subscriber.dashboard') }}" class="text-gray-500 text-hover-primary">
                                     <i class="ki-duotone ki-home fs-3 text-gray-500 mx-n1"></i>
                                 </a>
                             </li>

@@ -22,7 +22,7 @@
                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
                             <!--begin::Item-->
                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                <a href="/dashboard" class="text-gray-500 text-hover-primary">
+                                <a href="{{ route('monitor.dashboard') }}" class="text-gray-500 text-hover-primary">
                                     <i class="ki-duotone ki-home fs-3 text-gray-500 mx-n1"></i>
                                 </a>
                             </li>
@@ -957,11 +957,11 @@
 <!-- JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>
+<script src="{{ asset('/assets/js/custom/loneworker/update-worker.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/widgets.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/apps/chat/chat.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/utilities/modals/create-app.js') }}"></script>
-<script src="{{ asset('/assets/js/custom/loneworker/update-worker.js') }}"></script>
 <link href="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.css') }}" rel="stylesheet" type="text/css" />
 <script src="{{ asset('assets/plugins/custom/jkanban/jkanban.bundle.js') }}"></script>
 <script src="{{ asset('/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>

@@ -55,7 +55,7 @@ Route::middleware([SubscriberAuth::class])->group(function () {
 
     Route::get('/signout', [SigninController::class, 'signout']);
 
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('subscriber.dashboard');
 
     // Profile
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
