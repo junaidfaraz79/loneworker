@@ -364,7 +364,7 @@
                                     <label class="form-label required">Site Manager Contact</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input type="text" name="site_manager_contact" class="form-control mb-2"
+                                    <input type="tel" name="site_manager_contact" id="site_manager_contact" class="form-control mb-2"
                                         placeholder="Enter site manager contact" value="" />
                                     <!--end::Input-->
                                 </div>
@@ -448,9 +448,12 @@
 @endsection
 
 @push('scripts')
-
 <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
-
+<!-- CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>
 <script src="/assets/js/custom/loneworker/save-site.js"></script>
 <script src="/assets/js/widgets.bundle.js"></script>
 <script src="/assets/js/custom/widgets.js"></script>

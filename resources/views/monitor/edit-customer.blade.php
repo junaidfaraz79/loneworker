@@ -226,7 +226,7 @@
                                         <label class="form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="{{ $customer->phone_no }}" />
+                                        <input type="tel" id="phone_no" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="{{ $customer->phone_no }}" />
                                         <!--end::Input-->
                                         <!--begin::Description-->
                                         <div class="text-muted fs-7">Set phone number.</div>
@@ -306,9 +306,12 @@
 @endsection
 
 @push('scripts')
-
     <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>
     <script src="/assets/js/custom/loneworker/update-customer.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>

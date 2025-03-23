@@ -4,7 +4,39 @@
 var KTAppEcommerceSaveCategory = function () {
 
     // Private functions
-    var iti;
+    let itiInstances = {};
+
+    // Initialize intlTelInput for a given input field
+    const initIntlTelInput = (inputId) => {
+        const input = document.querySelector(`#${inputId}`);
+
+        if (!input) return;
+
+        const iti = intlTelInput(input, {
+            initialCountry: "auto",
+            geoIpLookup: function (callback) {
+                fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
+                    .then((res) => res.json())
+                    .then((data) => callback(data.countryCode))
+                    .catch(() => callback("us"));
+            },
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        itiInstances[inputId] = iti; // Store the instance for later use
+
+        // Set initial value if it exists
+        if (input.value) {
+            iti.setNumber(input.value);
+        }
+
+        // Ensure the input is visible
+        const itiElement = input.closest(".iti");
+        if (itiElement) {
+            itiElement.style.display = "block";
+        }
+    };
+
     // Init quill editor
     const initQuill = () => {
         // Define all elements for quill editor
@@ -193,8 +225,29 @@ var KTAppEcommerceSaveCategory = function () {
             {
                 fields: {
                     'username': { validators: { notEmpty: { message: 'Username is required' } } },
-                    'cell_no': { validators: { notEmpty: { message: 'Cell number is required' } } },
-                    'phone_no': { validators: { notEmpty: { message: 'Phone Number is required' } } },
+                    'cell_no': { 
+                        validators: { 
+                            notEmpty: { message: 'Cell number is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['cell_no'].isValidNumber();
+                                },
+                            },
+                        }
+                    },
+                    'phone_no': {
+                        validators: {
+                            notEmpty: { message: 'Phone Number is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['phone_no'].isValidNumber();
+                                },
+                            },
+                            // validatePhone: { message: errorMap[iti.getValidationError()] || "Invalid number" }
+                        }
+                    },
                     'email': {
                         validators: {
                             regexp: {
@@ -211,8 +264,28 @@ var KTAppEcommerceSaveCategory = function () {
                     'official_address': { validators: { notEmpty: { message: 'Official Address is required' } } },
                     'home_address': { validators: { notEmpty: { message: 'Home Address is required' } } },
                     'gender': { validators: { notEmpty: { message: 'Gender is required' } } },
-                    'emergency_contact_1': { validators: { notEmpty: { message: 'Primary Emergency Contact is required' } } },
-                    'emergency_contact_2': { validators: { notEmpty: { message: 'Secondary Emergency Contact is required' } } },
+                    'emergency_contact_1': { 
+                        validators: { 
+                            notEmpty: { message: 'Primary Emergency Contact is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['emergency_contact_1'].isValidNumber();
+                                },
+                            },
+                        }
+                    },
+                    'emergency_contact_2': { 
+                        validators: { 
+                            notEmpty: { message: 'Secondary Emergency Contact is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['emergency_contact_2'].isValidNumber();
+                                },
+                            },
+                        }
+                    },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -220,7 +293,7 @@ var KTAppEcommerceSaveCategory = function () {
                         rowSelector: '.fv-row',
                         eleInvalidClass: '',
                         eleValidClass: ''
-                    })
+                    }),
                 }
             }
         );
@@ -237,12 +310,12 @@ var KTAppEcommerceSaveCategory = function () {
                     if (status == 'Valid') {
                         submitButton.setAttribute('data-kt-indicator', 'on');
 
-                        const countryCode = iti.getSelectedCountryData().iso2;
-                        document.querySelector("#country_code").value = countryCode;
+                        document.querySelector("#phone_no").value = itiInstances['phone_no'].getNumber();
+                        document.querySelector("#cell_no").value = itiInstances['cell_no'].getNumber();
+                        document.querySelector("#emergency_contact_1").value = itiInstances['emergency_contact_1'].getNumber();
+                        document.querySelector("#emergency_contact_2").value = itiInstances['emergency_contact_2'].getNumber();
+                        
 
-                        const fullPhoneNumber = iti.getNumber();
-                        console.log("Full Phone Number:", fullPhoneNumber);
-                        document.querySelector("#phone_no").value = fullPhoneNumber;
                         // Disable submit button whilst loading
                         submitButton.disabled = true;
 
@@ -254,12 +327,12 @@ var KTAppEcommerceSaveCategory = function () {
                             url: form.getAttribute("action"),
                             data: formData,
                             contentType: false,
-                            processData:false,                 
-                          })
+                            processData: false,
+                        })
                             .done((data) => {
                                 console.log(data);
-                                let res = JSON.parse(data);        
-                                if(res.status == "duplicate") {
+                                let res = JSON.parse(data);
+                                if (res.status == "duplicate") {
 
                                     Swal.fire({
                                         html:
@@ -268,13 +341,13 @@ var KTAppEcommerceSaveCategory = function () {
                                         buttonsStyling: !1,
                                         confirmButtonText: "Ok, got it!",
                                         customClass: { confirmButton: "btn btn-primary" },
-                                    }); 
+                                    });
 
                                     submitButton.setAttribute('data-kt-indicator', 'off');
                                     submitButton.disabled = false;
 
                                 }
-                                else if(res.status == "success") {
+                                else if (res.status == "success") {
 
                                     setTimeout(function () {
                                         submitButton.removeAttribute('data-kt-indicator');
@@ -301,7 +374,7 @@ var KTAppEcommerceSaveCategory = function () {
                                 }
                                 else {
 
-                                    } 
+                                }
 
                             })
 
@@ -330,33 +403,43 @@ var KTAppEcommerceSaveCategory = function () {
             initFormRepeater();
             initConditionsSelect2();
 
-            const input = document.querySelector("#phone_no");
-            const countryCode = document.querySelector("#country_code");
-            iti = intlTelInput(input, {
-                initialCountry: countryCode.value ?? "auto",
-                geoIpLookup: function(callback) {
-                    fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
-                        .then(function(res) {
-                            return res.json();
-                        })
-                        .then(function(data) {
-                            console.log(data.countryCode);
-                            callback(data.countryCode);
-                        })
-                        .catch(function() {
-                            callback("us");
-                        });
-                },
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-            });
-            console.log(input.value);
-            if (input.value) {
-                iti.setNumber(input.value); // Set the existing phone number
-            }
-            const itiElement = document.querySelector(".iti");
-            if (itiElement) {
-                itiElement.style.display = "block"; // Change to desired value
-            }
+            // Initialize intlTelInput for phone fields
+            initIntlTelInput('phone_no');
+            initIntlTelInput('cell_no');
+            initIntlTelInput('emergency_contact_1');
+            initIntlTelInput('emergency_contact_2');
+
+            // input = document.querySelector("#phone_no");
+            // const countryCode = document.querySelector("#country_code");
+
+            // iti = intlTelInput(input, {
+            //     initialCountry: countryCode.value ?? "auto",
+            //     geoIpLookup: function (callback) {
+            //         fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
+            //             .then(function (res) {
+            //                 return res.json();
+            //             })
+            //             .then(function (data) {
+            //                 console.log(data.countryCode);
+            //                 callback(data.countryCode);
+            //             })
+            //             .catch(function () {
+            //                 callback("us");
+            //             });
+            //     },
+            //     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+            // });
+
+            // // FormValidation.validators.validatePhone = validatePhone;
+            
+            // console.log(input.value);
+            // if (input.value) {
+            //     iti.setNumber(input.value); // Set the existing phone number
+            // }
+            // const itiElement = document.querySelector(".iti");
+            // if (itiElement) {
+            //     itiElement.style.display = "block"; // Change to desired value
+            // }
 
             // Handle forms
             handleStatus();

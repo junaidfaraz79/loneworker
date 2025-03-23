@@ -287,9 +287,9 @@
                                                 <label class="form-label">Phone Number</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" name="phone_no" class="form-control mb-2"
+                                                <input type="tel" name="phone_no" class="form-control mb-2"
                                                     placeholder="Phone number" value="{{ $worker->phone_no }}" {{
-                                                    $isViewMode==='y' ? 'readonly' : '' }} />
+                                                    $isViewMode==='y' ? 'readonly' : '' }} id="phone_no" />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
                                                 @if($isViewMode === 'n')
@@ -479,7 +479,7 @@
                                                     <label class="required form-label">Primary Emergency Contact</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="emergency_contact_1"
+                                                    <input type="tel" name="emergency_contact_1" id="emergency_contact_1"
                                                         class="form-control mb-2" placeholder="Emergency phone number"
                                                         value="{{ $worker->emergency_contact_1 }}" {{ $isViewMode==='y'
                                                         ? 'readonly' : '' }} />
@@ -497,7 +497,7 @@
                                                         Contact</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="emergency_contact_2"
+                                                    <input type="tel" name="emergency_contact_2" id="emergency_contact_2"
                                                         class="form-control mb-2" placeholder="Emergency phone number"
                                                         value="{{ $worker->emergency_contact_2 }}" {{ $isViewMode==='y'
                                                         ? 'readonly' : '' }} />
@@ -583,9 +583,9 @@
                                                 <label class="form-label">Contact</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" name="nok_contact" class="form-control mb-2"
+                                                <input type="tel" name="nok_contact" class="form-control mb-2"
                                                     placeholder="Contact" value="{{ $worker->nok_contact }}" {{
-                                                    $isViewMode==='y' ? 'readonly' : '' }} />
+                                                    $isViewMode==='y' ? 'readonly' : '' }} id="nok_contact" />
                                                 <!--end::Input-->
                                                 @if($isViewMode === 'n')
                                                 <!--begin::Description-->
@@ -950,6 +950,11 @@
 @push('scripts')
 <script src="{{ asset('/assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
 <script src="{{ asset('/assets/js/widgets.bundle.js') }}"></script>
+<!-- CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>
 <script src="{{ asset('/assets/js/custom/widgets.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/apps/chat/chat.js') }}"></script>
 <script src="{{ asset('/assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>

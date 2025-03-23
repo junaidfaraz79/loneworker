@@ -3,8 +3,34 @@
 // Class definition
 var KTAppEcommerceSaveCategory = function () {
 
+    let itiInstances = {};
     // Private functions
 
+    // Initialize intlTelInput for a given input field
+    const initIntlTelInput = (inputId) => {
+        const input = document.querySelector(`#${inputId}`);
+
+        if (!input) return;
+
+        const iti = intlTelInput(input, {
+            initialCountry: "auto",
+            geoIpLookup: function (callback) {
+                fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
+                    .then((res) => res.json())
+                    .then((data) => callback(data.countryCode))
+                    .catch(() => callback("us"));
+            },
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        itiInstances[inputId] = iti; // Store the instance for later use
+
+        // Ensure the input is visible
+        const itiElement = input.closest(".iti");
+        if (itiElement) {
+            itiElement.style.display = "block";
+        }
+    };
     // Init quill editor
     const initQuill = () => {
         // Define all elements for quill editor
@@ -195,9 +221,13 @@ var KTAppEcommerceSaveCategory = function () {
                     'customer_name': { validators: { notEmpty: { message: 'Customer name is required.' } } },
                     'phone_no': {
                         validators: {
-                            notEmpty: {
-                                message: 'Phone number is required.'
-                            }
+                            notEmpty: { message: 'Phone Number is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['phone_no'].isValidNumber();
+                                },
+                            },
                         }
                     },
                     'email': {
@@ -256,6 +286,7 @@ var KTAppEcommerceSaveCategory = function () {
                     if (status == 'Valid') {
                         console.log('status:', status);
                         submitButton.setAttribute('data-kt-indicator', 'on');
+                        document.querySelector("#phone_no").value = itiInstances['phone_no'].getNumber();
 
                         // Disable submit button whilst loading
                         submitButton.disabled = true;
@@ -379,6 +410,7 @@ var KTAppEcommerceSaveCategory = function () {
                 $('#company-list').empty(); // Clear suggestions
             });
             initConditionsSelect2();
+            initIntlTelInput('phone_no');
 
             // Handle forms
             handleStatus();

@@ -7,11 +7,43 @@ var KTAppEcommerceSaveCategory = function () {
     var kanbanEl;
     var kanban;
     var isViewMode = document.getElementById('isViewMode').value === 'y';
+    let itiInstances = {};
     if (isViewMode) {
         var table = document.getElementById('workerCheckInsTable');
         var datatable;
     }
     // Private functions
+
+    // Initialize intlTelInput for a given input field
+    const initIntlTelInput = (inputId) => {
+        const input = document.querySelector(`#${inputId}`);
+
+        if (!input) return;
+
+        const iti = intlTelInput(input, {
+            initialCountry: "auto",
+            geoIpLookup: function (callback) {
+                fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
+                    .then((res) => res.json())
+                    .then((data) => callback(data.countryCode))
+                    .catch(() => callback("us"));
+            },
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        itiInstances[inputId] = iti; // Store the instance for later use
+
+        // Set initial value if it exists
+        if (input.value) {
+            iti.setNumber(input.value);
+        }
+
+        // Ensure the input is visible
+        const itiElement = input.closest(".iti");
+        if (itiElement) {
+            itiElement.style.display = "block";
+        }
+    };
 
     const initDatepickers = (datePickerElement) => {
         flatpickr(datePickerElement, {
@@ -200,7 +232,17 @@ var KTAppEcommerceSaveCategory = function () {
                 fields: {
                     'worker_name': { validators: { notEmpty: { message: 'Worker name is required' } } },
                     'worker_status': { validators: { notEmpty: { message: 'Worker status is required' } } },
-                    'phone_no': { validators: { notEmpty: { message: 'Phone Number is required' } } },
+                    'phone_no': {
+                        validators: {
+                            notEmpty: { message: 'Phone Number is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['phone_no'].isValidNumber();
+                                },
+                            },
+                        }
+                    },
                     'email': {
                         validators: {
                             regexp: {
@@ -219,12 +261,42 @@ var KTAppEcommerceSaveCategory = function () {
                     'phone_type': { validators: { notEmpty: { message: 'Phone Type is required' } } },
                     'sia_license_number': { validators: { notEmpty: { message: 'SIA Licence Number is required' } } },
                     'sia_license_expiry_date': { validators: { notEmpty: { message: 'SIA Licence Expiry Date is required' } } },
-                    'emergency_contact_1': { validators: { notEmpty: { message: 'Primary Emergency Contact is required' } } },
-                    'emergency_contact_2': { validators: { notEmpty: { message: 'Secondary Emergency Contact is required' } } },
+                    'emergency_contact_1': { 
+                        validators: { 
+                            notEmpty: { message: 'Primary Emergency Contact is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['emergency_contact_1'].isValidNumber();
+                                },
+                            },
+                        }
+                    },
+                    'emergency_contact_2': { 
+                        validators: { 
+                            notEmpty: { message: 'Secondary Emergency Contact is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['emergency_contact_2'].isValidNumber();
+                                },
+                            },
+                        }
+                    },
                     'nok_name': { validators: { notEmpty: { message: 'Name is required' } } },
                     'nok_relation': { validators: { notEmpty: { message: 'Relation is required' } } },
                     'nok_address': { validators: { notEmpty: { message: 'Address is required' } } },
-                    'nok_contact': { validators: { notEmpty: { message: 'Contact is required' } } },
+                    'nok_contact': { 
+                        validators: { 
+                            notEmpty: { message: 'Contact is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['nok_contact'].isValidNumber();
+                                },
+                            },
+                        }
+                    },
                     'site_id': { validators: { notEmpty: { message: 'Site is required' } } },
                     'shift_id': { validators: { notEmpty: { message: 'Shift is required' } } },
                     'start_date': { validators: { notEmpty: { message: 'Start Date is required' } } },
@@ -270,6 +342,11 @@ var KTAppEcommerceSaveCategory = function () {
                         unassignedBoard.forEach(item => {
                             unassignedMonitors.push(item.getAttribute('data-eid'));
                         });
+
+                        document.querySelector("#phone_no").value = itiInstances['phone_no'].getNumber();
+                        document.querySelector("#nok_contact").value = itiInstances['nok_contact'].getNumber();
+                        document.querySelector("#emergency_contact_1").value = itiInstances['emergency_contact_1'].getNumber();
+                        document.querySelector("#emergency_contact_2").value = itiInstances['emergency_contact_2'].getNumber();
 
                         let form = document.getElementById("kt_ecommerce_add_form");
                         let formData = new FormData(form);
@@ -509,7 +586,7 @@ var KTAppEcommerceSaveCategory = function () {
         initializeSelect2(shiftElement);
         initializeSelect2(startTimeEl);
         initializeSelect2(endTimeEl);
-        
+
     };
 
     const populateShifts = (repeaterItem) => {
@@ -667,6 +744,12 @@ var KTAppEcommerceSaveCategory = function () {
                 const repeaterItem = $(this).closest('[data-repeater-item]');
                 populateShifts(repeaterItem);
             });
+
+            // Initialize intlTelInput for phone fields
+            initIntlTelInput('phone_no');
+            initIntlTelInput('nok_contact');
+            initIntlTelInput('emergency_contact_1');
+            initIntlTelInput('emergency_contact_2');
 
             if (!isViewMode) {
                 startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');

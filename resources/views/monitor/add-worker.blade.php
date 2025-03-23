@@ -230,7 +230,7 @@
                                                 <label class="form-label">Phone Number</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" name="phone_no" class="form-control mb-2"
+                                                <input type="tel" id="phone_no" name="phone_no" class="form-control mb-2"
                                                     placeholder="Phone number" value="" />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
@@ -378,7 +378,7 @@
                                                     <label class="required form-label">Primary Emergency Contact</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="emergency_contact_1"
+                                                    <input type="tel" name="emergency_contact_1" id="emergency_contact_1"
                                                         class="form-control mb-2" placeholder="Emergency phone number"
                                                         value="" />
                                                     <!--end::Input-->
@@ -393,7 +393,7 @@
                                                         Contact</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="emergency_contact_2"
+                                                    <input type="tel" name="emergency_contact_2" id="emergency_contact_2"
                                                         class="form-control mb-2" placeholder="Emergency phone number"
                                                         value="" />
                                                     <!--end::Input-->
@@ -465,8 +465,8 @@
                                                 <label class="form-label">Contact</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" name="nok_contact" class="form-control mb-2"
-                                                    placeholder="Contact" value="" />
+                                                <input type="tel" name="nok_contact" class="form-control mb-2"
+                                                    placeholder="Contact" value="" id="nok_contact" />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
                                                 <div class="text-muted fs-7">Set Contact.</div>
@@ -724,6 +724,11 @@
 
 @push('scripts')
 <script src="{{ asset('/assets/js/custom/loneworker/save-worker.js') }}"></script>
+<!-- CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>
 {{-- <script src="/assets/js/widgets.bundle.js"></script>
 <script src="/assets/js/custom/widgets.js"></script>
 <script src="/assets/js/custom/apps/chat/chat.js"></script>

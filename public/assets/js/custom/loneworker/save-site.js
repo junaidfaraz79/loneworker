@@ -3,7 +3,34 @@
 // Class definition
 var KTAppEcommerceSaveCategory = function () {
 
+    let itiInstances = {};
     // Private functions
+
+    // Initialize intlTelInput for a given input field
+    const initIntlTelInput = (inputId) => {
+        const input = document.querySelector(`#${inputId}`);
+
+        if (!input) return;
+
+        const iti = intlTelInput(input, {
+            initialCountry: "auto",
+            geoIpLookup: function (callback) {
+                fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
+                    .then((res) => res.json())
+                    .then((data) => callback(data.countryCode))
+                    .catch(() => callback("us"));
+            },
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        itiInstances[inputId] = iti; // Store the instance for later use
+
+        // Ensure the input is visible
+        const itiElement = input.closest(".iti");
+        if (itiElement) {
+            itiElement.style.display = "block";
+        }
+    };
 
     // Init quill editor
     const initQuill = () => {
@@ -203,7 +230,17 @@ var KTAppEcommerceSaveCategory = function () {
                     'week_start': { validators: { notEmpty: { message: 'Week Start is required' } } },
                     'customer_id': { validators: { notEmpty: { message: 'Customer is required' } } },
                     'site_manager_name': { validators: { notEmpty: { message: 'Site Manager Name is required' } } },
-                    'site_manager_contact': { validators: { notEmpty: { message: 'Site Manager Contact is required' } } },
+                    'site_manager_contact': {
+                        validators: {
+                            notEmpty: { message: 'Site Manager Contact is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['site_manager_contact'].isValidNumber();
+                                },
+                            },
+                        }
+                    },
                     'national_emergency_number': { validators: { notEmpty: { message: 'National Emergency Number is required' } } },
                     'local_police_contact': { validators: { notEmpty: { message: 'Local Police Contact is required' } } },
                     'local_firebrigade_contact': { validators: { notEmpty: { message: 'Local Fire Brigade Contact is required' } } },
@@ -234,6 +271,7 @@ var KTAppEcommerceSaveCategory = function () {
 
                         // Disable submit button whilst loading
                         submitButton.disabled = true;
+                        document.querySelector("#site_manager_contact").value = itiInstances['site_manager_contact'].getNumber();
 
                         let form = document.getElementById("kt_ecommerce_add_form");
                         let formData = new FormData(form);
@@ -318,6 +356,7 @@ var KTAppEcommerceSaveCategory = function () {
             initTagify();
             initFormRepeater();
             initConditionsSelect2();
+            initIntlTelInput('site_manager_contact');
 
             // Handle forms
             handleStatus();
