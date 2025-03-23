@@ -91,7 +91,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="col-xl-12">
 									<label class="form-label fw-bold text-gray-900 fs-6">Subscription</label>
 									<select class="form-select mb-2" data-control="select2"
-										data-placeholder="Select a plan" name="subscription_id">
+										data-placeholder="Select a plan" name="plan_id">
 										<option value="">Select subscription</option>
 										@foreach ($subscriptions as $key => $s)
                                             <option value="{{$s->id}}">{{$s->plan_name}}</option>

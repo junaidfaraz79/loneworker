@@ -41,7 +41,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            'subscription_id' => $request->subscription_id,
+            'plan_id' => $request->plan_id,
             'role' => 'subscriber',
             'cell_no' => '123-456-7890',
             'phone_no' => '333-305-4572',
