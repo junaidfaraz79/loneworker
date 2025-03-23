@@ -47,15 +47,21 @@ class DashboardController extends Controller
             $user_image = ''; 
         }
 
-        DB::table('subscriber')->where('id', Auth::guard('subscriber')->user()->id)->update([
+        DB::table('subscribers')->where('id', Auth::guard('subscriber')->user()->id)->update([
             'username'=>$req->username, 
             'email'=>$req->email, 
             'cell_no'=>$req->cell_no, 
             'phone_no'=>$req->phone_no, 
             'designation'=>$req->designation, 
             'company_name'=>$req->company_name, 
-            'official_address'=>$req->official_address, 
-            'user_image'=>$user_image
+            'user_image'=>$user_image,
+            'company_number' => $req->company_number,
+            'address_line_1' => $req->address_line_1,
+            'address_line_2' => $req->address_line_2,
+            'country' => $req->country,
+            'locality' => $req->locality,
+            'region' => $req->region,
+            'postal_code' => $req->postal_code,
         ]);
 
         $res = ['id'=>$req->id, 'status'=>'success'];

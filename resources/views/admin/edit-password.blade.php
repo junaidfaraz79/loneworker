@@ -64,7 +64,7 @@
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-fluid">
                 <!--begin::Form-->
-                <form class="form w-100" novalidate="novalidate" data-kt-redirect-url="/lwadmin/dashboard"
+                <form class="form w-100" novalidate="novalidate" data-kt-redirect-url="{{ route('admin.dashboard') }}d"
                     id="kt_new_password_form" action="/lwadmin/update-password">
                     @csrf
                     <!--begin::Main column-->

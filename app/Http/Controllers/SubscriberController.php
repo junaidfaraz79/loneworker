@@ -47,7 +47,6 @@ class SubscriberController extends Controller
                         'cell_no'=>$req->cell_no, 
                         'phone_no'=>$req->phone_no, 
                         'company_name'=>$req->company_name, 
-                        'official_address'=>$req->official_address,
                         'designation'=>$req->designation,
                         'user_type'=>'subscriber',
                         // 'status'=>'active'

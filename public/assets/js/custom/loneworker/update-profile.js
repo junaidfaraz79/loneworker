@@ -4,6 +4,39 @@
 var KTAppEcommerceSaveCategory = function () {
 
     // Private functions
+    let itiInstances = {};
+
+    // Private functions
+    const initIntlTelInput = (inputId) => {
+        const input = document.querySelector(`#${inputId}`);
+
+        if (!input) return;
+
+        const iti = window.intlTelInput(input, {
+            initialCountry: "auto",
+            strictMode: true,
+            geoIpLookup: function (callback) {
+                fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
+                    .then((res) => res.json())
+                    .then((data) => callback(data.countryCode))
+                    .catch(() => callback("us"));
+            },
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        itiInstances[inputId] = iti; // Store the instance for later use
+
+        // Set initial value if it exists
+        if (input.value) {
+            iti.setNumber(input.value);
+        }
+
+        // Ensure the input is visible
+        const itiElement = input.closest(".iti");
+        if (itiElement) {
+            itiElement.style.display = "block";
+        }
+    };
 
     // Init quill editor
     const initQuill = () => {
@@ -192,13 +225,58 @@ var KTAppEcommerceSaveCategory = function () {
             form,
             {
                 fields: {
-                    'worker_name': {
+                    'username': {
                         validators: {
                             notEmpty: {
-                                message: 'Worker name is required'
+                                message: 'Name is required'
                             }
                         }
-                    }
+                    },
+                    'designation': { validators: { notEmpty: { message: 'designation is required' } } },
+                    'email': {
+                        validators: {
+                            regexp: {
+                                regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: 'The value is not a valid email address',
+                            },
+                            notEmpty: {
+                                message: 'Email address is required'
+                            }
+                        }
+                    },
+                    'cell_no': { 
+                        validators: { 
+                            notEmpty: { message: 'Cell number is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['cell_no'].isValidNumber();
+                                },
+                            },
+                            numeric: { message: 'The value is not a number'}
+                        }
+                    },
+                    'phone_no': {
+                        validators: {
+                            notEmpty: { message: 'Phone Number is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['phone_no'].isValidNumber();
+                                },
+                            },
+                            numeric: { message: 'The value is not a number'}
+                            // validatePhone: { message: errorMap[iti.getValidationError()] || "Invalid number" }
+                        }
+                    },
+                    'company_name': { validators: { notEmpty: { message: 'Company Name is required' } } },
+                    'company_number': { validators: { notEmpty: { message: 'Company Number is required' } } },
+                    'address_line_1': { validators: { notEmpty: { message: 'Address Line 1 is required' } } },
+                    'address_line_2': { validators: { notEmpty: { message: 'Address Line 2 is required' } } },
+                    'country': { validators: { notEmpty: { message: 'Country is required' } } },
+                    'locality': { validators: { notEmpty: { message: 'Locality is required' } } },
+                    'region': { validators: { notEmpty: { message: 'Region is required' } } },
+                    'postal_code': { validators: { notEmpty: { message: 'Postal Code is required' } } },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -222,6 +300,8 @@ var KTAppEcommerceSaveCategory = function () {
 
                     if (status == 'Valid') {
                         submitButton.setAttribute('data-kt-indicator', 'on');
+                        document.querySelector("#phone_no").value = itiInstances['phone_no'].getNumber();
+                        document.querySelector("#cell_no").value = itiInstances['cell_no'].getNumber();
 
                         // Disable submit button whilst loading
                         submitButton.disabled = true;
@@ -309,6 +389,8 @@ var KTAppEcommerceSaveCategory = function () {
             initTagify();
             initFormRepeater();
             initConditionsSelect2();
+            initIntlTelInput('phone_no');
+            initIntlTelInput('cell_no');
 
             // Handle forms
             handleStatus();

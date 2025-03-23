@@ -875,7 +875,7 @@ License: For each use you must have a valid license purchased only from above li
 					<div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
 						<div class="app-sidebar-logo position-relative" id="kt_app_sidebar_logo">
 							<!--begin::Logo-->
-							<a href="/lwadmin/dashboard">
+							<a href="{{ route('admin.dashboard') }}">
 								<img alt="Logo" src="/assets/media/logos/star.svg" class="h-30px app-sidebar-logo-default theme-light-show" />
 								<img alt="Logo" src="/assets/media/logos/star-dark.svg" class="h-30px app-sidebar-logo-default theme-dark-show" />
 								<img alt="Logo" src="/assets/media/logos/star-mini.svg" class="h-20px app-sidebar-logo-minimize" />

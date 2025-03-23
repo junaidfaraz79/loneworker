@@ -230,6 +230,7 @@ var KTAppEcommerceSaveCategory = function () {
                             notEmpty: { message: 'Phone Number is required' },
                             callback: {
                                 message: 'Please enter a valid phone number',
+                                numeric: { message: 'The value is not a number'},
                                 callback: function (input) {
                                     return itiInstances['phone_no'].isValidNumber();
                                 },

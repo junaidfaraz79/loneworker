@@ -1009,7 +1009,7 @@ License: For each use you must have a valid license purchased only from above li
 					data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
 					<div class="app-sidebar-logo position-relative" id="kt_app_sidebar_logo">
 						<!--begin::Logo-->
-						<a href="/dashboard">
+						<a href="{{ route('subscriber.dashboard') }}">
 							<img alt="Logo" src="/assets/media/logos/star.svg"
 								class="h-30px app-sidebar-logo-default theme-light-show" />
 							<img alt="Logo" src="/assets/media/logos/star-dark.svg"

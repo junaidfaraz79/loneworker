@@ -31,7 +31,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="{{ route('subscriber.dashboard') }}">Dashboard</a></li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
@@ -55,7 +55,7 @@
             <div id="kt_app_content" class="app-content px-lg-3">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-fluid">
-                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/profile" action="/profile/update">
+                    <form id="kt_ecommerce_add_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/profile" action="{{ route('subscriberProfile.update') }}">
                         @csrf
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -146,9 +146,9 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Designation</label>
+                                        <label class="required form-label">Designation</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="text" name="designation" class="form-control mb-2" placeholder="Designation" value="{{ $profile->designation }}" />
@@ -156,9 +156,9 @@
                                     </div>
                                     <!--end::Input group-->                                     
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Email address</label>
+                                        <label class="required form-label">Email address</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="email" name="email" class="form-control mb-2" placeholder="Email address" value="{{ $profile->email }}" />
@@ -166,49 +166,124 @@
                                     </div>
                                     <!--end::Input group-->                                    
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Cell Number</label>
+                                        <label class="required form-label">Cell Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="cell_no" class="form-control mb-2" placeholder="Phone number" value="{{ $profile->cell_no }}" />
+                                        <input type="tel" name="cell_no" id="cell_no" class="form-control mb-2" value="{{ $profile->cell_no }}" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="required form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="{{ $profile->phone_no }}" />
+                                        <input type="text" name="phone_no" id="phone_no" class="form-control mb-2" value="{{ $profile->phone_no }}" />
                                         <!--end::Input-->
                                     </div>
-                                    <!--end::Input group-->
+                                    <!--end::Input group-->                                    
+                                </div>
+                                <!--end::Card header-->
+                            </div>
+                            <!--end::General options-->
+                            <!--begin::Company Information options-->
+                            <div class="card card-flush py-4">
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h2>Company Information</h2>
+                                    </div>
+                                </div>
+                                <!--end::Card header-->
+                                <!--begin::Card body-->
+                                <div class="card-body pt-0">
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Company Name</label>
+                                        <label class="required form-label">Company Name</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
                                         <input type="text" name="company_name" class="form-control mb-2" placeholder="Company name" value="{{ $profile->company_name }}" />
                                         <!--end::Input-->
                                     </div>
-                                    <!--end::Input group-->
+                                    <!--end::Input group-->     
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
-                                        <label class="form-label">Official Address</label>
+                                        <label class="required form-label">Company Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="official_address" class="form-control mb-2" placeholder="Official address" value="{{ $profile->official_address }}" />
+                                        <input type="text" name="company_number" class="form-control mb-2" placeholder="Company Number" value="{{ $profile->company_number }}" />
                                         <!--end::Input-->
                                     </div>
-                                    <!--end::Input group-->                                     
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Address Line 1</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="address_line_1" class="form-control mb-2" placeholder="Address Line 1" value="{{ $profile->address_line_1 }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Address Line 2</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="address_line_2" class="form-control mb-2" placeholder="Address Line 2" value="{{ $profile->address_line_2 }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Country</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="country" class="form-control mb-2" placeholder="Country" value="{{ $profile->country }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Locality</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="locality" class="form-control mb-2" placeholder="Locality" value="{{ $profile->locality }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Region</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="region" class="form-control mb-2" placeholder="Region" value="{{ $profile->region }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Postal Code</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input type="text" name="postal_code" class="form-control mb-2" placeholder="Postal Code" value="{{ $profile->postal_code }}" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
                                 </div>
                                 <!--end::Card header-->
                             </div>
-                            <!--end::General options-->
+                            <!--end::Company Information-->
                             <div class="d-flex justify-content-end">
                                 <!--begin::Button-->
                                 <a href="/workers" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
@@ -239,7 +314,11 @@
 @endsection
 
 @push('scripts')
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
     <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 
     <script src="/assets/js/custom/loneworker/update-profile.js"></script>

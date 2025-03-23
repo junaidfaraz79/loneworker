@@ -255,6 +255,7 @@ var KTAppEcommerceSaveCategory = function () {
                     'phone_no': {
                         validators: {
                             notEmpty: { message: 'Phone Number is required' },
+                            numeric: { message: 'The value is not a number'},
                             callback: {
                                 message: 'Please enter a valid phone number',
                                 callback: function (input) {
@@ -284,6 +285,7 @@ var KTAppEcommerceSaveCategory = function () {
                     'emergency_contact_1': { 
                         validators: { 
                             notEmpty: { message: 'Primary Emergency Contact is required' },
+                            numeric: { message: 'The value is not a number'},
                             callback: {
                                 message: 'Please enter a valid phone number',
                                 callback: function (input) {
@@ -295,6 +297,7 @@ var KTAppEcommerceSaveCategory = function () {
                     'emergency_contact_2': { 
                         validators: { 
                             notEmpty: { message: 'Secondary Emergency Contact is required' },
+                            numeric: { message: 'The value is not a number'},
                             callback: {
                                 message: 'Please enter a valid phone number',
                                 callback: function (input) {
@@ -309,6 +312,7 @@ var KTAppEcommerceSaveCategory = function () {
                     'nok_contact': { 
                         validators: { 
                             notEmpty: { message: 'Contact is required' },
+                            numeric: { message: 'The value is not a number'},
                             callback: {
                                 message: 'Please enter a valid phone number',
                                 callback: function (input) {

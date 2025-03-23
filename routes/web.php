@@ -59,7 +59,7 @@ Route::middleware([SubscriberAuth::class])->group(function () {
 
     // Profile
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
-    Route::post('/profile/update', [DashboardController::class, 'update']);
+    Route::post('/profile/update', [DashboardController::class, 'update'])->name('subscriberProfile.update');
     Route::get('/subscription', [DashboardController::class, 'subscription'])->name('subscription');
 
     // Monitor Routes

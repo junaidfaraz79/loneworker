@@ -31,7 +31,7 @@
                                 </li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
-                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="/dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item text-gray-700 fw-bold lh-1"><a href="{{ route('subscriber.dashboard') }}">Dashboard</a></li>
                                 <!--end::Item-->
                                 <!--begin::Item-->
                                 <li class="breadcrumb-item">
