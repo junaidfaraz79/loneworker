@@ -10,7 +10,7 @@ var KTAppEcommerceSaveCategory = function () {
 
         if (!input) return;
 
-        const iti = intlTelInput(input, {
+        const iti = window.intlTelInput(input, {
             initialCountry: "auto",
             geoIpLookup: function (callback) {
                 fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
@@ -18,7 +18,8 @@ var KTAppEcommerceSaveCategory = function () {
                     .then((data) => callback(data.countryCode))
                     .catch(() => callback("us"));
             },
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            strictMode: true,
         });
 
         itiInstances[inputId] = iti; // Store the instance for later use

@@ -222,8 +222,7 @@
                                     <label class="required form-label">Phone Number</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input type="tel" name="phone_no" id="phone_no" class="form-control mb-2"
-                                        placeholder="Phone number" value="" />
+                                    <input type="tel" name="phone_no" id="phone_no" class="form-control mb-2" />
                                     <!--end::Input-->
                                     <!--begin::Description-->
                                     <div class="text-muted fs-7">Set phone number.</div>

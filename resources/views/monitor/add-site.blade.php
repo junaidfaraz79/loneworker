@@ -364,8 +364,7 @@
                                     <label class="form-label required">Site Manager Contact</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input type="tel" name="site_manager_contact" id="site_manager_contact" class="form-control mb-2"
-                                        placeholder="Enter site manager contact" value="" />
+                                    <input type="tel" name="site_manager_contact" id="site_manager_contact" class="form-control mb-2"/>
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Input group-->

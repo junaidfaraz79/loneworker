@@ -95,7 +95,7 @@
                                         <label class="required form-label">Cell Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="tel" id="cell_no" name="cell_no" class="form-control mb-2" placeholder="Cell number" value="{{ $monitor->cell_no }}"/>
+                                        <input type="tel" id="cell_no" name="cell_no" class="form-control mb-2" value="{{ $monitor->cell_no }}"/>
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->                                    
@@ -105,7 +105,7 @@
                                         <label class="required form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="tel" name="phone_no"  id="phone_no" class="form-control mb-2" placeholder="Phone number" value="{{ $monitor->phone_no }}" />
+                                        <input type="tel" name="phone_no"  id="phone_no" class="form-control mb-2" value="{{ $monitor->phone_no }}" />
                                         <input type="hidden" name="country_code" id="country_code" value="{{ $monitor->country_code }}" />
                                         <!--end::Input-->
                                     </div>
@@ -184,7 +184,7 @@
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <input type="tel" name="emergency_contact_1" id="emergency_contact_1"
-                                                class="form-control mb-2" placeholder="Emergency phone number"
+                                                class="form-control mb-2"
                                                 value="{{ $monitor->emergency_contact_1 ?? '' }}"/>
                                             <!--end::Input-->
                                         </div>
@@ -194,7 +194,7 @@
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <input type="tel" name="emergency_contact_2" id="emergency_contact_2"
-                                                class="form-control mb-2" placeholder="Emergency phone number"
+                                                class="form-control mb-2"
                                                 value="{{ $monitor->emergency_contact_2 ?? '' }}" />
                                             <!--end::Input-->
                                         </div>

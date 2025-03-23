@@ -288,7 +288,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="tel" name="phone_no" class="form-control mb-2"
-                                                    placeholder="Phone number" value="{{ $worker->phone_no }}" {{
+                                                    value="{{ $worker->phone_no }}" {{
                                                     $isViewMode==='y' ? 'readonly' : '' }} id="phone_no" />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
@@ -480,7 +480,7 @@
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <input type="tel" name="emergency_contact_1" id="emergency_contact_1"
-                                                        class="form-control mb-2" placeholder="Emergency phone number"
+                                                        class="form-control mb-2"
                                                         value="{{ $worker->emergency_contact_1 }}" {{ $isViewMode==='y'
                                                         ? 'readonly' : '' }} />
                                                     <!--end::Input-->
@@ -498,7 +498,7 @@
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <input type="tel" name="emergency_contact_2" id="emergency_contact_2"
-                                                        class="form-control mb-2" placeholder="Emergency phone number"
+                                                        class="form-control mb-2"
                                                         value="{{ $worker->emergency_contact_2 }}" {{ $isViewMode==='y'
                                                         ? 'readonly' : '' }} />
                                                     <!--end::Input-->
@@ -584,7 +584,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="tel" name="nok_contact" class="form-control mb-2"
-                                                    placeholder="Contact" value="{{ $worker->nok_contact }}" {{
+                                                    value="{{ $worker->nok_contact }}" {{
                                                     $isViewMode==='y' ? 'readonly' : '' }} id="nok_contact" />
                                                 <!--end::Input-->
                                                 @if($isViewMode === 'n')

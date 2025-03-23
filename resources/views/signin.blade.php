@@ -90,7 +90,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Title-->
 									<!--begin::Link-->
 									<div class="text-gray-500 fw-semibold fs-4">New Here? 
-									<a href="" class="link-primary fw-bold">Create an Account</a></div>
+									<a href="{{ route('register') }}" class="link-primary fw-bold">Create an Account</a></div>
 									<!--end::Link-->
 								</div>
 								@if (session('message'))

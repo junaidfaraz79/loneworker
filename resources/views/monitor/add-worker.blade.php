@@ -230,8 +230,7 @@
                                                 <label class="form-label">Phone Number</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="tel" id="phone_no" name="phone_no" class="form-control mb-2"
-                                                    placeholder="Phone number" value="" />
+                                                <input type="tel" id="phone_no" name="phone_no" class="form-control mb-2"/>
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
                                                 <div class="text-muted fs-7">Set phone number.</div>
@@ -379,8 +378,7 @@
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <input type="tel" name="emergency_contact_1" id="emergency_contact_1"
-                                                        class="form-control mb-2" placeholder="Emergency phone number"
-                                                        value="" />
+                                                        class="form-control mb-2"/>
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set primary emergency phone number.
@@ -394,8 +392,7 @@
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <input type="tel" name="emergency_contact_2" id="emergency_contact_2"
-                                                        class="form-control mb-2" placeholder="Emergency phone number"
-                                                        value="" />
+                                                        class="form-control mb-2"/>
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set secondary emergency phone number.
@@ -465,8 +462,7 @@
                                                 <label class="form-label">Contact</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="tel" name="nok_contact" class="form-control mb-2"
-                                                    placeholder="Contact" value="" id="nok_contact" />
+                                                <input type="tel" name="nok_contact" class="form-control mb-2" id="nok_contact" />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
                                                 <div class="text-muted fs-7">Set Contact.</div>

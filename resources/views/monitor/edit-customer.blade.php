@@ -226,7 +226,7 @@
                                         <label class="form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="tel" id="phone_no" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="{{ $customer->phone_no }}" />
+                                        <input type="tel" id="phone_no" name="phone_no" class="form-control mb-2" value="{{ $customer->phone_no }}" />
                                         <!--end::Input-->
                                         <!--begin::Description-->
                                         <div class="text-muted fs-7">Set phone number.</div>

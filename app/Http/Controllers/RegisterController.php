@@ -13,7 +13,7 @@ class RegisterController extends Controller
 {
     public function showRegistrationForm()
     {
-        $subscriptions = DB::table('subscriptions')->get();
+        $subscriptions = DB::table('plans')->get();
         return view('register', compact('subscriptions'));
     }
 

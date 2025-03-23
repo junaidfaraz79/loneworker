@@ -367,8 +367,7 @@
                                         <label class="form-label required">Site Manager Contact</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="tel" name="site_manager_contact" class="form-control mb-2" id="site_manager_contact"
-                                            placeholder="Enter site manager contact" value="{{ $site->site_manager_contact }}" />
+                                        <input type="tel" name="site_manager_contact" class="form-control mb-2" id="site_manager_contact" value="{{ $site->site_manager_contact }}" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->

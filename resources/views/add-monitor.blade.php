@@ -99,8 +99,7 @@
                                     <label class="required form-label">Cell Number</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input type="tel" name="cell_no" id="cell_no" class="form-control mb-2"
-                                        placeholder="Cell number" />
+                                    <input type="tel" name="cell_no" id="cell_no" class="form-control mb-2" />
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Input group-->
@@ -110,8 +109,7 @@
                                     <label class="required form-label">Phone Number</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input type="tel" name="phone_no" id="phone_no" class="form-control mb-2"
-                                        placeholder="Phone number" />
+                                    <input type="tel" name="phone_no" id="phone_no" class="form-control mb-2" />
                                     {{-- <span id="valid-msg" class="hide">✓ Valid</span>
                                     <span id="error-msg" class="hide"></span> --}}
                                     <input type="hidden" name="country_code" id="country_code" />
