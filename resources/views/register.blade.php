@@ -180,16 +180,16 @@ License: For each use you must have a valid license purchased only from above li
 							</div>
 							<!--end::Input group-->
 							<!--begin::Input group-->
-							<div class="row fv-row mb-7">
+							<div class="row mb-7">
 								<!--begin::Col-->
-								<div class="col-sm-6">
+								<div class="col-sm-6 fv-row">
 									<label class="form-label fw-bold text-gray-900 fs-6 required">Address Line 1</label>
 									<input class="form-control form-control-lg form-control-solid" type="text"
 										placeholder="" name="address_line_1" id="address_line_1" />
 								</div>
 								<!--end::Col-->
 								<!--begin::Col-->
-								<div class="col-sm-6">
+								<div class="col-sm-6 fv-row">
 									<label class="form-label fw-bold text-gray-900 fs-6 required">Address Line 2</label>
 									<input class="form-control form-control-lg form-control-solid" type="text"
 										placeholder="" name="address_line_2" id="address_line_2" />
@@ -198,16 +198,16 @@ License: For each use you must have a valid license purchased only from above li
 							</div>
 							<!--end::Input group-->
 							<!--begin::Input group-->
-							<div class="row fv-row mb-7">
+							<div class="row mb-7">
 								<!--begin::Col-->
-								<div class="col-sm-6">
+								<div class="col-sm-6 fv-row">
 									<label class="form-label fw-bold text-gray-900 fs-6 required">Country</label>
 									<input class="form-control form-control-lg form-control-solid" type="text"
 										placeholder="" name="country" id="country" />
 								</div>
 								<!--end::Col-->
 								<!--begin::Col-->
-								<div class="col-sm-6">
+								<div class="col-sm-6 fv-row">
 									<label class="form-label fw-bold text-gray-900 fs-6 required">Locality</label>
 									<input class="form-control form-control-lg form-control-solid" type="text"
 										placeholder="" name="locality" id="locality" />
@@ -216,16 +216,16 @@ License: For each use you must have a valid license purchased only from above li
 							</div>
 							<!--end::Input group-->
 							<!--begin::Input group-->
-							<div class="row fv-row mb-7">
+							<div class="row mb-7">
 								<!--begin::Col-->
-								<div class="col-sm-6">
+								<div class="col-sm-6 fv-row">
 									<label class="form-label fw-bold text-gray-900 fs-6 required">Region</label>
 									<input class="form-control form-control-lg form-control-solid" type="text"
 										placeholder="" name="region" id="region" />
 								</div>
 								<!--end::Col-->
 								<!--begin::Col-->
-								<div class="col-sm-6">
+								<div class="col-sm-6 fv-row">
 									<label class="form-label fw-bold text-gray-900 fs-6 required">Postal Code</label>
 									<input class="form-control form-control-lg form-control-solid" type="text"
 										placeholder="" name="postal_code" id="postal_code" />

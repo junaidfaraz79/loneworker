@@ -167,13 +167,16 @@ var KTSignupGeneral = function () {
             form,
             {
                 fields: {
-                    'name': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Name is required'
-                            }
-                        }
-                    },
+                    'name': { validators: { notEmpty: { message: 'Name is required' } } },
+                    'plan_id': { validators: { notEmpty: { message: 'Subscription plan is required' } } },
+                    'company_name': { validators: { notEmpty: { message: 'Company Name is required' } } },
+                    'company_number': { validators: { notEmpty: { message: 'Company Number is required' } } },
+                    'address_line_1': { validators: { notEmpty: { message: 'Address Line 1 is required' } } },
+                    'address_line_2': { validators: { notEmpty: { message: 'Address Line 2 is required' } } },
+                    'country': { validators: { notEmpty: { message: 'Country is required' } } },
+                    'locality': { validators: { notEmpty: { message: 'Locality is required' } } },
+                    'region': { validators: { notEmpty: { message: 'Region is required' } } },
+                    'postal_code': { validators: { notEmpty: { message: 'Postal Code is required' } } },
                     'email': {
                         validators: {
                             regexp: {
@@ -213,13 +216,13 @@ var KTSignupGeneral = function () {
                             }
                         }
                     },
-                    'toc': {
-                        validators: {
-                            notEmpty: {
-                                message: 'You must accept the terms and conditions'
-                            }
-                        }
-                    }
+                    // 'toc': {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'You must accept the terms and conditions'
+                    //         }
+                    //     }
+                    // }
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger({
