@@ -59,8 +59,6 @@ class MonitorController extends Controller
                 // 'password' => bcrypt($password), // This will be hashed if you've set the mutator
                 'cell_no' => $req->cell_no,
                 'phone_no' => $req->phone_no,
-                'company_name' => $req->company_name,
-                'official_address' => $req->official_address,
                 'designation' => $req->designation,
                 'home_address' => $req->home_address,
                 'gender' => $req->gender,
@@ -97,8 +95,6 @@ class MonitorController extends Controller
                 'password' => 'monitor', // This will be hashed if you've set the mutator
                 'cell_no' => $req->cell_no,
                 'phone_no' => $req->phone_no,
-                'company_name' => $req->company_name,
-                'official_address' => $req->official_address,
                 'home_address' => $req->home_address,
                 'gender' => $req->gender,
                 'emergency_contact_1' => $req->emergency_contact_1,

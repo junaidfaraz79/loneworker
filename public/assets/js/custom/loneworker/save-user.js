@@ -263,8 +263,6 @@ var KTAppEcommerceSaveCategory = function () {
                         }
                     },
                     'designation': { validators: { notEmpty: { message: 'Designation is required' } } },
-                    'company_name': { validators: { notEmpty: { message: 'Company Name is required' } } },
-                    'official_address': { validators: { notEmpty: { message: 'Official Address is required' } } },
                     'home_address': { validators: { notEmpty: { message: 'Home Address is required' } } },
                     'gender': { validators: { notEmpty: { message: 'Gender is required' } } },
                     'emergency_contact_1': { 
