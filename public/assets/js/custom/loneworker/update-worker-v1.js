@@ -3,10 +3,36 @@
 // Class definition
 var KTAppEcommerceSaveCategory = function () {
     var startDatepicker;
+    var startFlatpickr;
     var kanbanEl;
     var kanban;
+    var isViewMode = document.getElementById('isViewMode').value === 'y';
     let itiInstances = {};
+
+    if (isViewMode) {
+        var table = document.getElementById('workerCheckInsTable');
+        var datatable;
+    }
     // Private functions
+
+    const initDropzone = () => {
+        var myDropzone = new Dropzone("#add_worker_documents", {
+            url: "/",
+            paramName: "file", // The name that will be used to transfer the file
+            maxFiles: 10,
+            maxFilesize: 10, // MB
+            addRemoveLinks: true,
+            autoProcessQueue: false,
+            acceptedFiles: 'image/*, .pdf, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        });
+        // const mockFile = {
+        //     name: "Filename 2",
+        //     size: 12345,
+        //     accepted:true //this is required to set maxFiles count automatically
+        // };
+        // myDropzone.files.push(mockFile);
+        // myDropzone.displayExistingFile(mockFile, "https://i.picsum.photos/id/959/600/600.jpg");
+    }
 
     // Initialize intlTelInput for a given input field
     const initIntlTelInput = (inputId) => {
@@ -28,60 +54,17 @@ var KTAppEcommerceSaveCategory = function () {
 
         itiInstances[inputId] = iti; // Store the instance for later use
 
+        // Set initial value if it exists
+        if (input.value) {
+            iti.setNumber(input.value);
+        }
+
         // Ensure the input is visible
         const itiElement = input.closest(".iti");
         if (itiElement) {
             itiElement.style.display = "block";
         }
     };
-
-    // Init quill editor
-    const initQuill = () => {
-        // Define all elements for quill editor
-        const elements = [
-            '#plan_description'
-        ];
-
-        // Loop all elements
-        elements.forEach(element => {
-            // Get quill element
-            let quill = document.querySelector(element);
-
-            // Break if element not found
-            if (!quill) {
-                return;
-            }
-
-            // Init quill --- more info: https://quilljs.com/docs/quickstart/
-            quill = new Quill(element, {
-                modules: {
-                    toolbar: [
-                        [{
-                            header: [1, 2, false]
-                        }],
-                        ['bold', 'italic', 'underline'],
-                        ['image', 'code-block']
-                    ]
-                },
-                placeholder: 'Type your text here...',
-                theme: 'snow' // or 'bubble'
-            });
-        });
-
-    }
-
-    // Init DropzoneJS --- more info:
-    const initDropzone = () => {
-        var myDropzone = new Dropzone("#add_worker_documents", {
-            url: "/",
-            paramName: "file", // The name that will be used to transfer the file
-            maxFiles: 10,
-            maxFilesize: 10, // MB
-            addRemoveLinks: true,
-            autoProcessQueue: false,
-            acceptedFiles: 'image/*, .pdf, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        });
-    }
 
     const initDatepickers = (datePickerElement) => {
         flatpickr(datePickerElement, {
@@ -90,236 +73,74 @@ var KTAppEcommerceSaveCategory = function () {
         });
     }
 
-    // Init tagify
-    const initTagify = () => {
-        // Define all elements for tagify
-        const elements = [
-            '#kt_ecommerce_add_category_meta_keywords'
-        ];
+    var initCheckinsTable = function (startDate = null, endDate = null) {
+        if (startDate && endDate) { console.log(startDate.format('YYYY-MM-DD HH:mm:ss'), endDate.format('YYYY-MM-DD HH:mm:ss')); }
+        datatable = $(table).DataTable({
+            pageLength: 10,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: workerViewUrl,
+                type: 'GET',
+                data: function (d) {
+                    // Add date range parameters to the request if they are provided
+                    if (startDate && endDate) {
+                        d.startDate = startDate.format('YYYY-MM-DD HH:mm:ss');
+                        d.endDate = endDate.format('YYYY-MM-DD HH:mm:ss');
+                    }
+                },
+                dataSrc: 'data',
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error: ", status, error);
+                }
+            },
+            columns: [
+                { data: 'date' },
+                { data: 'scheduled_time' },
+                { data: 'actual_time' },
+                { data: 'grace_period_end' },
+                { data: 'location' },
+                { data: 'status' }
+            ]
+        });
+    };
 
-        // Loop all elements
-        elements.forEach(element => {
-            // Get tagify element
-            const tagify = document.querySelector(element);
-
-            // Break if element not found
-            if (!tagify) {
-                return;
-            }
-
-            // Init tagify --- more info: https://yaireo.github.io/tagify/
-            new Tagify(tagify);
+    var handleSearchDatatable = () => {
+        const filterSearch = document.querySelector('[data-kt-user-table-filter="search"]');
+        filterSearch.addEventListener('keyup', function (e) {
+            datatable.search(e.target.value).draw();
         });
     }
 
-    // Init form repeater --- more info: https://github.com/DubFriend/jquery.repeater
-    const initFormRepeater = () => {
-        $('#kt_ecommerce_add_category_conditions').repeater({
-            initEmpty: false,
+    // DATE RANGE PICKER FOR CHECKIN FILTERING
+    var initDateRangePicker = () => {
+        var start = moment().subtract(29, "days");
+        var end = moment();
 
-            defaultValues: {
-                'text-input': 'foo'
-            },
+        function cb(start, end) {
+            $("#kt_daterangepicker_2").html(start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY"));
 
-            show: function () {
-                $(this).slideDown();
-
-                // Init select2 on new repeated items
-                initConditionsSelect2();
-            },
-
-            hide: function (deleteElement) {
-                $(this).slideUp(deleteElement);
+            // Destroy the existing DataTable (if it exists) and reinitialize it with the new date range
+            if (datatable) {
+                datatable.destroy();
             }
-        });
-
-        $('#shifts_site_repeater').repeater({
-            initEmpty: false,
-
-            defaultValues: {
-                'text-input': 'foo'
-            },
-
-            show: function () {
-                $(this).slideDown();
-
-                const siteElement = $(this).find('.site-select');
-                const shiftElement = $(this).find('.shift-select');
-                const startTimeEl = $(this).find('.custom-start-time');
-                const endTimeEl = $(this).find('.custom-end-time');
-                const shiftStartDatepicker = $(this).find('.shift-start');
-                const shiftEndDatepicker = $(this).find('.shift-end');
-                populateSites(siteElement);
-                populateTimings(startTimeEl);
-                populateTimings(endTimeEl);
-
-                // Initialize Select2 for the new select element
-                initializeSelect2(siteElement);
-                initializeSelect2(shiftElement);
-                initializeSelect2(startTimeEl);
-                initializeSelect2(endTimeEl);
-                initDatepickers(shiftStartDatepicker);
-                initDatepickers(shiftEndDatepicker);
-
-                // Attach event listeners for the new repeater item
-                const repeaterItem = $(this);
-                repeaterItem.find('.site-select').on('change', function () {
-                    console.log('site selected')
-                    populateShifts(repeaterItem);
-                });
-            },
-
-            hide: function (deleteElement) {
-                $(this).slideUp(deleteElement);
-            }
-        });
-    }
-
-    // Function to populate shifts
-    const populateShifts = (repeaterItem) => {
-        const selectedSite = repeaterItem.find('.site-select option:selected').val();
-        const shiftElement = repeaterItem.find('.shift-select');
-
-        if (selectedSite) {
-            // Construct the URL with the site ID
-            const url = `/monitor/shifts/site/${selectedSite}`;
-
-            // Fetch API call
-            fetch(url)
-                .then(response => {
-                    // Check if the response is successful
-                    if (!response.ok) {
-                        // Handle non-successful responses
-                        throw new Error('Network response was not ok: ' + response.statusText);
-                    }
-                    return response.json();  // Convert response to JSON
-                })
-                .then(data => {
-                    // Handle the data received from the server
-                    console.log('Success:', data);
-                    if (data.shifts && data.shifts.length > 0) {
-                        // Process the shifts data
-                        const shifts= data.shifts;
-                        // Clear existing options
-                        $(shiftElement).empty();
-
-                        // Add default option
-                        $(shiftElement).append($('<option>', {
-                            value: '',
-                            text: 'Select Shift',
-                            selected: true
-                        }));
-
-                        // Add product options
-                        shifts.forEach(shift => {
-                            $(shiftElement).append($('<option>', {
-                                value: shift.id,
-                                text: `${shift.name} (${shift.default_start_time} - ${shift.default_end_time})`,
-                                selected: false,
-
-                            }));
-                        });
-
-                        $(shiftElement).select2(); 
-
-                    } else {
-                        console.log('No shifts found for the given site.');
-                    }
-                })
-                .catch(error => {
-                    // Handle any errors that occurred during the fetch
-                    console.error('Error:', error);
-                });
-        } 
-        else {
-            // Clear existing options
-            $(shiftElement).empty();
-            // Add default option
-            $(shiftElement).append($('<option>', {
-                value: '',
-                text: 'Select Shift',
-                selected: true
-            }));
+            initCheckinsTable(start, end); // Pass the selected date range to initCheckinsTable
         }
 
-        // const productPrice = parseFloat(selectedProduct.data('price'));
-        // const numberOfTablets = parseFloat(selectedProduct.data('number-of-tablets'));
+        $("#kt_daterangepicker_2").daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                "Today": [moment(), moment()],
+                "Yesterday": [moment().subtract(1, "days"), moment().subtract(1, "days")],
+                "Last 7 Days": [moment().subtract(6, "days"), moment()],
+                "Last 30 Days": [moment().subtract(29, "days"), moment()],
+                "This Month": [moment().startOf("month"), moment().endOf("month")],
+                "Last Month": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+            }
+        }, cb);
 
-        // if (productPrice && numberOfTablets) {
-        //     const pricePu = productPrice / numberOfTablets;
-        //     pricePuInput.val(pricePu.toFixed(2));
-
-        //     const quantity = parseFloat(quantityInput.val()) || 0;
-        //     const itemTotalPrice = pricePu * quantity;
-        //     itemTotalPriceInput.val(itemTotalPrice.toFixed(2));
-        // } else {
-        //     pricePuInput.val('');
-        //     itemTotalPriceInput.val('');
-        // }
-    };
-
-    var initializeSelect2 = (selectElement) => {
-        if (!$(selectElement).hasClass("select2-hidden-accessible")) {
-            $(selectElement).select2({
-                placeholder: "Select an option",
-                allowClear: true
-            });
-        }
-    };
-
-    // Function to populate product options in a select element
-    const populateSites = (selectElement) => {
-        // Clear existing options
-        $(selectElement).empty();
-
-        $(selectElement).append($('<option>', {
-            value: '',
-            text: 'Select Site',
-            selected: true
-        }));
-
-        // Loop through the sites data
-        Object.entries(sites).forEach(([customerId, customerSites]) => {
-            // Create an optgroup element
-            var optgroup = $('<optgroup>', {
-                label: customerSites[0].customer_name // Set the optgroup label
-            });
-
-            // Loop through the sites under this customer
-            customerSites.forEach(site => {
-                // Create an option element
-                var option = $('<option>', {
-                    value: site.id, // Set the option value
-                    text: site.site_name // Set the option text
-                });
-
-                // Append the option to the optgroup
-                optgroup.append(option);
-            });
-
-            // Append the optgroup to the select element
-            $(selectElement).append(optgroup);
-        });
-    };
-
-    // Function to populate product options in a select element
-    const populateTimings = (selectElement) => {
-        // Clear existing options
-        $(selectElement).empty();
-
-        // Add default option
-        $(selectElement).append($('<option>', {
-            value: '',
-            text: 'Select timing'
-        }));
-
-        // Add product options
-        timings.forEach(timing => {
-            $(selectElement).append($('<option>', {
-                value: timing.time,
-                text: timing.time,
-            }));
-        });
+        cb(start, end); // Initialize with the default date range
     };
 
     // Init condition select2
@@ -425,7 +246,6 @@ var KTAppEcommerceSaveCategory = function () {
         const form = document.getElementById('kt_ecommerce_add_form');
         const submitButton = document.getElementById('kt_ecommerce_add_submit');
 
-        console.log('validatingggg')
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validator = FormValidation.formValidation(
             form,
@@ -526,7 +346,6 @@ var KTAppEcommerceSaveCategory = function () {
         submitButton.addEventListener('click', e => {
             e.preventDefault();
 
-            console.log('submittingg')
             // Validate form before submit
             if (validator) {
                 validator.validate().then(function (status) {
@@ -539,6 +358,7 @@ var KTAppEcommerceSaveCategory = function () {
                         // submitButton.disabled = true;
 
                         const assignedMonitors = [];
+                        const unassignedMonitors = [];
 
                         // Get assigned monitors
                         const assignedBoard = kanban.getBoardElements('_assigned_monitors');
@@ -546,23 +366,25 @@ var KTAppEcommerceSaveCategory = function () {
                             assignedMonitors.push(item.getAttribute('data-eid'));
                         });
 
+                        // Get unassigned monitors
+                        const unassignedBoard = kanban.getBoardElements('_unassigned_monitors');
+                        unassignedBoard.forEach(item => {
+                            unassignedMonitors.push(item.getAttribute('data-eid'));
+                        });
                         console.log('itiInstances: ', itiInstances['phone_no'])
                         document.querySelector("#phone_no").value = itiInstances['phone_no'].getNumber();
                         document.querySelector("#nok_contact").value = itiInstances['nok_contact'].getNumber();
                         document.querySelector("#emergency_contact_1").value = itiInstances['emergency_contact_1'].getNumber();
                         document.querySelector("#emergency_contact_2").value = itiInstances['emergency_contact_2'].getNumber();
 
-                        // const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
                         let form = document.getElementById("kt_ecommerce_add_form");
                         let formData = new FormData(form);
 
-                        for (let [key, value] of formData.entries()) {
-                            console.log(key, value);
-                        }
-
                         // Add serialized data to formData
                         formData.append('assignedMonitors', JSON.stringify(assignedMonitors));
+                        formData.append('unassignedMonitors', JSON.stringify(unassignedMonitors));
 
+                        console.log(JSON.stringify(assignedMonitors), JSON.stringify(unassignedMonitors))
                         const dropzoneElement = document.querySelector('#add_worker_documents');
                         if (dropzoneElement.dropzone) {
                             const files = dropzoneElement.dropzone.files;
@@ -573,7 +395,7 @@ var KTAppEcommerceSaveCategory = function () {
 
                         $.ajax({
                             type: 'POST',
-                            url: '/monitor/worker/save',
+                            url: form.getAttribute("action"),
                             data: formData,
                             contentType: false,
                             processData: false,
@@ -581,7 +403,6 @@ var KTAppEcommerceSaveCategory = function () {
                             .done((data) => {
                                 console.log(data);
                                 let res = JSON.parse(data);
-                                console.log(res.message);
                                 if (res.status == "duplicate") {
 
                                     Swal.fire({
@@ -620,27 +441,13 @@ var KTAppEcommerceSaveCategory = function () {
                                             }
                                         });
                                     }, 2000);
+
                                 }
+                                else {
+
+                                }
+
                             })
-                            .fail((xhr, status, error) => {
-                                console.log("Error: ", error);
-                                console.log("Status: ", status);
-                                console.log("Response: ", xhr.responseText);
-                            
-                                Swal.fire({
-                                    text: "Sorry, looks like there are some errors detected, please try again.",
-                                    icon: "error",
-                                    buttonsStyling: false,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary"
-                                    }
-                                });
-                            })
-                            .finally(()=>{
-                                submitButton.setAttribute('data-kt-indicator', 'off');
-                                submitButton.disabled = false;
-                            });
 
                     } else {
                         Swal.fire({
@@ -652,23 +459,19 @@ var KTAppEcommerceSaveCategory = function () {
                                 confirmButton: "btn btn-primary"
                             }
                         });
-
-                        submitButton.setAttribute('data-kt-indicator', 'off');
-                        submitButton.disabled = false;
                     }
                 });
             }
         })
     }
 
+    // Private functions
     var initKanban = function () {
         kanban = new jKanban({
             element: '#kt_docs_jkanban_restricted',
             gutter: '0',
             widthBoard: '250px',
-            click: function (el) {
-                alert(el.innerHTML);
-            },
+            dragItems: isViewMode ? false : true,
             boards: [
                 {
                     'id': '_assigned_monitors',
@@ -708,34 +511,243 @@ var KTAppEcommerceSaveCategory = function () {
         });
     }
 
+    const initFormRepeater = () => {
+        $('#shifts_site_repeater').repeater({
+            initEmpty: false,
+            defaultValues: {
+                'text-input': 'foo'
+            },
+            show: function () {
+                $(this).slideDown();
+
+                const siteElement = $(this).find('.site-select');
+                const shiftElement = $(this).find('.shift-select');
+                const startTimeEl = $(this).find('.custom-start-time');
+                const endTimeEl = $(this).find('.custom-end-time');
+                const shiftStartDatepicker = $(this).find('.shift-start');
+                const shiftEndDatepicker = $(this).find('.shift-end');
+                populateSites(siteElement);
+                populateTimings(startTimeEl);
+                populateTimings(endTimeEl);
+
+                // Initialize Select2 for the new select element
+                initializeSelect2(siteElement);
+                initializeSelect2(shiftElement);
+                initializeSelect2(startTimeEl);
+                initializeSelect2(endTimeEl);
+                initDatepickers(shiftStartDatepicker);
+                initDatepickers(shiftEndDatepicker);
+
+                // Attach event listeners for the new repeater item
+                const repeaterItem = $(this);
+                repeaterItem.find('.site-select').on('change', function () {
+                    populateShifts(repeaterItem);
+                });
+            },
+            hide: function (deleteElement) {
+                $(this).slideUp(deleteElement);
+            }
+        });
+
+        const workerId = document.getElementById('workerId').value;
+        if (workerId) {
+            const url = `/monitor/worker/shifts/${workerId}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Worker data fetched:', data);
+                    populateRepeater(data.shifts); // Call a function to populate the repeater
+                })
+                .catch(error => {
+                    console.error('Error fetching worker data:', error);
+                });
+        }
+    };
+
+    const populateRepeater = async (shifts) => {
+        // Clear existing repeater items (if any)
+        $('#shifts_site_repeater').find('[data-repeater-item]').remove();
+
+        // Loop through the shifts and add repeater items
+        for (const shift of shifts) {
+            // Add a new repeater item
+            $('[data-repeater-create]').click();
+
+            // Get the newly added repeater item
+            const newRepeaterItem = $('#shifts_site_repeater').find('[data-repeater-item]').last();
+
+            // Populate the fields in the new repeater item
+            await populateRepeaterItem(newRepeaterItem, shift);
+        }
+    };
+
+    const populateRepeaterItem = async (repeaterItem, shift) => {
+        // Populate site select
+        const siteElement = repeaterItem.find('.site-select');
+        siteElement.val(shift.site_id).trigger('change');
+
+        // Wait for the shifts dropdown to be populated
+        await populateShifts(repeaterItem);
+
+        // Populate shift select
+        const shiftElement = repeaterItem.find('.shift-select');
+        shiftElement.val(shift.shift_id).trigger('change');
+
+        // Populate start time
+        const startTimeEl = repeaterItem.find('.custom-start-time');
+        startTimeEl.val(shift.custom_start_time).trigger('change');
+
+        // Populate end time
+        const endTimeEl = repeaterItem.find('.custom-end-time');
+        endTimeEl.val(shift.custom_end_time).trigger('change');
+
+        const shiftStartDatepicker = repeaterItem.find('.shift-start');
+
+        const shiftEndDatepicker = repeaterItem.find('.shift-end');
+
+        console.log(shiftStartDatepicker, shiftEndDatepicker)
+        initDatepickers(shiftStartDatepicker);
+        initDatepickers(shiftEndDatepicker);
+        shiftEndDatepicker.val(shift.end_date).trigger('change');
+        shiftStartDatepicker.val(shift.start_date).trigger('change');
+        // Initialize Select2 for the new repeater item
+        initializeSelect2(siteElement);
+        initializeSelect2(shiftElement);
+        initializeSelect2(startTimeEl);
+        initializeSelect2(endTimeEl);
+
+    };
+
+    const populateShifts = (repeaterItem) => {
+        return new Promise((resolve, reject) => {
+            const selectedSite = repeaterItem.find('.site-select option:selected').val();
+            const shiftElement = repeaterItem.find('.shift-select');
+
+            if (selectedSite) {
+                // Construct the URL with the site ID
+                const url = `/monitor/shifts/site/${selectedSite}`;
+
+                // Fetch API call
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.shifts && data.shifts.length > 0) {
+                            // Clear existing options
+                            $(shiftElement).empty();
+
+                            // Add default option
+                            $(shiftElement).append($('<option>', {
+                                value: '',
+                                text: 'Select Shift',
+                                selected: true
+                            }));
+
+                            // Add shift options
+                            data.shifts.forEach(shift => {
+                                $(shiftElement).append($('<option>', {
+                                    value: shift.id,
+                                    text: `${shift.name} (${shift.default_start_time} - ${shift.default_end_time})`
+                                }));
+                            });
+
+                            // Initialize Select2
+                            $(shiftElement).select2();
+                            resolve(); // Resolve the promise after shifts are populated
+                        } else {
+                            console.log('No shifts found for the given site.');
+                            resolve(); // Resolve even if no shifts are found
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        reject(error); // Reject the promise on error
+                    });
+            } else {
+                // Clear existing options
+                $(shiftElement).empty();
+                $(shiftElement).append($('<option>', {
+                    value: '',
+                    text: 'Select Shift',
+                    selected: true
+                }));
+                resolve(); // Resolve the promise if no site is selected
+            }
+        });
+    };
+
+    // Function to populate product options in a select element
+    const populateSites = (selectElement) => {
+        // Clear existing options
+        $(selectElement).empty();
+
+        $(selectElement).append($('<option>', {
+            value: '',
+            text: 'Select Site',
+            selected: true
+        }));
+
+        // Loop through the sites data
+        Object.entries(sites).forEach(([customerId, customerSites]) => {
+            // Create an optgroup element
+            var optgroup = $('<optgroup>', {
+                label: customerSites[0].customer_name // Set the optgroup label
+            });
+
+            // Loop through the sites under this customer
+            customerSites.forEach(site => {
+                // Create an option element
+                var option = $('<option>', {
+                    value: site.id, // Set the option value
+                    text: site.site_name // Set the option text
+                });
+
+                // Append the option to the optgroup
+                optgroup.append(option);
+            });
+
+            // Append the optgroup to the select element
+            $(selectElement).append(optgroup);
+        });
+    };
+
+    // Function to populate product options in a select element
+    const populateTimings = (selectElement) => {
+        // Clear existing options
+        $(selectElement).empty();
+
+        // Add default option
+        $(selectElement).append($('<option>', {
+            value: '',
+            text: 'Select timing'
+        }));
+
+        // Add product options
+        timings.forEach(timing => {
+            $(selectElement).append($('<option>', {
+                value: timing.time,
+                text: timing.time,
+            }));
+        });
+    };
+
+    var initializeSelect2 = (selectElement) => {
+        if (!$(selectElement).hasClass("select2-hidden-accessible")) {
+            $(selectElement).select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        }
+    };
+
     // Public methods
     return {
         init: function () {
-            startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
-            // shiftStartDatepicker = document.querySelector('#kt_calendar_datepicker_shift_start_date');
-            // shiftEndDatepicker = document.querySelector('#kt_calendar_datepicker_shift_end_date');
-
-            // Attach event listeners to existing repeater items
-            // $(document).on('change', '[data-repeater-item] .site-select', function () {
-            //     const repeaterItem = $(this).closest('[data-repeater-item]');
-            //     populateShifts(repeaterItem);
-            // });
-            // Init forms
-            initQuill();
-            initTagify();
             initFormRepeater();
-            initConditionsSelect2();
-            initDropzone();
-            initDatepickers(startDatepicker);
-            kanbanEl = document.querySelector('#kt_docs_jkanban_restricted');
-            initKanban();
-
-            // Initialize intlTelInput for phone fields
-            initIntlTelInput('phone_no');
-            initIntlTelInput('nok_contact');
-            initIntlTelInput('emergency_contact_1');
-            initIntlTelInput('emergency_contact_2');
-
             // Manually initialize select 2 for first additional order repeater item 
             const firstRepeaterItem = $('#shifts_site_repeater').find('[data-repeater-item]').first();
             if (firstRepeaterItem.length) {
@@ -756,10 +768,39 @@ var KTAppEcommerceSaveCategory = function () {
                 initDatepickers(shiftStartDatepicker);
                 initDatepickers(shiftEndDatepicker);
             }
-            // Handle forms
-            handleStatus();
-            handleConditions();
-            handleSubmit();
+
+            $(document).on('change', '[data-repeater-item] .site-select', function () {
+                const repeaterItem = $(this).closest('[data-repeater-item]');
+                populateShifts(repeaterItem);
+            });
+
+            // Initialize intlTelInput for phone fields
+            initIntlTelInput('phone_no');
+            initIntlTelInput('nok_contact');
+            initIntlTelInput('emergency_contact_1');
+            initIntlTelInput('emergency_contact_2');
+
+            if (!isViewMode) {
+                startDatepicker = document.querySelector('#kt_calendar_datepicker_start_date');
+                initDropzone();
+                initConditionsSelect2();
+                initDatepickers(startDatepicker);
+                handleStatus();
+                handleConditions();
+                handleSubmit();
+            }
+            if (isViewMode) {
+                initCheckinsTable();
+                initDateRangePicker();
+                $('a[data-repeater-delete]').addClass('disabled').attr('href', 'javascript:void(0);');
+                // Optionally prevent the click event
+                $('a[data-repeater-delete]').click(function (e) {
+                    e.preventDefault();
+                });
+            }
+            kanbanEl = document.querySelector('#kt_docs_jkanban_restricted');
+            initKanban();
+            // handleSearchDatatable();
         }
     };
 }();

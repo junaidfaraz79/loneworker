@@ -191,8 +191,9 @@ class WorkerController extends Controller
                 if ($req->file('worker_image')->isValid())
                     $filename = time() . '_' . $req->file('worker_image')->getClientOriginalName();
                 $worker_image = $req->file('worker_image')->storeAs('worker_images', $filename);
-            } else
+            } else {
                 $worker_image = '';
+            }
             try {
                 // Start transaction
                 DB::beginTransaction();
@@ -361,7 +362,6 @@ class WorkerController extends Controller
 
     public function update(Request $req)
     {
-
         // $duplicate = DB::table('plans')->where('plan_name','=',$req->plan_name)->where('id','<>',$req->id)->get();
 
         // if(count($duplicate))

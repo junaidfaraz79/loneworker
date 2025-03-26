@@ -8,6 +8,7 @@ var KTAppEcommerceSaveCategory = function () {
     var kanban;
     var isViewMode = document.getElementById('isViewMode').value === 'y';
     let itiInstances = {};
+
     if (isViewMode) {
         var table = document.getElementById('workerCheckInsTable');
         var datatable;
@@ -337,6 +338,10 @@ var KTAppEcommerceSaveCategory = function () {
             }
         );
 
+        $('.form-select').on('change', function() {
+            validator.validate(); // Revalidate entire form
+        });
+        
         // Handle submit button
         submitButton.addEventListener('click', e => {
             e.preventDefault();
@@ -366,7 +371,7 @@ var KTAppEcommerceSaveCategory = function () {
                         unassignedBoard.forEach(item => {
                             unassignedMonitors.push(item.getAttribute('data-eid'));
                         });
-
+                        console.log('itiInstances: ', itiInstances['phone_no'])
                         document.querySelector("#phone_no").value = itiInstances['phone_no'].getNumber();
                         document.querySelector("#nok_contact").value = itiInstances['nok_contact'].getNumber();
                         document.querySelector("#emergency_contact_1").value = itiInstances['emergency_contact_1'].getNumber();

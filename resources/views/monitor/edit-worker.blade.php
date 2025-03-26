@@ -288,8 +288,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="tel" name="phone_no" class="form-control mb-2"
-                                                    value="{{ $worker->phone_no }}" {{
-                                                    $isViewMode==='y' ? 'readonly' : '' }} id="phone_no" />
+                                                    value="{{ $worker->phone_no }}" {{ $isViewMode==='y' ? 'readonly' : '' }} id="phone_no" />
                                                 <!--end::Input-->
                                                 <!--begin::Description-->
                                                 @if($isViewMode === 'n')

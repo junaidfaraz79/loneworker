@@ -2,6 +2,8 @@
 
 // Class definition
 var KTAppEcommerceSaveCategory = function () {
+
+    // Private functions
     let itiInstances = {};
 
     // Private functions
@@ -12,6 +14,7 @@ var KTAppEcommerceSaveCategory = function () {
 
         const iti = window.intlTelInput(input, {
             initialCountry: "auto",
+            strictMode: true,
             geoIpLookup: function (callback) {
                 fetch("http://ip-api.com/json", { headers: { 'Accept': 'application/json' } })
                     .then((res) => res.json())
@@ -19,7 +22,6 @@ var KTAppEcommerceSaveCategory = function () {
                     .catch(() => callback("us"));
             },
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-            strictMode: true,
         });
 
         itiInstances[inputId] = iti; // Store the instance for later use
@@ -223,33 +225,50 @@ var KTAppEcommerceSaveCategory = function () {
             form,
             {
                 fields: {
-                    'site_name': { validators: { notEmpty: { message: 'Site name is required' } } },
-                    'country': { validators: { notEmpty: { message: 'Country is required' } } },
-                    'site_address_1': { validators: { notEmpty: { message: 'Address Line 1 is required' } } },
-                    'site_address_2': { validators: { notEmpty: { message: 'Address Line 2 is required' } } },
-                    'suburb_town_city': { validators: { notEmpty: { message: 'Suburb/ Town/ City is required' } } },
-                    'postal_code': { validators: { notEmpty: { message: 'Postal Code/ ZIP Code is required' } } },
-                    'longitude': { validators: { notEmpty: { message: 'Longitude is required' } } },
-                    'latitude': { validators: { notEmpty: { message: 'Latitude is required' } } },
-                    'week_start': { validators: { notEmpty: { message: 'Week Start is required' } } },
-                    'customer_id': { validators: { notEmpty: { message: 'Customer is required' } } },
-                    'site_manager_name': { validators: { notEmpty: { message: 'Site Manager Name is required' } } },
-                    'site_manager_contact': {
+                    'username': {
                         validators: {
-                            notEmpty: { message: 'Site Manager Contact is required' },
-                            numeric: { message: 'The value is not a number'},
+                            notEmpty: {
+                                message: 'Name is required'
+                            }
+                        }
+                    },
+                    'designation': { validators: { notEmpty: { message: 'designation is required' } } },
+                    'email': {
+                        validators: {
+                            regexp: {
+                                regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: 'The value is not a valid email address',
+                            },
+                            notEmpty: {
+                                message: 'Email address is required'
+                            }
+                        }
+                    },
+                    'cell_no': { 
+                        validators: { 
+                            notEmpty: { message: 'Cell number is required' },
                             callback: {
                                 message: 'Please enter a valid phone number',
                                 callback: function (input) {
-                                    return itiInstances['site_manager_contact'].isValidNumber();
+                                    return itiInstances['cell_no'].isValidNumber();
                                 },
                             },
+                            numeric: { message: 'The value is not a number'}
                         }
                     },
-                    'national_emergency_number': { validators: { notEmpty: { message: 'National Emergency Number is required' } } },
-                    'local_police_contact': { validators: { notEmpty: { message: 'Local Police Contact is required' } } },
-                    'local_firebrigade_contact': { validators: { notEmpty: { message: 'Local Fire Brigade Contact is required' } } },
-                    'local_hospital_contact': { validators: { notEmpty: { message: 'Local Hospital/Medical Contact is required' } } },
+                    'phone_no': {
+                        validators: {
+                            notEmpty: { message: 'Phone Number is required' },
+                            callback: {
+                                message: 'Please enter a valid phone number',
+                                callback: function (input) {
+                                    return itiInstances['phone_no'].isValidNumber();
+                                },
+                            },
+                            numeric: { message: 'The value is not a number'}
+                            // validatePhone: { message: errorMap[iti.getValidationError()] || "Invalid number" }
+                        }
+                    },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -262,10 +281,6 @@ var KTAppEcommerceSaveCategory = function () {
             }
         );
 
-        $('.form-select').on('change', function() {
-            validator.validate(); // Revalidate entire form
-        });
-        
         // Handle submit button
         submitButton.addEventListener('click', e => {
             e.preventDefault();
@@ -277,7 +292,8 @@ var KTAppEcommerceSaveCategory = function () {
 
                     if (status == 'Valid') {
                         submitButton.setAttribute('data-kt-indicator', 'on');
-                        document.querySelector("#site_manager_contact").value = itiInstances['site_manager_contact'].getNumber();
+                        document.querySelector("#phone_no").value = itiInstances['phone_no'].getNumber();
+                        document.querySelector("#cell_no").value = itiInstances['cell_no'].getNumber();
 
                         // Disable submit button whilst loading
                         submitButton.disabled = true;
@@ -361,15 +377,16 @@ var KTAppEcommerceSaveCategory = function () {
     return {
         init: function () {
             // Init forms
-            // initQuill();
-            // initTagify();
-            // initFormRepeater();
+            initQuill();
+            initTagify();
+            initFormRepeater();
             initConditionsSelect2();
-            initIntlTelInput('site_manager_contact');
+            initIntlTelInput('phone_no');
+            initIntlTelInput('cell_no');
 
             // Handle forms
             handleStatus();
-            // handleConditions();
+            handleConditions();
             handleSubmit();
         }
     };

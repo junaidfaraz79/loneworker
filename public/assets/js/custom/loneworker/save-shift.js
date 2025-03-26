@@ -35,6 +35,10 @@ var KTAppSaveShift = function () {
             }
         );
 
+        $('.form-select').on('change', function() {
+            validator.validate(); // Revalidate entire form
+        });
+
         // Handle submit button
         submitButton.addEventListener('click', e => {
             e.preventDefault();

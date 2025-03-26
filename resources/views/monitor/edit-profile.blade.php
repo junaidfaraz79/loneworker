@@ -146,7 +146,7 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="form-label">Designation</label>
                                         <!--end::Label-->
@@ -156,7 +156,7 @@
                                     </div>
                                     <!--end::Input group-->                                     
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="form-label">Email address</label>
                                         <!--end::Label-->
@@ -166,45 +166,25 @@
                                     </div>
                                     <!--end::Input group-->                                    
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="form-label">Cell Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="cell_no" class="form-control mb-2" placeholder="Phone number" value="{{ $profile->cell_no }}" />
+                                        <input type="tel" name="cell_no" id="cell_no" class="form-control mb-2" value="{{ $profile->cell_no }}" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="mb-10">
+                                    <div class="mb-10 fv-row">
                                         <!--begin::Label-->
                                         <label class="form-label">Phone Number</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" name="phone_no" class="form-control mb-2" placeholder="Phone number" value="{{ $profile->phone_no }}" />
+                                        <input type="tel" name="phone_no" id="phone_no" class="form-control mb-2" value="{{ $profile->phone_no }}" />
                                         <!--end::Input-->
                                     </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="mb-10">
-                                        <!--begin::Label-->
-                                        <label class="form-label">Company Name</label>
-                                        <!--end::Label-->
-                                        <!--begin::Input-->
-                                        <input type="text" name="company_name" class="form-control mb-2" placeholder="Company name" value="{{ $profile->company_name }}" />
-                                        <!--end::Input-->
-                                    </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="mb-10">
-                                        <!--begin::Label-->
-                                        <label class="form-label">Official Address</label>
-                                        <!--end::Label-->
-                                        <!--begin::Input-->
-                                        <input type="text" name="official_address" class="form-control mb-2" placeholder="Official address" value="{{ $profile->official_address }}" />
-                                        <!--end::Input-->
-                                    </div>
-                                    <!--end::Input group-->                                     
+                                    <!--end::Input group-->                                 
                                 </div>
                                 <!--end::Card header-->
                             </div>
@@ -239,15 +219,18 @@
 @endsection
 
 @push('scripts')
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js"></script>
     <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 
-    <script src="/assets/js/custom/loneworker/update-profile.js"></script>
+    <script src="/assets/js/custom/loneworker/monitor-update-profile.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
     <script src="/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
     <script src="/assets/js/custom/utilities/modals/create-app.js"></script>
-    <script src="/assets/js/custom/utilities/modals/users-search.js"></script>
 
 @endpush
