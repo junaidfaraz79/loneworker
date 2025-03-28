@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -55,10 +57,43 @@ class AdminController extends Controller
 
     public function profile()
     {
-        $profile = DB::table('lwadmin')->where('email',session('email'))->get();
-        return view('edit-profile', ['profile'=>$profile[0]]);  
+        $profile = DB::table('lwadmin')->where('email',session('email'))->first();
+        return view('admin.edit-profile', ['profile'=>$profile]);  
     }
 
+    public function profileUpdate(Request $req)
+    {
+        // Type-hint the $monitor variable
+        $admin = DB::table('lwadmin')->where('id',session('user_id'))->first();
+
+        if ($req->file('user_image')) {
+            if ($req->file('user_image')->isValid())
+                $user_image = $req->file('user_image')->store('public');
+
+            if ($req->current_image)
+                Storage::delete($req->current_image);
+        } elseif ($req->current_image) {
+            $user_image = $req->current_image;
+        } else {
+            $user_image = '';
+        }
+
+        DB::table('lwadmin')->where('id',session('user_id'))->update([
+            'username' => $req->username,
+            'email' => $req->email,
+            'cell_no' => $req->cell_no,
+            'phone_no' => $req->phone_no,
+            'designation' => $req->designation,
+            'company_name' => $req->company_name,
+            'official_address' => $req->official_address,
+            'user_image' => $user_image
+        ]);
+
+        $res = ['id' => $req->id, 'status' => 'success'];
+
+        return json_encode($res);
+    }
+    
     public function updatePassword(Request $req)
     {
         // Validate the input

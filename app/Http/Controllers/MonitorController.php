@@ -264,8 +264,6 @@ class MonitorController extends Controller
             'cell_no' => $req->cell_no,
             'phone_no' => $req->phone_no,
             'designation' => $req->designation,
-            'company_name' => $req->company_name,
-            'official_address' => $req->official_address,
             'user_image' => $user_image
         ]);
 

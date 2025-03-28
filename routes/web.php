@@ -80,6 +80,7 @@ Route::prefix('lwadmin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); // Requires authentication
         Route::get('/signout', [AdminController::class, 'logout'])->name('admin.logout'); // Requires authentication
         Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
+        Route::post('/profile/update', [AdminController::class, 'profileUpdate'])->name('admin.profile.update');
         Route::get('/edit-password', [AdminController::class, 'editPassword'])->name('admin.editPassword');
         Route::post('/update-password', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
 
