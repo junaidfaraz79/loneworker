@@ -347,7 +347,7 @@
                                                 <!--end::Avatar-->
                                                 <!--begin::User details-->
                                                 <div class="d-flex flex-column">
-                                                    <a href="{{ route('worker.view', ['parameter' => $worker->id]) }}" class="text-gray-800 text-hover-primary mb-1">{{ $worker->worker_name }}</a>
+                                                    <a href="{{ route('worker.view', ['parameter' => $worker->id]) }}" class="text-gray-800 text-hover-primary mb-1" data-kt-ecommerce-category-filter="worker_name">{{ $worker->worker_name }}</a>
                                                 </div>
                                                 <!--begin::User details-->
                                             </td>
@@ -367,7 +367,7 @@
                                                     <!--end::Menu item-->
                                                     <!--begin::Menu item-->
                                                     <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
+                                                        <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row" data-worker-id="{{ $worker->id }}">Delete</a>
                                                     </div>
                                                     <!--end::Menu item-->
                                                 </div>
@@ -410,6 +410,6 @@
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
     <script src="/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
     <script src="/assets/js/custom/utilities/modals/create-app.js"></script>
-    <script src="/assets/js/custom/utilities/modals/users-search.js"></script>
+    {{-- <script src="/assets/js/custom/utilities/modals/users-search.js"></script> --}}
 
 @endpush

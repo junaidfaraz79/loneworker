@@ -20,7 +20,7 @@ class WorkerController extends Controller
 {
     public function list()
     {
-        $workers = DB::table('workers')->get();
+        $workers = Worker::all();
         return view('monitor.workers', ['workers' => $workers]);
     }
 
@@ -313,10 +313,10 @@ class WorkerController extends Controller
             $timings = DB::table('timings')->get();
 
             $documents = DB::table('worker_documents')
-            ->join('workers', 'worker_documents.worker_id', '=', 'workers.id')
-            ->where('worker_documents.worker_id', $id)
-            ->select('worker_documents.*')  // You can modify the select statement based on the columns you need
-            ->get();
+                ->join('workers', 'worker_documents.worker_id', '=', 'workers.id')
+                ->where('worker_documents.worker_id', $id)
+                ->select('worker_documents.*')  // You can modify the select statement based on the columns you need
+                ->get();
 
             return view('monitor.edit-worker', [
                 'worker' => $worker,
@@ -654,13 +654,18 @@ class WorkerController extends Controller
 
         return $mimeType;
     }
-    public function delete(Request $req)
+    
+    public function delete(Request $req, $id)
     {
+        $deleted = Worker::where('id', $id)->delete();
 
-        DB::table('workers')->where('id', $req->id)->delete();
-        $res = ['id' => $req->id, 'status' => 'success'];
-        return json_encode($res);
+        if ($deleted) {
+            return response()->json(['status' => 'success', 'message' => 'Worker deleted successfully']);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Failed to delete worker']);
+        }
     }
+
 
     // API FUNCTIONS
     public function authenticateWorker(Request $request)

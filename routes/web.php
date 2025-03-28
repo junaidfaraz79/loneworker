@@ -124,6 +124,7 @@ Route::prefix('monitor')->group(function () {
         Route::get('/worker/add', [WorkerController::class, 'add'])->name('worker.add');
         Route::post('/worker/save', [WorkerController::class, 'save'])->name('worker.save');
         Route::get('/worker/edit/{parameter}', [WorkerController::class, 'edit'])->name('worker.edit');
+        Route::get('/worker/delete/{parameter}', [WorkerController::class, 'delete'])->name('worker.delete');
         Route::post('/worker/update', [WorkerController::class, 'update'])->name('worker.update');
         Route::get('/worker/view/{parameter}', [WorkerController::class, 'view'])->name('worker.view');
         Route::get('/worker/escalation/{parameter}', [WorkerController::class, 'workerEscalation'])->name('worker.escalation');

@@ -35,74 +35,63 @@ var KTAppEcommerceCategories = function () {
 
     // Delete cateogry
     var handleDeleteRows = () => {
-        // Select all delete buttons
-        const deleteButtons = table.querySelectorAll('[data-kt-ecommerce-category-filter="delete_row"]');
-
-        deleteButtons.forEach(d => {
-            // Delete button on click
-            d.addEventListener('click', function (e) {
+        const deleteButtons = document.querySelectorAll('[data-kt-users-table-filter="delete_row"]');
+        console.log(deleteButtons)
+    
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                console.log('deletingggg')
                 e.preventDefault();
-
-                // Select parent row
-                const parent = e.target.closest('tr');
-
-                // Get category name
-                const workerName = parent.querySelector('[data-kt-ecommerce-category-filter="worker_name"]').innerText;
-
-                // SweetAlert2 pop up --- official docs reference: https://sweetalert2.github.io/
+                console.log(this.dataset.workerId)
+                const workerId = this.dataset.workerId;
+                console.log(this.closest('tr'))
+                const workerName = this.closest('tr').querySelector('[data-kt-ecommerce-category-filter="worker_name"]').innerText;
+    
                 Swal.fire({
                     text: "Are you sure you want to delete " + workerName + "?",
                     icon: "warning",
                     showCancelButton: true,
-                    buttonsStyling: false,
                     confirmButtonText: "Yes, delete!",
                     cancelButtonText: "No, cancel",
-                    customClass: {
-                        confirmButton: "btn fw-bold btn-danger",
-                        cancelButton: "btn fw-bold btn-active-light-primary"
-                    }
-                }).then(function (result) {
-                    if (result.value) {
-                        Swal.fire({
-                            text: "You have deleted " + workerName + "!.",
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn fw-bold btn-primary",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/monitor/worker/delete/${workerId}`, {
+                            method: 'GET', // or 'POST'
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                Swal.fire("Deleted!", `You have deleted ${workerName}.`, "success");
+                                // Remove the row visually
+                                button.closest('tr').remove();
+                            } else {
+                                Swal.fire("Error!", "There was an issue deleting the worker.", "error");
                             }
-                        }).then(function () {
-                            // Remove current row
-                            datatable.row($(parent)).remove().draw();
-                        });
-                    } else if (result.dismiss === 'cancel') {
-                        Swal.fire({
-                            text: workerName + " was not deleted.",
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn fw-bold btn-primary",
-                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire("Error!", "Network error or server is unreachable.", "error");
                         });
                     }
                 });
-            })
+            });
         });
-    }
+    };
+    
 
 
     // Public methods
     return {
         init: function () {
-            table = document.querySelector('#kt_ecommerce_category_table');
+            table = document.querySelector('#kt_table_users');
 
             if (!table) {
                 return;
             }
 
             initDatatable();
-            handleSearchDatatable();
+            // handleSearchDatatable();
             handleDeleteRows();
         }
     };
