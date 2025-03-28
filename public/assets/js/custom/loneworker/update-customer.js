@@ -227,7 +227,7 @@ var KTAppEcommerceSaveCategory = function () {
                     'customer_name': { validators: { notEmpty: { message: 'Customer name is required.' } } },
                     'phone_no': {
                         validators: {
-                            notEmpty: { message: 'Phone Number is required' },
+                            // notEmpty: { message: 'Phone Number is required' },
                             callback: {
                                 message: 'Please enter a valid phone number',
                                 numeric: { message: 'The value is not a number'},

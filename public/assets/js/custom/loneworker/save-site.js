@@ -234,7 +234,7 @@ var KTAppEcommerceSaveCategory = function () {
                     'site_manager_contact': {
                         validators: {
                             notEmpty: { message: 'Site Manager Contact is required' },
-                            numeric: { message: 'The value is not a number'},
+                            // numeric: { message: 'The value is not a number'},
                             callback: {
                                 message: 'Please enter a valid phone number',
                                 callback: function (input) {

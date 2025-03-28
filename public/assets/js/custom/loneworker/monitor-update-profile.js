@@ -253,7 +253,7 @@ var KTAppEcommerceSaveCategory = function () {
                                     return itiInstances['cell_no'].isValidNumber();
                                 },
                             },
-                            numeric: { message: 'The value is not a number'}
+                            // numeric: { message: 'The value is not a number'}
                         }
                     },
                     'phone_no': {
@@ -265,7 +265,7 @@ var KTAppEcommerceSaveCategory = function () {
                                     return itiInstances['phone_no'].isValidNumber();
                                 },
                             },
-                            numeric: { message: 'The value is not a number'}
+                            // numeric: { message: 'The value is not a number'}
                             // validatePhone: { message: errorMap[iti.getValidationError()] || "Invalid number" }
                         }
                     },
