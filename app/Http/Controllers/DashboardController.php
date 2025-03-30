@@ -74,8 +74,9 @@ class DashboardController extends Controller
 
     public function subscription()
     {
-        $subscription = DB::table('subscriptions')->where('id', Auth::guard('subscriber')->user()->subscription_id)->first();
-        return view('my-subscription', ['subscription'=>$subscription]);  
+        $subscription = DB::table('subscriptions')->where('user_email', Auth::guard('subscriber')->user()->email)->first();
+        $card = DB::table('cards')->where('subscriber_id', Auth::guard('subscriber')->user()->id)->first();
+        return view('my-subscription', ['subscription'=>$subscription, 'card' => $card]);  
     }    
   
 }

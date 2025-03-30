@@ -38,4 +38,8 @@ return [
     'companies_house' => [
         'api_key' => env('COMPANIES_HOUSE_API_KEY'),
     ],
+
+    'fcm' => [
+        'project_id' => env('FIREBASE_PROJECT_ID'),
+    ],
 ];

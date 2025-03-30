@@ -62,6 +62,9 @@ Route::middleware([SubscriberAuth::class])->group(function () {
     Route::post('/profile/update', [DashboardController::class, 'update'])->name('subscriberProfile.update');
     Route::get('/subscription', [DashboardController::class, 'subscription'])->name('subscription');
 
+    // Card information
+    Route::post('/update', [SubscriberController::class, 'updateCard'])->name('card.update');
+
     // Monitor Routes
     Route::get('/monitors', [MonitorController::class, 'list'])->name('monitors');
     Route::get('/monitor/add', [MonitorController::class, 'add'])->name('monitor.add');

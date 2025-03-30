@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Notifications\WorkerResetPasswordNotification;
 use App\Services\ExpoPushNotificationService;
+use App\Services\NotificationService;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -101,8 +102,15 @@ class Worker extends Authenticatable
             return null;
         }
 
-        $expoPushService = new ExpoPushNotificationService();
-        return $expoPushService->sendNotification($this->push_token, $title, $body, $data, $this->id);
+        $notificationService = new NotificationService();
+        $result =  $notificationService->sendPushNotification($this->push_token, $title, $body, $data, $this->id);
+
+        if ($result['success']) {
+            return $result;
+        } else {
+            // Handle error
+            logger()->error('Notification failed', $result);
+        }
     }
 }
 

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class AttendanceController extends Controller
 {
@@ -26,37 +27,57 @@ class AttendanceController extends Controller
             $worker = Auth::user();
             $checkinTime = Carbon::parse($request->checkin_time);
 
+            Log::info('Check-in time parsed:', ['checkin_time' => $checkinTime]);
+
             // Retrieve the check_in_frequency value by joining with the check_in_frequency table
             $frequency = Worker::where('workers.id', $worker->id)
                 ->join('check_in_frequency', 'workers.check_in_frequency', '=', 'check_in_frequency.id')
                 ->first(['check_in_frequency.value']);
 
+            // Log::info('Frequency value:', ['frequency' => $frequency]);
+
             // Retrieve the worker's shifts
-            $shifts = DB::table('worker_shift_site')
+            // $shifts = DB::table('worker_shift_site')
+            //     ->join('shifts', 'worker_shift_site.shift_id', '=', 'shifts.id')
+            //     ->where('worker_shift_site.worker_id', $worker->id)
+            //     ->whereDate('worker_shift_site.start_date', '<=', $checkinTime)
+            //     ->whereDate('worker_shift_site.end_date', '>=', $checkinTime)
+            //     ->select('worker_shift_site.*', 'shifts.default_start_time', 'shifts.default_end_time')
+            //     ->get();
+
+            // Log::info('Shifts retrieved:', ['shifts' => $shifts]);
+            // $matchedShift = null;
+
+            // foreach ($shifts as $shift) {
+            //     $startTime = Carbon::createFromFormat('Y-m-d h:i A', $checkinTime->toDateString() . ' ' . ($shift->custom_start_time ?? $shift->default_start_time));
+            //     $endTime = Carbon::createFromFormat('Y-m-d h:i A', $checkinTime->toDateString() . ' ' . ($shift->custom_end_time ?? $shift->default_end_time));
+            
+            //     // If the end time is earlier in the day, it means the shift ends after midnight.
+            //     if ($endTime->lessThan($startTime)) {
+            //         $endTime->addDay();
+            //     }
+            
+            //     Log::info('Adjusted shift times', ['start_time' => $startTime, 'end_time' => $endTime, 'shift_id' => $shift->id]);
+            
+            //     // Compare checkin_time with the shift's start and end times
+            //     if ($checkinTime->between($startTime, $endTime)) {
+            //         $matchedShift = $shift;
+            //         Log::info('Matched shift found:', ['matched_shift' => $matchedShift]);
+            //         break;
+            //     }
+            // }
+            
+            // if (!$matchedShift) {
+            //     Log::error('No matching shift found for the check-in time.');
+            //     throw new \Exception('No matching shift found for the check-in time.');
+            // }
+            
+            //for testing
+            $matchedShift = DB::table('worker_shift_site')
                 ->join('shifts', 'worker_shift_site.shift_id', '=', 'shifts.id')
                 ->where('worker_shift_site.worker_id', $worker->id)
-                ->whereDate('worker_shift_site.start_date', '<=', $checkinTime)
-                ->whereDate('worker_shift_site.end_date', '>=', $checkinTime)
                 ->select('worker_shift_site.*', 'shifts.default_start_time', 'shifts.default_end_time')
-                ->get();
-
-            $matchedShift = null;
-
-            foreach ($shifts as $shift) {
-                // Use custom times if available, otherwise use default times
-                $startTime = Carbon::createFromFormat('h:i A', $shift->custom_start_time ?? $shift->default_start_time);
-                $endTime = Carbon::createFromFormat('h:i A', $shift->custom_end_time ?? $shift->default_end_time);
-
-                // Compare checkin_time with the shift's start and end times
-                if ($checkinTime->between($startTime, $endTime)) {
-                    $matchedShift = $shift;
-                    break;
-                }
-            }
-
-            if (!$matchedShift) {
-                throw new \Exception('No matching shift found for the check-in time.');
-            }
+                ->first();
 
             // Insert check-in time into attendance table
             $attendance = Attendance::create([
@@ -65,6 +86,8 @@ class AttendanceController extends Controller
                 'status' => 'active',
                 'worker_shift_site_id' => $matchedShift->id,
             ]);
+
+            Log::info('Attendance recorded:', ['attendance' => $attendance]);
 
             // Assume $frequencyInSeconds holds the frequency in seconds retrieved from your frequency table.
             // $frequencyInSeconds = 300; // For example, 300 seconds for 5 minutes
@@ -79,6 +102,8 @@ class AttendanceController extends Controller
                 'status' => 'pending',
                 'worker_id' => $worker->id,
             ]);
+
+            Log::info('Check-in details saved:', ['checkin' => $checkin]);
 
             DB::commit();
 

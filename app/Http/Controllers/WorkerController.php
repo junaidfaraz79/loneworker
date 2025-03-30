@@ -508,6 +508,7 @@ class WorkerController extends Controller
 
             // Send notification to worker for only if their shift details are changed
             if ($shiftsUpdated) {
+                Log::info('sending shift update notif');
                 $worker->sendPushNotification('Shift Details!', 'Your shift details have been updated. Click here to view.', ['screen' => 'Shift Details']);
             }
 
@@ -678,6 +679,10 @@ class WorkerController extends Controller
 
         // Start a transaction to ensure data integrity
         DB::beginTransaction();
+
+        Log::info('pin: ' . $request->pin);
+        Log::info('password: ' . $request->password);
+        Log::info('push_token: ' . $request->push_token);
 
         try {
             $worker = Worker::where('pin', $request->pin)->first();
