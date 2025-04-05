@@ -13,15 +13,18 @@ class ShiftController extends Controller
 {
     public function list()
     {
-        $shifts = DB::table('shifts')->get();
-        $sites = DB::table('sites')->get();
+        $shifts = DB::table('shifts')->where('shifts.subscriber_id', Auth::guard('monitor')->user()->subscriber_id)->get();
+        $sites = DB::table('sites')->where('sites.subscriber_id', Auth::guard('monitor')->user()->subscriber_id)->get();
         return view('monitor.shifts', ['shifts' => $shifts, 'sites' => $sites]);
     }
 
     public function shiftsBySite(Request $req, $site_id)
     {
         try {
-            $shifts = DB::table('shifts')->where('site_id', intval($site_id))->get();
+            $shifts = DB::table('shifts')
+            ->where('shifts.subscriber_id', Auth::guard('monitor')->user()->subscriber_id)
+            ->where('site_id', intval($site_id))
+            ->get();
 
             if ($shifts) {
                 $res = ['shifts' => $shifts, 'status' => 'success'];
@@ -48,7 +51,7 @@ class ShiftController extends Controller
         // $plans = DB::table('plans')->get();
         $timings = DB::table('timings')->get();
         $frequency = DB::table('check_in_frequency')->get();
-        $sites = DB::table('sites')->get();
+        $sites = DB::table('sites')->where('sites.subscriber_id', Auth::guard('monitor')->user()->subscriber_id)->get();
         return view('monitor.add-shift', compact('timings', 'frequency', 'sites'));
     }
 
@@ -66,7 +69,8 @@ class ShiftController extends Controller
                 'site_id' => $req->input('site_id'),
                 'days' => json_encode($req->days),
                 // 'alert_frequency' => $req->input('alert_frequency'),
-                'monitor_id' => Auth::guard('monitor')->user()->id,                
+                'monitor_id' => Auth::guard('monitor')->user()->id,       
+                'subscriber_id' => Auth::guard('monitor')->user()->subscriber_id,         
                 'added_on' => now(),
                 'updated_on' => now(),
             ]);

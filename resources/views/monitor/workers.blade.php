@@ -376,7 +376,12 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="100%" class="text-center">No workers found</td>
+                                            <td colspan="6" class="text-center">No workers found</td>
+                                            <td style="display: none"></td>
+                                            <td style="display: none"></td>
+                                            <td style="display: none"></td>
+                                            <td style="display: none"></td>
+                                            <td style="display: none"></td>
                                         </tr>
                                     @endforelse
                                 </tbody>

@@ -20,7 +20,7 @@ class WorkerController extends Controller
 {
     public function list()
     {
-        $workers = Worker::all();
+        $workers = Worker::where('subscriber_id', Auth::guard('monitor')->user()->subscriber_id)->get();
         return view('monitor.workers', ['workers' => $workers]);
     }
 
@@ -120,7 +120,9 @@ class WorkerController extends Controller
             ->select('id', 'username')
             ->get();
 
-        $shifts = DB::table('shifts')->where('status', 'active')->get();
+        $shifts = DB::table('shifts')
+        ->where('shifts.subscriber_id', $monitor->subscriber_id)
+        ->where('status', 'active')->get();
 
         $frequency = DB::table('check_in_frequency')->get();
 
@@ -300,7 +302,9 @@ class WorkerController extends Controller
                 ->select('id', 'username')
                 ->get();
 
-            $shifts = DB::table('shifts')->where('status', 'active')->get();
+            $shifts = DB::table('shifts')
+            ->where('shifts.subscriber_id', Auth::guard('monitor')->user()->subscriber_id)
+            ->where('status', 'active')->get();
 
 
             $sites = DB::table('sites')

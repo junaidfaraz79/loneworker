@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,6 +14,7 @@ class CustomerController extends Controller
     {
         $customers = DB::table('customers')
             ->leftJoin('sites', 'customers.id', '=', 'sites.customer_id')
+            ->where('customers.subscriber_id', Auth::guard('monitor')->user()->subscriber_id)
             ->select(
                 'customers.id as customer_id',
                 'customers.customer_name',
@@ -66,6 +68,7 @@ class CustomerController extends Controller
         // }
         // else
         // {
+        $monitor = Auth::guard('monitor')->user();
 
         if ($req->file('customer_image')) {
             if ($req->file('customer_image')->isValid())
@@ -80,7 +83,9 @@ class CustomerController extends Controller
             'role' => $req->role,
             'department' => $req->department,
             'customer_image' => $customer_image,
-            'customer_status' => $req->customer_status
+            'customer_status' => $req->customer_status,
+            'monitor_id' => $monitor->id,
+            'subscriber_id' => $monitor->subscriber_id,
         ]);
 
         $res = ['id' => $id, 'status' => 'success'];

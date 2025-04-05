@@ -14,6 +14,7 @@ class SiteController extends Controller
     {
         $sites = DB::table('sites')
             ->leftJoin('customers as c', 'c.id', '=', 'sites.customer_id')
+            ->where('sites.subscriber_id', Auth::guard('monitor')->user()->subscriber_id)
             ->select('sites.*', 'c.customer_name')
             ->get();
         return view('monitor.sites', ['sites' => $sites]);
@@ -229,7 +230,7 @@ class SiteController extends Controller
             "Zimbabwe"
         ];
 
-        $customers = DB::table('customers')->get();
+        $customers = DB::table('customers')->where('customers.subscriber_id', Auth::guard('monitor')->user()->subscriber_id)->get();
         return view('monitor.add-site', compact('countries', 'customers'));
     }
 
@@ -481,7 +482,7 @@ class SiteController extends Controller
             "Zimbabwe"
         ];
 
-        $customers = DB::table('customers')->get();
+        $customers = DB::table('customers')->where('customers.subscriber_id', Auth::guard('monitor')->user()->subscriber_id)->get();
         if ($site) {
             return view('monitor.edit-site', compact('countries', 'customers', 'site'));
         } else

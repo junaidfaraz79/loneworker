@@ -719,7 +719,7 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('/assets/js/custom/loneworker/save-worker-v2.js') }}"></script>
+<script src="{{ asset('/assets/js/custom/loneworker/save-worker.js') }}"></script>
 <!-- CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
 <!-- JS -->
@@ -739,6 +739,5 @@
     var unassignedMonitors = @json($unassignedMonitors);
     var sites = @json($sites);
     var timings = @json($timings);
-    var utils_url = '/assets/js/utils.js';
 </script>
 @endpush

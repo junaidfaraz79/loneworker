@@ -381,7 +381,12 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="100%" class="text-center">No sites found</td>
+                                            <td colspan="6" class="text-center">No sites found</td>
+                                            <td style="display: none"></td>
+                                            <td style="display: none"></td>
+                                            <td style="display: none"></td>
+                                            <td style="display: none"></td>
+                                            <td style="display: none"></td>
                                         </tr>
                                     @endforelse
                                 </tbody>
